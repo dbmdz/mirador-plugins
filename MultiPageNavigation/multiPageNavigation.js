@@ -112,29 +112,31 @@
     subscribeToEvents: function(){
       this.subscribeToViewerEvents();
 
-      i18next.on('initialized', function(){
-        this.addLocalesToViewer();
-      }.bind(this));
     },
 
     /* subscribes to events fired by Mirador */
-    subscribeToViewerEvents: function(){
-      window.mirador.eventEmitter.subscribe('windowUpdated', function(event, data){
-        if(data.viewType){
-          var hudSelector = null;
-          if(data.viewType === 'ImageView'){
-            hudSelector = 'div[data-layout-slot-id="' + window.mirador.viewer.workspace.getSlotFromAddress(
-              data.slotAddress
-            ).slotID + '"] .image-view > .mirador-hud';
-            this.injectToViewer(hudSelector, data.viewType);
-          }else if(data.viewType === 'BookView'){
-            hudSelector = 'div[data-layout-slot-id="' + window.mirador.viewer.workspace.getSlotFromAddress(
-              data.slotAddress
-            ).slotID + '"] .book-view > .mirador-hud';
-            this.injectToViewer(hudSelector, data.viewType);
+    injectWorkspaceEventHandler: function(){
+      var this_ = this;
+      var origFunc = Mirador.Workspace.prototype.bindEvents;
+      Mirador.Workspace.prototype.bindEvents = function() {
+        var workspace = this;
+        this.eventEmitter.subscribe('windowUpdated', function(event, data) {
+          if (!data.viewType) {
+            return;
           }
-        }
-      }.bind(this));
+          var hudSelector = null;
+          var slotId = workspace.getSlotFromAddress(data.slotAddress).slotID;
+          if (data.viewType === 'ImageView') {
+            hudSelector = 'div[data-layout-slot-id="' + slotId + '"] .image-view > .mirador-hud';
+          } else if(data.viewType === 'BookView') {
+            hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .book-view > .mirador-hud';
+          }
+          if (hudSelector) {
+            this_.injectToViewer(hudSelector, data.viewType);
+          }
+        })
+        origFunc.apply(this);
+      }
     },
 
     /* adds the locales to the internationalization module of the viewer */
@@ -162,8 +164,10 @@
       // add some event handlers to Mirador
       this.addEventHandlersToViewer('ImageView');
       this.addEventHandlersToViewer('BookView');
-      // subscribe to some events
-      this.subscribeToEvents();
+      this.injectWorkspaceEventHandler();
+      i18next.on('initialized', function(){
+        this.addLocalesToViewer();
+      }.bind(this));
     },
 
     /*

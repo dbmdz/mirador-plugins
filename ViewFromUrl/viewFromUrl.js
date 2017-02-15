@@ -3,7 +3,7 @@ var UpdateUrlFromView = {
 
   init: function() {
     var this_ = this;
-    var origHandler = Mirador.Viewer.prototype.setupViewer;
+    var origFunc = Mirador.Viewer.prototype.setupViewer;
     Mirador.Viewer.prototype.setupViewer = function() {
       if (window.location.hash) {
         var windowObj = this_.parseHash(window.location.hash);
@@ -12,8 +12,7 @@ var UpdateUrlFromView = {
       }
       this.eventEmitter.subscribe('slotsUpdated', this_.onSlotsUpdated);
       this.eventEmitter.subscribe('windowUpdated', this_.onWindowUpdated);
-      this_.viewer = this;
-      origHandler.apply(this);
+      origFunc.apply(this);
     }
   },
 
@@ -33,8 +32,6 @@ var UpdateUrlFromView = {
     this.updateUrl = data.slots.length === 1;
     if (!this.updateUrl) {
       window.location.hash = '';
-    } else {
-      console.log('Activated URL update');
     }
   },
 
@@ -49,3 +46,7 @@ var UpdateUrlFromView = {
     window.location.hash = hash;
   }
 }
+
+$(document).ready(function() {
+  UpdateUrlFromView.init();
+});

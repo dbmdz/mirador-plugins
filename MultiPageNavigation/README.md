@@ -8,15 +8,7 @@ To use this plugin, just follow these steps:
   <link rel="stylesheet" type="text/css" href="<url to the plugin>/multiPageNavigation.css" />
   ```
 
-2. save the Mirador instance to the global variable `window.mirador`
-
-  ```js
-  window.mirador = Mirador({
-    // configuration options
-  });
-  ```
-
-3. include the js file right after the Mirador js file
+2. include the js file right after the Mirador js file
 
   ```html
   <script src="<url to the plugin>/multiPageNavigation.js"></script>

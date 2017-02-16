@@ -107,12 +107,6 @@ var MultiPageNavigation = {
     Mirador[viewType].prototype.listenForActions = extendedListenForActions;
   },
 
-  /* subscribes to events */
-  subscribeToEvents: function(){
-    this.subscribeToViewerEvents();
-
-  },
-
   /* subscribes to events fired by Mirador */
   injectWorkspaceEventHandler: function(){
     var this_ = this;

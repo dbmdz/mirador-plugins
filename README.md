@@ -34,3 +34,25 @@ unwieldy to store in the URL hash. Use Mirador's built-in bookmarking
 functionality (via JSONBlob) for these use cases.
 
 To enable it, just include the JavaScript **after** loading Mirador.
+
+## Keyboard Navigation
+
+Adds keyboard nagivation features to Mirador. If there are multiple windows, the action are applied to all of them.
+
+| Key                              | Action                                                |
+| -------------------------------- | ----------------------------------------------------- |
+| <kbd>←</kbd>                     | Go to previous page.                                  |
+| <kbd>→</kbb> or <kbd>SPACE</kbd> | Go to next page.                                      |
+| <kbd>i</kbd>                     | Show or hide information/metadata.                    |
+| <kbd>↵</kbd>                     | Toggle fullscreen using the largest possible option. |
+
+Installation:
+
+```html
+<script src="build/mirador/mirador.js"></script>
+<script src="path/to/keyboardNavigation.js"></script>
+<script>
+// Creating Mirador instance
+// ...
+</script>
+```

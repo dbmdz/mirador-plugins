@@ -43,7 +43,7 @@ var KeyboardNavigation = {
       origFunc.apply(this);
       var this_ = this;
       Mousetrap.bind(['left'], function(){
-        console.log('Got key ←');
+        console.log('Got key ←, going to previous page.');
         var workspace = this_.workspace;
         if (anyViewIsZoomed(workspace)) {
           return;
@@ -53,7 +53,7 @@ var KeyboardNavigation = {
         });
       });
       Mousetrap.bind(['right', 'space'], function(){
-        console.log('Got key → or ␣');
+        console.log('Got key → or ␣, going to next page.');
         var workspace = this_.workspace;
         if (anyViewIsZoomed(workspace)) {
           return;
@@ -61,6 +61,22 @@ var KeyboardNavigation = {
         forEveryActiveView(workspace, function(view){
           view.next();
         })
+      });
+      Mousetrap.bind(['enter'], function(){
+        console.log('Got key ↵, toggle fullscreen.');
+        if (this_.workspace.windows.length == 1) {
+          jQuery('.mirador-osd-fullscreen').click();
+        }
+        else {
+          this_.eventEmitter.publish('TOGGLE_FULLSCREEN');
+        }
+      });
+      Mousetrap.bind(['i'], function(){
+        console.log('Got key i, toggle metadata info.');
+        //jQuery('.mirador-osd-fullscreen').click();
+        this_.workspace.windows.forEach(function(w) {
+          w.toggleMetadataOverlay(w.viewType);
+        });
       });
     }
   }

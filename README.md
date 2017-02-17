@@ -42,7 +42,7 @@ Adds keyboard nagivation features to Mirador. If there are multiple windows, the
 | Key                              | Action                                                |
 | -------------------------------- | ----------------------------------------------------- |
 | <kbd>←</kbd>                     | Go to previous page.                                  |
-| <kbd>→</kbb> or <kbd>SPACE</kbd> | Go to next page.                                      |
+| <kbd>→</kbd> or <kbd>SPACE</kbd> | Go to next page.                                      |
 | <kbd>i</kbd>                     | Show or hide information/metadata.                    |
 | <kbd>↵</kbd>                     | Toggle fullscreen using the largest possible option. |
 

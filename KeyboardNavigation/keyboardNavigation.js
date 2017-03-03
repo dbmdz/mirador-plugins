@@ -52,6 +52,17 @@ var KeyboardNavigation = {
           view.previous();
         });
       });
+      Mousetrap.bind(['ctrl+left'], function(){
+        console.log('Got key ←, going to previous page.');
+        var workspace = this_.workspace;
+        if (anyViewIsZoomed(workspace)) {
+          return;
+        }
+        forEveryActiveView(workspace, function(view){
+          // this_.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + this_.windowId, this_.imagesList[0]['@id']);
+          view.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + view.windowId, view.imagesList[0]['@id']);
+        });
+      });
       Mousetrap.bind(['right', 'space'], function(){
         console.log('Got key → or ␣, going to next page.');
         var workspace = this_.workspace;
@@ -61,6 +72,16 @@ var KeyboardNavigation = {
         forEveryActiveView(workspace, function(view){
           view.next();
         })
+      });
+      Mousetrap.bind(['ctrl+right'], function(){
+        console.log('Got key ←, going to previous page.');
+        var workspace = this_.workspace;
+        if (anyViewIsZoomed(workspace)) {
+          return;
+        }
+        forEveryActiveView(workspace, function(view){
+           view.eventEmitter.publish('SET_CURRENT_CANVAS_ID.' + view.windowId, view.imagesList[view.imagesList.length-1]['@id']);
+        });
       });
       Mousetrap.bind(['enter'], function(){
         console.log('Got key ↵, toggle fullscreen.');

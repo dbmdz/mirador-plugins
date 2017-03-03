@@ -8,7 +8,7 @@ function currentView(window) {
       break;
       case 'BookView':
         console.log('Go to previous image');
-        return window.focusModules.ImageView;
+        return window.focusModules.BookView;
       break;
     }
     return null;

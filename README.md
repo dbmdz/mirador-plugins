@@ -2,6 +2,39 @@
 
 This repository contains multiple extensions for the IIIF viewer Mirador (see http://projectmirador.org/).
 
+
+## Physical Document Ruler
+
+Adds a vertical and a horizontal ruler with metric or imperial units to the
+canvas display if the canvas has a [physical dimensions service](http://iiif.io/api/annex/services/#physical-dimensions)
+set.
+
+[![Demo](https://thumbs.gfycat.com/InexperiencedPoshArabianhorse-size_restricted.gif)](https://gfycat.com/InexperiencedPoshArabianhorse)
+
+
+To enable it, simply include the JavaScript (**after** loading Mirador):
+
+```html
+<script src="<url to the plugin>/physicalRuler.js"></script>
+```
+
+You can configure the ruler with the `physicalRuler` configuration attribute
+in your Mirador configuration:
+
+```javascript
+var mirador = Mirador({
+  physicalRuler: {
+    color: "#ffffff",         // The color for the rulers and labels
+    location: "bottom-left",  // Location of the reference point of the rulers
+    smallDashSize: 10,        // Size of the small dashes in pixels
+    largeDashSize: 15,        // Size of the large dashes in pixels
+    labelsEvery: 5,           // Draw ruler labels every n centimeters/inches
+    imperialUnits: false      // Use imperial units instead of metric
+  }
+});
+```
+
+
 ## Multi-Page Navigation
 
 Adds a small additional navigation bar to the top of the viewport that

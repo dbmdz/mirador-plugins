@@ -58,7 +58,7 @@
    *  location:   'top-left', 'top-right', 'bottom-left', 'bottom-right'
    *  smallDashSize: Size of small unit dashes in pixels
    *  largeDashSize: Size of large unit dashes in pixels
-   *  pixelsPerMilimeter: How many pixels per milimeter?
+   *  pixelsPerMillimeter: How many pixels per millimeter?
    *  imperialUnits: Use imperial units instead of metric?
    *  color: RGB color to use for the rulers
    */
@@ -73,7 +73,7 @@
     this.location = osd.DocumentRulerLocationMapping[options.location || 'bottom-left'];
     this.smallDashSize = options.smallDashSize || 10;
     this.largeDashSize = options.largeDashSize || 15;
-    this.pixelsPerMilimeter = options.pixelsPerMilimeter;
+    this.pixelsPerMillimeter = options.pixelsPerMillimeter;
     this.labelsEvery = options.labelsEvery || 5;
     this.imperialUnits = options.imperialUnits || false;
     this.color = options.color || "#ffffff";
@@ -118,7 +118,7 @@
 
     // Other instance state
     location: undefined,
-    pointsPerMilimeter: undefined,
+    pointsPerMillimeter: undefined,
     smallDashSize: undefined,
     largeDashSize: undefined,
 
@@ -219,13 +219,13 @@
     refresh: function(options) {
       var viewport = this.viewer.viewport;
       var zoom = viewport.viewportToImageZoom(viewport.getZoom(true));
-      var currentPixelsPerMilimeter = zoom * this.pixelsPerMilimeter;
-      this.updateScales(currentPixelsPerMilimeter);
+      var currentPixelsPerMillimeter = zoom * this.pixelsPerMillimeter;
+      this.updateScales(currentPixelsPerMillimeter);
     },
 
-    /** Update the scales with the new pixelsPerMilimeter value **/
-    updateScales: function(pixelsPerMilimeter) {
-      var scaleInfo = this.getScalesInfo(pixelsPerMilimeter);
+    /** Update the scales with the new pixelsPerMillimeter value **/
+    updateScales: function(pixelsPerMillimeter) {
+      var scaleInfo = this.getScalesInfo(pixelsPerMillimeter);
       this.elems.horizontal.small.style.backgroundSize = scaleInfo.small + 'px 100%';
       this.elems.horizontal.large.style.backgroundSize = scaleInfo.large + 'px 100%';
       this.elems.vertical.small.style.backgroundSize = '100% ' + scaleInfo.small + 'px';
@@ -306,9 +306,9 @@
 
     /** Return the pixel steps for the small and large scales, the factor
      *  used for the labels on the large scale as well as the unit to display. */
-    getScalesInfo: function(pixelsPerMilimeter) {
+    getScalesInfo: function(pixelsPerMillimeter) {
       if (this.imperialUnits) {
-        var pixelsPerEigthInch = (pixelsPerMilimeter * 25.4) / 8;
+        var pixelsPerEigthInch = (pixelsPerMillimeter * 25.4) / 8;
         if (pixelsPerEigthInch > 2) {
           return { large: 8 * pixelsPerEigthInch,
                   small: pixelsPerEigthInch,
@@ -326,19 +326,19 @@
                    unit: 'ft' };
         }
       } else {
-        if (pixelsPerMilimeter > 2) {
-          return { large: 10 * pixelsPerMilimeter,
-                   small: pixelsPerMilimeter,
+        if (pixelsPerMillimeter > 2) {
+          return { large: 10 * pixelsPerMillimeter,
+                   small: pixelsPerMillimeter,
                    factor: 1,
                    unit: 'cm' };
-        } else if (pixelsPerMilimeter > 0.1) {
-          return { large: 100 * pixelsPerMilimeter,
-                   small: 10 * pixelsPerMilimeter,
+        } else if (pixelsPerMillimeter > 0.1) {
+          return { large: 100 * pixelsPerMillimeter,
+                   small: 10 * pixelsPerMillimeter,
                    factor: 10,
                    unit: 'cm' };
         } else {
-          return { large: 1000 * pixelsPerMilimeter,
-                   small: 100 * pixelsPerMilimeter,
+          return { large: 1000 * pixelsPerMillimeter,
+                   small: 100 * pixelsPerMillimeter,
                    factor: 1,
                    unit: 'm' };
         }
@@ -358,12 +358,12 @@
       var options = _this.state.getStateProperty("physicalRuler") || {};
       var service = _this.currentImg.service;
       if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
-        var milimetersPerPhysicalUnit = {
+        var millimetersPerPhysicalUnit = {
           'mm': 1.0,
           'cm': 10.0,
           'in': 25.4
         };
-        options.pixelsPerMilimeter = 1 / (milimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
+        options.pixelsPerMillimeter = 1 / (millimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
         jQuery.extend(true, _this.osd, {
           documentRulerConfig: options
         });

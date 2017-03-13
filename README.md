@@ -55,10 +55,12 @@ due to a still pending pull request that updates the i18next dependency
 
 ## Bookmarkable Viewer State
 
-Modifies Mirador to dynamically update the URL hash to reflect the currently
+Modifies Mirador to dynamically update the URL to reflect the currently
 selected view type (image, book, etc), manifest and canvas and to reconstruct
 a Mirador session from such an URL hash. This allows users to bookmark the
 (partial) state of Mirador and restore it at a later time.
+
+The syntax of the URL is compatible with the [work-in-progress IIIF Drag-and-Drop pattern](http://zimeon.github.io/iiif-dragndrop/).
 
 This plugins comes with a major caveat, namely that the URL is only updated
 if there is a single slot in the viewer. This is due to the fact that more

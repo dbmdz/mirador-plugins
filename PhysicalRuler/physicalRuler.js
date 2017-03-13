@@ -361,7 +361,7 @@
         var milimetersPerPhysicalUnit = {
           'mm': 1.0,
           'cm': 10.0,
-          'in': 2.54
+          'in': 25.4
         };
         options.pixelsPerMilimeter = 1 / (milimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
         jQuery.extend(true, _this.osd, {

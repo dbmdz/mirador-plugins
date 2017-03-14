@@ -192,18 +192,18 @@
         smallScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
         largeScale.style.height = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + ' 3px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 3px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 3px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
       } else {
         smallScale.style.width = this.smallDashSize + 'px';
         smallScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         largeScale.style.width = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 3px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 3px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 3px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 1px, transparent 0px)';
       }
       rulerElem.appendChild(smallScale);
       rulerElem.appendChild(largeScale);
@@ -350,26 +350,38 @@
 
 // Hook up Mirador plugin
 (function(mirador) {
+  mirador.ImageView.prototype.enablePhysicalRuler = function(service) {
+    var options = this.state.getStateProperty("physicalRuler") || {};
+    if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
+      var millimetersPerPhysicalUnit = {
+        'mm': 1.0,
+        'cm': 10.0,
+        'in': 25.4
+      };
+      options.pixelsPerMillimeter = 1 / (millimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
+      jQuery.extend(true, this.osd, {
+        documentRulerConfig: options
+      });
+      this.osd.documentRuler(this.osd.documentRulerConfig);
+      this.osd.rulerInstance.refresh();
+      this.osd.rulerInstance.updateSize();
+    }
+  };
+
   var oldFn = mirador.ImageView.prototype.createOpenSeadragonInstance;
   mirador.ImageView.prototype.createOpenSeadragonInstance = function(imageUrl) {
     oldFn.apply(this, [imageUrl]);
     var _this = this;
     this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
-      var options = _this.state.getStateProperty("physicalRuler") || {};
       var service = _this.currentImg.service;
       if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
-        var millimetersPerPhysicalUnit = {
-          'mm': 1.0,
-          'cm': 10.0,
-          'in': 25.4
-        };
-        options.pixelsPerMillimeter = 1 / (millimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
-        jQuery.extend(true, _this.osd, {
-          documentRulerConfig: options
-        });
-        _this.osd.documentRuler(_this.osd.documentRulerConfig);
-        _this.osd.rulerInstance.refresh();
-        _this.osd.rulerInstance.updateSize();
+        if ((!service.physicalScale || !service.physicalUnits) && service['@id']) {
+          // Remote Service
+          jQuery.getJSON(service['@id'], _this.enablePhysicalRuler.bind(_this));
+        } else if (service.physicalScale && service.physicalUnits) {
+          // Embedded Service
+          _this.enablePhysicalRuler(service);
+        }
       }
     });
   }

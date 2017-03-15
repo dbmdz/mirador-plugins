@@ -330,7 +330,7 @@
           label.style.whiteSpace = "nowrap";
           text = labelNumber.toExponential(this.labelPrecision);
         } else {
-          text = labelNumber.toFixed(this.labelPrecision);
+          text = Number(labelNumber.toFixed(this.labelPrecision));
         }
         if (direction === 'vertical') {
           var textHeight = 17;

@@ -324,7 +324,14 @@
         if (idx === 0) {
           return;
         }
-        var text = Number((idx * scaleInfo.labelFactor * this.labelsEvery).toFixed(this.labelPrecision));
+        var labelNumber = idx * scaleInfo.labelFactor * this.labelsEvery;
+        var text;
+        if (labelNumber < 1e-4 || labelNumber > 1e4) {
+          label.style.whiteSpace = "nowrap";
+          text = labelNumber.toExponential(this.labelPrecision);
+        } else {
+          text = labelNumber.toFixed(this.labelPrecision);
+        }
         if (direction === 'vertical') {
           var textHeight = 17;
           if (this.location[0] === 0) {

@@ -60,7 +60,8 @@
    *  largeDashSize: Size of large unit dashes in pixels
    *  pixelsPerMillimeter: How many pixels per millimeter?
    *  imperialUnits: Use imperial units instead of metric?
-   *  color: RGB color to use for the rulers
+   *  color: RGB color to use for the rulers,
+   *  labelPrecision: Numboer of decimal places to use for labels
    */
   osd.DocumentRuler = function(options) {
     options = options || {};
@@ -77,6 +78,7 @@
     this.labelsEvery = options.labelsEvery || 5;
     this.imperialUnits = options.imperialUnits || false;
     this.color = options.color || "#ffffff";
+    this.labelPrecision = options.labelPrecision || 3;
 
     // Offscreen canvas for measuring text size
     this._canvas = document.createElement('canvas');
@@ -276,7 +278,7 @@
         if (idx === 0) {
           return;
         }
-        var text = idx * scaleInfo.factor * this.labelsEvery;
+        var text = Number((idx * scaleInfo.factor * this.labelsEvery).toFixed(this.labelPrecision));;
         if (direction === 'vertical') {
           var textHeight = 17;
           if (this.location[0] === 0) {

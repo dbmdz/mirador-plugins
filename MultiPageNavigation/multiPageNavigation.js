@@ -20,7 +20,7 @@ var MultiPageNavigation = {
    */
 
   /* the template for the navigation buttons */
-  template: Handlebars.compile([
+  template: Mirador.Handlebars.compile([
     '<div class="extendedNav skipPrevious">',
     '<a class="mirador-osd-first hud-control">',
     '<i class="fa fa-chevron-left"></i><span>{{t "firstPage"}}</span>',
@@ -127,7 +127,7 @@ var MultiPageNavigation = {
         if (hudSelector) {
           this_.injectToViewer(hudSelector, data.viewType);
         }
-      })
+      });
       origFunc.apply(this);
     }
   },

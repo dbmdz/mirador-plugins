@@ -433,6 +433,9 @@
           // Embedded Service
           _this.enablePhysicalRuler(service);
         }
+        $('.mirador-osd-context-controls').css("left","2.3%"); /* move annotation, image tools away from scale */
+        $('.bottomPanel').css("left","40px"); /* keep thumbnails and ruler from overlapping */
+        $('.mirador-osd-previous').css("left","2.3%"); /* move navigation arrow right */
       }
     });
   }

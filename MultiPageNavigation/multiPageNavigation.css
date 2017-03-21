@@ -1,4 +1,4 @@
-.extendedNav {
+div.extendedNav {
   z-index: 100;
   font-size: 20px;
   position: absolute;
@@ -10,18 +10,18 @@
   opacity: 0.5;
   transition: opacity 0.5s;
 }
-.extendedNav:hover{
+div.extendedNav:hover{
   opacity: 1;
 }
-.extendedNav.skipPrevious {
+div.extendedNav.skipPrevious {
   right: 50%;
   text-align: right;
 }
-.extendedNav.skipNext {
+div.extendedNav.skipNext {
   left: 50%;
   text-align: left;
 }
-.extendedNav a {
+div.extendedNav a.hud-control {
   margin: 5px;
   padding: 6px 7px 0;
   border-radius: 5px;
@@ -32,10 +32,10 @@
   text-decoration: none;
   font-size: 14px;
 }
-.extendedNav a .fa{
+div.extendedNav a .fa{
   font-size: 20px;
 }
-.extendedNav a span {
+div.extendedNav a span {
   position: relative;
   top: -4px;
   margin: 0 3px;

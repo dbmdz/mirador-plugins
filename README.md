@@ -42,10 +42,6 @@ allows faster seeking through a manifest.
 
 To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 
-**NOTE:** This plugin does currently not work with upstream Mirador. This is
-due to a still pending pull request that updates the i18next dependency
-(https://github.com/ProjectMirador/mirador/pull/1230).
-
 ```html
 <link rel="stylesheet" type="text/css" href="<url to the plugin>/multiPageNavigation.css" />
 ...

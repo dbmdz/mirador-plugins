@@ -118,9 +118,9 @@ var MultiPageNavigation = {
           return;
         }
         var hudSelector = null;
-        var slotId = workspace.getSlotFromAddress(data.slotAddress).slotID;
+        var slotID = workspace.getSlotFromAddress(data.slotAddress).slotID;
         if (data.viewType === 'ImageView') {
-          hudSelector = 'div[data-layout-slot-id="' + slotId + '"] .image-view > .mirador-hud';
+          hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .image-view > .mirador-hud';
         } else if(data.viewType === 'BookView') {
           hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .book-view > .mirador-hud';
         }

@@ -102,7 +102,7 @@ var MultiPageNavigation = {
           this.handleExtendedNavigation(data.viewType);
         }
       }.bind(this));
-    }
+    };
     Mirador[viewType].prototype.bindEvents = extendedBindEvents;
     Mirador[viewType].prototype.listenForActions = extendedListenForActions;
   },
@@ -121,7 +121,7 @@ var MultiPageNavigation = {
         var slotID = workspace.getSlotFromAddress(data.slotAddress).slotID;
         if (data.viewType === 'ImageView') {
           hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .image-view > .mirador-hud';
-        } else if(data.viewType === 'BookView') {
+        } else if (data.viewType === 'BookView') {
           hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .book-view > .mirador-hud';
         }
         if (hudSelector) {
@@ -129,12 +129,12 @@ var MultiPageNavigation = {
         }
       });
       origFunc.apply(this);
-    }
+    };
   },
 
   /* adds the locales to the internationalization module of the viewer */
   addLocalesToViewer: function(){
-    for(language in this.locales){
+    for(var language in this.locales){
       i18next.addResources(
         language, 'translation',
         this.locales[language]

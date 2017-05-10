@@ -425,28 +425,30 @@
     var _this = this;
     this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
       var service = _this.currentImg.service;
-      if (service && $.isArray(service)) {
-        for (var n = 0; n < service.length; n++) {
-          if ((!service[n].physicalScale || !service[n].physicalUnits) && service[n]['@id']) {
-            // Remote Service
-            jQuery.getJSON(service[n]['@id'], _this.enablePhysicalRuler.bind(_this));
-           } else if (service[n].physicalScale && service[n].physicalUnits) {
-            // Embedded Service
-            _this.enablePhysicalRuler(service[n]);
-           }
-        }
-      }      
-      else if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
+      // Handle multiple services, try to find first physical dimensions service
+      if (service && Array.isArray(service)) {
+        service = service.find(function(s) {
+          return service.profile === "http://iiif.io/api/annex/services/physdim";
+        });
+      }
+      if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
         if ((!service.physicalScale || !service.physicalUnits) && service['@id']) {
           // Remote Service
           jQuery.getJSON(service['@id'], _this.enablePhysicalRuler.bind(_this));
         } else if (service.physicalScale && service.physicalUnits) {
           // Embedded Service
           _this.enablePhysicalRuler(service);
+        } else {
+          return;
         }
-        $('.mirador-osd-context-controls').css("left","2.3%"); /* move annotation, image tools away from scale */
-        $('.bottomPanel').css("left","40px"); /* keep thumbnails and ruler from overlapping */
-        $('.mirador-osd-previous').css("left","2.3%"); /* move navigation arrow right */
+
+        // Adjust styling
+        // move annotation, image tools away from scale
+        document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
+        // keep thumbnails and ruler from overlapping
+        document.querySelector('.bottomPanel').style.left = '40px';
+        // move navigation arrow right
+        document.querySelector('.mirador-osd-previous').style.left = '2.3%';
       }
     });
   }

@@ -1,14 +1,11 @@
 div.extendedNav {
-  z-index: 100;
   font-size: 20px;
-  position: absolute;
-  /* width: 250px; */
-  /* height: 40px; */
-  /* text-align: center; */
-  top: 0;
-  padding: 20px 10px 10px;
   opacity: 0.5;
+  padding: 20px 10px 10px;
+  position: absolute;
+  top: 0;
   transition: opacity 0.5s;
+  z-index: 1;
 }
 div.extendedNav:hover{
   opacity: 1;
@@ -22,21 +19,21 @@ div.extendedNav.skipNext {
   text-align: left;
 }
 div.extendedNav a.hud-control {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px black;
+  color: rgba(0,0,0,0.7);
+  font-size: 14px;
   margin: 5px;
   padding: 6px 7px 0;
-  border-radius: 5px;
-  background-color: white;
-  color: rgba(0,0,0,0.7);
   text-shadow: none;
-  box-shadow: 0 0 5px black;
   text-decoration: none;
-  font-size: 14px;
 }
 div.extendedNav a .fa{
   font-size: 20px;
 }
 div.extendedNav a span {
+  margin: 0 3px;
   position: relative;
   top: -4px;
-  margin: 0 3px;
 }

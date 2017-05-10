@@ -37,16 +37,16 @@ var MultiPageNavigation = {
     '</div>',
     '<div class="extendedNav skipNext">',
     '<a class="mirador-osd-next-3 hud-control">',
-    '<i class="fa fa-chevron-right"></i><span>3</span>',
+    '<span>3</span><i class="fa fa-chevron-right"></i>',
     '</a>',
     '<a class="mirador-osd-next-5 hud-control">',
-    '<i class="fa fa-chevron-right"></i><span>5</span>',
+    '<span>5</span><i class="fa fa-chevron-right"></i>',
     '</a>',
     '<a class="mirador-osd-next-10 hud-control">',
-    '<i class="fa fa-chevron-right"></i><span>10</span>',
+    '<span>10</span><i class="fa fa-chevron-right"></i>',
     '</a>',
     '<a class="mirador-osd-last hud-control">',
-    '<i class="fa fa-chevron-right"></i><span>{{t "lastPage"}}</span>',
+    '<span>{{t "lastPage"}}</span><i class="fa fa-chevron-right"></i>',
     '</a>',
     '</div>'
   ].join('')),
@@ -102,7 +102,7 @@ var MultiPageNavigation = {
           this.handleExtendedNavigation(data.viewType);
         }
       }.bind(this));
-    }
+    };
     Mirador[viewType].prototype.bindEvents = extendedBindEvents;
     Mirador[viewType].prototype.listenForActions = extendedListenForActions;
   },
@@ -118,10 +118,10 @@ var MultiPageNavigation = {
           return;
         }
         var hudSelector = null;
-        var slotId = workspace.getSlotFromAddress(data.slotAddress).slotID;
+        var slotID = workspace.getSlotFromAddress(data.slotAddress).slotID;
         if (data.viewType === 'ImageView') {
-          hudSelector = 'div[data-layout-slot-id="' + slotId + '"] .image-view > .mirador-hud';
-        } else if(data.viewType === 'BookView') {
+          hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .image-view > .mirador-hud';
+        } else if (data.viewType === 'BookView') {
           hudSelector = 'div[data-layout-slot-id="' + slotID + '"] .book-view > .mirador-hud';
         }
         if (hudSelector) {
@@ -129,12 +129,12 @@ var MultiPageNavigation = {
         }
       });
       origFunc.apply(this);
-    }
+    };
   },
 
   /* adds the locales to the internationalization module of the viewer */
   addLocalesToViewer: function(){
-    for(language in this.locales){
+    for(var language in this.locales){
       i18next.addResources(
         language, 'translation',
         this.locales[language]

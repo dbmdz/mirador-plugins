@@ -425,6 +425,12 @@
     var _this = this;
     this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
       var service = _this.currentImg.service;
+      // Handle multiple services, try to find first physical dimensions service
+      if (service && Array.isArray(service)) {
+        service = service.find(function(s) {
+          return service.profile === "http://iiif.io/api/annex/services/physdim";
+        });
+      }
       if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
         if ((!service.physicalScale || !service.physicalUnits) && service['@id']) {
           // Remote Service
@@ -432,7 +438,17 @@
         } else if (service.physicalScale && service.physicalUnits) {
           // Embedded Service
           _this.enablePhysicalRuler(service);
+        } else {
+          return;
         }
+
+        // Adjust styling
+        // move annotation, image tools away from scale
+        document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
+        // keep thumbnails and ruler from overlapping
+        document.querySelector('.bottomPanel').style.left = '40px';
+        // move navigation arrow right
+        document.querySelector('.mirador-osd-previous').style.left = '2.3%';
       }
     });
   }

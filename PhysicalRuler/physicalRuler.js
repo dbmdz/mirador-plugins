@@ -2,10 +2,7 @@
  * - Get rid of the scale{X,Y}(-1) mucking, which makes parsing the whole
  *   positioning logic unneccesarily complicated
  * - Add option to change the ruler visibility during runtime
- * - Clear up variable naming, there are far too many different confusingly
- *   named "factors" involved
- * - General heavy refactoring
- * - Evaluate using SVG for drawing the rulers
+ * - Fix configurability
  */
 
 
@@ -41,6 +38,20 @@
     }
   };
 
+  osd.DocumentRulerLocation = {
+    TOP_LEFT: [0, 0],
+    TOP_RIGHT: [1, 0],
+    BOTTOM_LEFT: [0, 1],
+    BOTTOM_RIGHT: [1, 1]
+  };
+
+  osd.DocumentRulerLocationMapping = {
+    'top-left': osd.DocumentRulerLocation.TOP_LEFT,
+    'top-right': osd.DocumentRulerLocation.TOP_RIGHT,
+    'bottom-left': osd.DocumentRulerLocation.BOTTOM_LEFT,
+    'bottom-right': osd.DocumentRulerLocation.BOTTOM_RIGHT
+  }
+
   /** Construct a new ruler.
    *
    * Options are:
@@ -49,8 +60,7 @@
    *  largeDashSize: Size of large unit dashes in pixels
    *  pixelsPerMillimeter: How many pixels per millimeter?
    *  imperialUnits: Use imperial units instead of metric?
-   *  color: RGB color to use for the rulers,
-   *  labelPrecision: Numboer of decimal places to use for labels
+   *  color: RGB color to use for the rulers
    */
   osd.DocumentRuler = function(options) {
     options = options || {};
@@ -60,14 +70,13 @@
 
     // Set up instance state
     this.viewer = options.viewer;
-    this.location = osd.DocumentRuler.LOCATION_MAPPING[options.location || 'bottom-left'];
+    this.location = osd.DocumentRulerLocationMapping[options.location || 'bottom-left'];
     this.smallDashSize = options.smallDashSize || 10;
     this.largeDashSize = options.largeDashSize || 15;
     this.pixelsPerMillimeter = options.pixelsPerMillimeter;
     this.labelsEvery = options.labelsEvery || 5;
     this.imperialUnits = options.imperialUnits || false;
     this.color = options.color || "#ffffff";
-    this.labelPrecision = options.labelPrecision || 3;
 
     // Offscreen canvas for measuring text size
     this._canvas = document.createElement('canvas');
@@ -98,63 +107,6 @@
       self.updateSize();
     });
   };
-
-  osd.DocumentRuler.Location = {
-    TOP_LEFT: [0, 0],
-    TOP_RIGHT: [1, 0],
-    BOTTOM_LEFT: [0, 1],
-    BOTTOM_RIGHT: [1, 1],
-  };
-
-  osd.DocumentRuler.LOCATION_MAPPING = {
-    'top-left': osd.DocumentRuler.Location.TOP_LEFT,
-    'top-right': osd.DocumentRuler.Location.TOP_RIGHT,
-    'bottom-left': osd.DocumentRuler.Location.BOTTOM_LEFT,
-    'bottom-right': osd.DocumentRuler.Location.BOTTOM_RIGHT
-  };
-
-  /**
-  * { conversionFactor: factor to multiply mm with to arrive at 1 <unit>,
-  *   labelFactors: array of label factors to support for this unit, i.e.
-  *                 [1, 10] will dynamically choose between 1<unit> and 10<unit>
-  *                 labels, depending on the scale,
-  *   unit: String representation of the unit
-  **/
-  osd.DocumentRuler.UNITS = {
-    metric: [
-      { conversionFactor: 1e-6,
-        labelFactors: [0.1, 1, 10, 1000, 1e4],
-        unit: 'nm' },
-      { conversionFactor: 0.001,
-        labelFactors: [1, 10],
-        unit: 'μm' },
-      { conversionFactor: 0.1,
-        labelFactors: [0.1, 1],
-        unit: 'mm' },
-      { conversionFactor: 10,
-        labelFactors: [1, 10],
-        unit: 'cm' },
-      { conversionFactor: 1000,
-        labelFactors: [1, 10, 100],
-        unit: 'm' },
-      { conversionFactor: 1e6,
-        labelFactors: [0.1, 1, 10, 100, 1000, 1000],
-        unit: 'km' },
-      { conversionFactor: 94607304725808000,
-        labelFactors: [1e-9, 1e-6, 1e-3, 1, 1e3, 1e6, 1e9],
-        unit: 'ly' }],
-    imperial: [
-      { conversionFactor: 25.4,
-        labelFactors: [1e-9, 1e-6, 1e-3, 0.01, 1],
-        unit: 'in' },
-      { conversionFactor: 25.4 * 12,
-        labelFactors: [1],
-        unit: 'ft' },
-      { conversionFactor: 25.4 * 12 * 5280,
-        labelFactors: [1e-6, 1e-3, 0.1, 1, 10, 100, 1e3, 1e6],
-        unit: 'ml' }]
-  };
-
 
   osd.DocumentRuler.prototype = {
     // DOM elements used for the ruler
@@ -240,18 +192,18 @@
         smallScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
         largeScale.style.height = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
       } else {
         smallScale.style.width = this.smallDashSize + 'px';
         smallScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         smallScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
         largeScale.style.width = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 2px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 1px, transparent 0px)';
       }
       rulerElem.appendChild(smallScale);
       rulerElem.appendChild(largeScale);
@@ -274,10 +226,10 @@
     /** Update the scales with the new pixelsPerMillimeter value **/
     updateScales: function(pixelsPerMillimeter) {
       var scaleInfo = this.getScalesInfo(pixelsPerMillimeter);
-      this.elems.horizontal.small.style.backgroundSize = Math.round(scaleInfo.small) + 'px 100%';
-      this.elems.horizontal.large.style.backgroundSize = Math.round(scaleInfo.small) * scaleInfo.largeFactor + 'px 100%';
-      this.elems.vertical.small.style.backgroundSize = '100% ' + Math.round(scaleInfo.small) + 'px';
-      this.elems.vertical.large.style.backgroundSize = '100% ' + Math.round(scaleInfo.small) * scaleInfo.largeFactor + 'px';
+      this.elems.horizontal.small.style.backgroundSize = scaleInfo.small + 'px 100%';
+      this.elems.horizontal.large.style.backgroundSize = scaleInfo.large + 'px 100%';
+      this.elems.vertical.small.style.backgroundSize = '100% ' + scaleInfo.small + 'px';
+      this.elems.vertical.large.style.backgroundSize = '100% ' + scaleInfo.large + 'px';
       if (this.elems.unit.text !== scaleInfo.unit) {
         this.elems.unit.textContent = scaleInfo.unit;
       }
@@ -290,11 +242,11 @@
     updateLabels: function(direction, scaleInfo) {
       var numLabels;
       if (direction === 'vertical') {
-        numLabels = Math.ceil(this.viewer.viewport.containerSize.y / (Math.round(scaleInfo.small) * scaleInfo.largeFactor) / this.labelsEvery);
+        numLabels = Math.ceil(this.viewer.viewport.containerSize.y / scaleInfo.large / this.labelsEvery);
       } else {
-        numLabels = Math.ceil(this.viewer.viewport.containerSize.x / (Math.round(scaleInfo.small) * scaleInfo.largeFactor) / this.labelsEvery);
+        numLabels = Math.ceil(this.viewer.viewport.containerSize.x / scaleInfo.large / this.labelsEvery);
       }
-      var labelDistance = this.labelsEvery * (scaleInfo.small / scaleInfo.largeFactor);
+      var labelDistance = this.labelsEvery * scaleInfo.large;
       var currentLabels = this.elems[direction].labels;
       if (currentLabels.length < numLabels) {
         while (currentLabels.length < numLabels) {
@@ -324,14 +276,7 @@
         if (idx === 0) {
           return;
         }
-        var labelNumber = idx * scaleInfo.labelFactor * this.labelsEvery;
-        var text;
-        if (labelNumber < 1e-4 || labelNumber > 1e4) {
-          label.style.whiteSpace = "nowrap";
-          text = labelNumber.toExponential(this.labelPrecision);
-        } else {
-          text = Number(labelNumber.toFixed(this.labelPrecision));
-        }
+        var text = idx * scaleInfo.factor * this.labelsEvery;
         if (direction === 'vertical') {
           var textHeight = 17;
           if (this.location[0] === 0) {
@@ -339,11 +284,11 @@
           } else {
             label.style.right = this.largeDashSize * 1.5 + 'px';
           }
-          var verticalMargin = (this.labelsEvery * idx * Math.round(scaleInfo.small) * scaleInfo.largeFactor - (textHeight / 2)) + 'px';
+          var verticalMargin = ((this.labelsEvery * idx * scaleInfo.large) - (textHeight / 2)) + 'px';
           label.style.top = verticalMargin;
         } else {
           var textWidth = textMeasureContext.measureText(text).width;
-          var horizontalMargin = (this.labelsEvery * idx * Math.round(scaleInfo.small) * scaleInfo.largeFactor - (textWidth / 1)) + 'px';
+          var horizontalMargin = ((this.labelsEvery * idx * scaleInfo.large) - (textWidth / 1)) + 'px';
           label.style.top = this.largeDashSize * 1.5 + 'px';
           label.style.left = horizontalMargin;
         }
@@ -362,40 +307,44 @@
     /** Return the pixel steps for the small and large scales, the factor
      *  used for the labels on the large scale as well as the unit to display. */
     getScalesInfo: function(pixelsPerMillimeter) {
-      function getPixelsPerSmallDash(conversionFactor, largeFactor, labelFactor) {
-        return (conversionFactor * pixelsPerMillimeter * labelFactor) / largeFactor;
-      }
-
-      function getLargeFactor(unitDef, labelFactor) {
-        if (this.imperialUnits && unitDef.unit === 'in' && labelFactor === 1) {
-          return 8;
+      if (this.imperialUnits) {
+        var pixelsPerEigthInch = (pixelsPerMillimeter * 25.4) / 8;
+        if (pixelsPerEigthInch > 2) {
+          return { large: 8 * pixelsPerEigthInch,
+                  small: pixelsPerEigthInch,
+                  factor: 1,
+                  unit: 'in' };
+        } else if (pixelsPerEigthInch > 0.125) {
+          return { large: 5 * 8 * pixelsPerEigthInch,
+                   small: 8 * pixelsPerEigthInch,
+                   factor: 5,
+                  unit: 'in' };
         } else {
-          return 10;
+          return { large: 12 * 8 * pixelsPerEigthInch,
+                   small: 8 * pixelsPerEigthInch,
+                   factor: 1,
+                   unit: 'ft' };
+        }
+      } else {
+        if (pixelsPerMillimeter > 2) {
+          return { large: 10 * pixelsPerMillimeter,
+                   small: pixelsPerMillimeter,
+                   factor: 1,
+                   unit: 'cm' };
+        } else if (pixelsPerMillimeter > 0.1) {
+          return { large: 100 * pixelsPerMillimeter,
+                   small: 10 * pixelsPerMillimeter,
+                   factor: 10,
+                   unit: 'cm' };
+        } else {
+          return { large: 1000 * pixelsPerMillimeter,
+                   small: 100 * pixelsPerMillimeter,
+                   factor: 1,
+                   unit: 'm' };
         }
       }
-
-      var units = this.imperialUnits ? osd.DocumentRuler.UNITS.imperial : osd.DocumentRuler.UNITS.metric;
-
-      var unitDefinition = units.find(function(unitDef) {
-        var labelFactor = unitDef.labelFactors.slice(-1)[0];
-        var largeFactor = getLargeFactor(unitDef, labelFactor);
-        return getPixelsPerSmallDash(unitDef.conversionFactor,  largeFactor, labelFactor) > 2;
-      });
-      var labelFactor = unitDefinition.labelFactors.find(function(factor) {
-        var largeFactor = getLargeFactor(unitDefinition, factor);
-        return getPixelsPerSmallDash(unitDefinition.conversionFactor, largeFactor, factor) > 2;
-      });
-
-      var largeFactor = getLargeFactor(unitDefinition, labelFactor);
-
-      return {
-        small: unitDefinition.conversionFactor * labelFactor * pixelsPerMillimeter * (1 / largeFactor),
-        largeFactor: largeFactor,
-        labelFactor: labelFactor,
-        unit: unitDefinition.unit
-      };
     }
-  }
+  };
 }(OpenSeadragon));
 
 
@@ -403,7 +352,10 @@
 (function(mirador) {
   mirador.ImageView.prototype.enablePhysicalRuler = function(service) {
     var options = this.state.getStateProperty("physicalRuler") || {};
-    if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
+    if (service && $.isArray(service)) {
+        console.log('physicalruler service is an array');
+    }
+    else if (service && service.profile === "http://iiif.io/api/annex/services/physdim") { 
       var millimetersPerPhysicalUnit = {
         'mm': 1.0,
         'cm': 10.0,
@@ -425,7 +377,19 @@
     var _this = this;
     this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
       var service = _this.currentImg.service;
-      if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
+      if (service && $.isArray(service)) {
+        console.log('found an array');
+        for (var n = 0; n < service.length; n++) {
+          if ((!service[n].physicalScale || !service[n].physicalUnits) && service[n]['@id']) {
+            // Remote Service
+            jQuery.getJSON(service[n]['@id'], _this.enablePhysicalRuler.bind(_this));
+           } else if (service[n].physicalScale && service[n].physicalUnits) {
+            // Embedded Service
+            _this.enablePhysicalRuler(service[n]);
+           }
+        }
+      }      
+      else if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
         if ((!service.physicalScale || !service.physicalUnits) && service['@id']) {
           // Remote Service
           jQuery.getJSON(service['@id'], _this.enablePhysicalRuler.bind(_this));

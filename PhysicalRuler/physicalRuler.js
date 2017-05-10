@@ -376,7 +376,7 @@
     oldFn.apply(this, [imageUrl]);
     var _this = this;
     this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
-      var service = _this.currentImg.service;
+      var service = _this.currentImg.service; 
       if (service && $.isArray(service)) {
         console.log('found an array');
         for (var n = 0; n < service.length; n++) {

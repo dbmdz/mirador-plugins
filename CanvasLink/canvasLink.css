@@ -1,0 +1,9 @@
+.window-manifest-navigation > .mirador-btn.mirador-icon-canvas-link {
+  color: #929191;
+  margin-right: 5px;
+}
+
+#canvasLinkModal #canvasLink {
+  display: inline-block;
+  margin-bottom: 5px;
+}

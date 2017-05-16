@@ -2,7 +2,6 @@
 
 This repository contains multiple extensions for the IIIF viewer Mirador (see http://projectmirador.org/).
 
-
 ## Physical Document Ruler
 
 Adds a vertical and a horizontal ruler with metric or imperial units to the
@@ -10,7 +9,6 @@ canvas display if the canvas has a [physical dimensions service](http://iiif.io/
 set.
 
 [![Demo](https://thumbs.gfycat.com/InexperiencedPoshArabianhorse-size_restricted.gif)](https://gfycat.com/InexperiencedPoshArabianhorse)
-
 
 To enable it, simply include the JavaScript (**after** loading Mirador):
 
@@ -34,7 +32,6 @@ var mirador = Mirador({
 });
 ```
 
-
 ## Multi-Page Navigation
 
 Adds a small additional navigation bar to the top of the viewport that
@@ -48,6 +45,23 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/multiPageNavigation.js"></script>
 ```
 
+## Link to the current canvas
+
+Adds an extra button to every window that displays a link to the currently shown canvas. The URL will look like this:
+
+```html
+<canvas uri>/view
+```
+
+**NOTE:** This means that the server serving Mirador needs a rule for resolving this URL.
+
+To enable it, include the CSS and the JavaScript (**after** loading Mirador).
+
+```html
+<link rel="stylesheet" type="text/css" href="<url to the plugin>/canvasLink.css" />
+...
+<script src="<url to the plugin>/canvasLink.js"></script>
+```
 
 ## Bookmarkable Viewer State
 
@@ -70,13 +84,13 @@ To enable it, just include the JavaScript **after** loading Mirador.
 
 Adds keyboard nagivation features to Mirador. If there are multiple windows, the action are applied to all of them.
 
-| Key                              | Action                                                |
-| -------------------------------- | ----------------------------------------------------- |
-| <kbd>←</kbd>                     | Go to previous page.                                  |
-| <kbd>→</kbd> or <kbd>SPACE</kbd> | Go to next page.                                      |
-| <kbd>ctrl</kbd> + <kbd>←</kbd>   | Go to first page.                                  |
-| <kbd>ctrl</kbd> + <kbd>→</kbd>   | Go to last page.                                      |
-| <kbd>i</kbd>                     | Show or hide information/metadata.                    |
+| Key                              | Action                                               |
+| -------------------------------- | ---------------------------------------------------- |
+| <kbd>←</kbd>                     | Go to previous page.                                 |
+| <kbd>→</kbd> or <kbd>SPACE</kbd> | Go to next page.                                     |
+| <kbd>ctrl</kbd> + <kbd>←</kbd>   | Go to first page.                                    |
+| <kbd>ctrl</kbd> + <kbd>→</kbd>   | Go to last page.                                     |
+| <kbd>i</kbd>                     | Show or hide information/metadata.                   |
 | <kbd>↵</kbd>                     | Toggle fullscreen using the largest possible option. |
 
 Installation:

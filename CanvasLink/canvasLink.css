@@ -4,6 +4,13 @@
 }
 
 #canvasLinkModal #canvasLink {
-  display: inline-block;
-  margin-bottom: 5px;
+  box-sizing: border-box;
+  height: 33px;
+  padding: 6px;
+  width: calc(100% - 45px);
+}
+
+#canvasLinkModal #copyToClipboard {
+  height: 34px;
+  width: 40px;
 }

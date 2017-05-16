@@ -29,7 +29,7 @@ var CanvasLink = {
     '</div>',
     '<div class="modal-body">',
     '<p>',
-    '<a id="canvasLink"></a>',
+    '<input id="canvasLink" type="text">',
     '<button type="button" class="btn btn-default" id="copyToClipboard" title="{{t "copyToClipboard"}}">',
     '<i class="fa fa-clipboard" aria-hidden="true"></i>',
     '</button>',
@@ -72,25 +72,9 @@ var CanvasLink = {
   /* adds event handlers to the modal */
   addEventHandlers: function(){
     $(document.body).on('click', '#canvasLinkModal #copyToClipboard', function(){
-      this.selectText('#canvasLinkModal #canvasLink');
+      $('#canvasLinkModal #canvasLink').select();
       document.execCommand('copy');
     }.bind(this));
-  },
-
-  /* selects the text included in the node defined by the selector */
-  selectText: function(selector){
-    var textElement = document.querySelector(selector);
-    if(document.body.createTextRange){
-      var range = document.body.createTextRange();
-      range.moveToElementText(textElement);
-      range.select();
-    }else if(window.getSelection){
-      var selection = window.getSelection();
-      var range = document.createRange();
-      range.selectNodeContents(textElement);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
   },
 
   /* injects the needed workspace event handler */
@@ -114,8 +98,11 @@ var CanvasLink = {
       origFunc.apply(this);
       this.element.find('.mirador-icon-canvas-link').on('click', function(){
         var canvasLink = this.canvasID + '/view';
-        $('#canvasLinkModal #canvasLink').text(canvasLink).attr('href', canvasLink);
+        $('#canvasLinkModal #canvasLink').attr('value', canvasLink);
         $('#canvasLinkModal').modal('show');
+        $('#canvasLinkModal').on('shown.bs.modal', function(){
+          $('#canvasLinkModal #canvasLink').focus().select();
+        });
       }.bind(this));
     };
   },

@@ -63,6 +63,16 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/canvasLink.js"></script>
 ```
 
+You can configure the ruler with the `canvasLink` configuration attribute in your Mirador configuration:
+
+```javascript
+var mirador = Mirador({
+  canvasLink: {
+    showSocialMediaButtons: true // Display social media buttons to share the canvas link on e.g. Facebook or Twitter
+  }
+});
+```
+
 ## Bookmarkable Viewer State
 
 Modifies Mirador to dynamically update the URL to reflect the currently

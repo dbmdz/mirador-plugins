@@ -1,13 +1,20 @@
 var CanvasLink = {
+  /* options of the plugin */
+  options: {},
+
   /* all of the needed locales */
   locales: {
     'de': {
       'copyToClipboard': 'In die Zwischenablage kopieren',
-      'linkToPage': 'Link zu dieser Seite'
+      'linkToPage': 'Link zu dieser Seite',
+      'shareOnFacebook': 'Auf Facebook teilen',
+      'shareOnTwitter': 'Auf Twitter teilen'
     },
     'en': {
       'copyToClipboard': 'Copy to clipboard',
-      'linkToPage': 'Link to this page'
+      'linkToPage': 'Link to this page',
+      'shareOnFacebook': 'Share on Facebook',
+      'shareOnTwitter': 'Share on Twitter'
     }
   },
 
@@ -36,6 +43,14 @@ var CanvasLink = {
     '</p>',
     '</div>',
     '<div class="modal-footer">',
+    '{{#if showSocialMediaButtons}}',
+    '<a type="button" class="btn btn-default pull-left" id="shareOnFacebook" title="{{t "shareOnFacebook"}}" target="_blank">',
+    '<i class="fa fa-facebook" aria-hidden="true"></i>',
+    '</a>',
+    '<a type="button" class="btn btn-default pull-left" id="shareOnTwitter" title="{{t "shareOnTwitter"}}" target="_blank">',
+    '<i class="fa fa-twitter" aria-hidden="true"></i>',
+    '</a>',
+    '{{/if}}',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',
     '</div>',
     '</div>',
@@ -64,7 +79,13 @@ var CanvasLink = {
     var origFunc = Mirador.Viewer.prototype.setupViewer;
     Mirador.Viewer.prototype.setupViewer = function(){
       origFunc.apply(this);
-      document.body.insertAdjacentHTML('beforeend', this_.modalTemplate());
+      var options = this.state.getStateProperty('canvasLink');
+      if($.isPlainObject(options)){
+        this_.options = options;
+      }
+      document.body.insertAdjacentHTML('beforeend', this_.modalTemplate({
+        'showSocialMediaButtons': this_.options.showSocialMediaButtons || false
+      }));
     };
     this.addEventHandlers();
   },
@@ -99,6 +120,10 @@ var CanvasLink = {
       this.element.find('.mirador-icon-canvas-link').on('click', function(){
         var canvasLink = this.canvasID + '/view';
         $('#canvasLinkModal #canvasLink').attr('value', canvasLink);
+        if(this_.options.showSocialMediaButtons){
+          $('#canvasLinkModal #shareOnFacebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + canvasLink);
+          $('#canvasLinkModal #shareOnTwitter').attr('href', 'https://twitter.com/intent/tweet?text=' + canvasLink);
+        }
         $('#canvasLinkModal').modal('show');
         $('#canvasLinkModal').on('shown.bs.modal', function(){
           $('#canvasLinkModal #canvasLink').select();

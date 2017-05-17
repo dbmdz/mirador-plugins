@@ -18,3 +18,33 @@
   height: 34px;
   width: 40px;
 }
+
+#canvas-link-modal .share-button {
+  border: none;
+  border-radius: 20px;
+  color: white;
+}
+
+#canvas-link-modal #share-on-envelope {
+  background-color: #7d7d7d;
+}
+
+#canvas-link-modal #share-on-facebook {
+  background-color: #3B5998;
+}
+
+#canvas-link-modal #share-on-pinterest {
+  background-color: #CB2027;
+}
+
+#canvas-link-modal #share-on-tumblr {
+  background-color: #32506d;
+}
+
+#canvas-link-modal #share-on-twitter {
+  background-color: #55acee;
+}
+
+#canvas-link-modal #share-on-whatsapp {
+  background-color: #25d366;
+}

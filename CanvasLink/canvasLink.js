@@ -101,7 +101,7 @@ var CanvasLink = {
         $('#canvasLinkModal #canvasLink').attr('value', canvasLink);
         $('#canvasLinkModal').modal('show');
         $('#canvasLinkModal').on('shown.bs.modal', function(){
-          $('#canvasLinkModal #canvasLink').focus().select();
+          $('#canvasLinkModal #canvasLink').select();
         });
       }.bind(this));
     };

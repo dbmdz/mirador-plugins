@@ -7,15 +7,32 @@ var CanvasLink = {
     'de': {
       'cite-share-page': 'Diese Seite zitieren/teilen',
       'copy-to-clipboard': 'In die Zwischenablage kopieren',
+      'share-on-envelope': 'Per Mail teilen',
       'share-on-facebook': 'Auf Facebook teilen',
-      'share-on-twitter': 'Auf Twitter teilen'
+      'share-on-pinterest': 'Auf Pinterest teilen',
+      'share-on-tumblr': 'Auf Tumblr teilen',
+      'share-on-twitter': 'Auf Twitter teilen',
+      'share-on-whatsapp': 'Per Whatsapp teilen'
     },
     'en': {
       'cite-share-page': 'Cite/share this page',
       'copy-to-clipboard': 'Copy to clipboard',
+      'share-on-envelope': 'Share via mail',
       'share-on-facebook': 'Share on Facebook',
-      'share-on-twitter': 'Share on Twitter'
+      'share-on-pinterest': 'Share on Pinterest',
+      'share-on-tumblr': 'Share on Tumblr',
+      'share-on-twitter': 'Share on Twitter',
+      'share-on-whatsapp': 'Share via Whatsapp'
     }
+  },
+
+  linkPrefixes: {
+    'envelope': 'mailto:?body=',
+    'facebook': 'https://www.facebook.com/sharer/sharer.php?u=',
+    'pinterest': 'http://pinterest.com/pin/create/link/?url=',
+    'tumblr': 'http://www.tumblr.com/share/link?url=',
+    'twitter': 'https://twitter.com/intent/tweet?text=',
+    'whatsapp': 'whatsapp://send?text='
   },
 
   /* the template for the link button */
@@ -44,12 +61,11 @@ var CanvasLink = {
     '</div>',
     '<div class="modal-footer">',
     '{{#if showSocialMediaButtons}}',
-    '<a type="button" class="btn btn-default pull-left" id="share-on-facebook" title="{{t "share-on-facebook"}}" target="_blank">',
-    '<i class="fa fa-facebook" aria-hidden="true"></i>',
+    '{{#each socialMediaButtons}}',
+    '<a type="button" class="btn btn-default pull-left share-button" id="share-on-{{this}}" title="{{t (concat this)}}" target="_blank" data-target="{{this}}">',
+    '<i class="fa fa-{{this}}" aria-hidden="true"></i>',
     '</a>',
-    '<a type="button" class="btn btn-default pull-left" id="share-on-twitter" title="{{t "share-on-twitter"}}" target="_blank">',
-    '<i class="fa fa-twitter" aria-hidden="true"></i>',
-    '</a>',
+    '{{/each}}',
     '{{/if}}',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',
     '</div>',
@@ -60,6 +76,9 @@ var CanvasLink = {
 
   /* initializes the plugin */
   init: function(){
+    Mirador.Handlebars.registerHelper('concat', function(target){
+      return 'share-on-' + target;
+    });
     i18next.on('initialized', function(){
       this.addLocalesToViewer();
     }.bind(this));
@@ -84,7 +103,8 @@ var CanvasLink = {
         this_.options = options;
       }
       document.body.insertAdjacentHTML('beforeend', this_.modalTemplate({
-        'showSocialMediaButtons': this_.options.showSocialMediaButtons || false
+        'showSocialMediaButtons': this_.options.showSocialMediaButtons || false,
+        'socialMediaButtons': ['facebook', 'twitter', 'pinterest', 'tumblr', 'envelope', 'whatsapp']
       }));
     };
     this.addEventHandlers();
@@ -121,8 +141,9 @@ var CanvasLink = {
         var canvasLink = this.canvasID + '/view';
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
         if(this_.options.showSocialMediaButtons){
-          $('#canvas-link-modal #share-on-facebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + canvasLink);
-          $('#canvas-link-modal #share-on-twitter').attr('href', 'https://twitter.com/intent/tweet?text=' + canvasLink);
+          $('#canvas-link-modal .share-button').attr('href', function(){
+            return this_.linkPrefixes[$(this).data('target')] + canvasLink
+          });
         }
         $('#canvas-link-modal').modal('show');
         $('#canvas-link-modal').on('shown.bs.modal', function(){

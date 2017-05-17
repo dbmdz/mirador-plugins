@@ -6,13 +6,13 @@ var CanvasLink = {
   locales: {
     'de': {
       'copyToClipboard': 'In die Zwischenablage kopieren',
-      'linkToPage': 'Link zu dieser Seite',
+      'linkToPage': 'Diese Seite zitieren/teilen',
       'shareOnFacebook': 'Auf Facebook teilen',
       'shareOnTwitter': 'Auf Twitter teilen'
     },
     'en': {
       'copyToClipboard': 'Copy to clipboard',
-      'linkToPage': 'Link to this page',
+      'linkToPage': 'Cite/share this page',
       'shareOnFacebook': 'Share on Facebook',
       'shareOnTwitter': 'Share on Twitter'
     }

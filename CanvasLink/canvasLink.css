@@ -3,6 +3,10 @@
   margin-right: 5px;
 }
 
+.window-manifest-navigation > .mirador-btn.mirador-icon-canvas-link:hover {
+  color: black;
+}
+
 #canvasLinkModal #canvasLink {
   box-sizing: border-box;
   height: 33px;

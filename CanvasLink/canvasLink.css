@@ -7,14 +7,14 @@
   color: black;
 }
 
-#canvasLinkModal #canvasLink {
+#canvas-link-modal #canvas-link {
   box-sizing: border-box;
   height: 33px;
   padding: 6px;
   width: calc(100% - 45px);
 }
 
-#canvasLinkModal #copyToClipboard {
+#canvas-link-modal #copy-to-clipboard {
   height: 34px;
   width: 40px;
 }

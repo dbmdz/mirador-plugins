@@ -27,7 +27,7 @@ var CanvasLink = {
 
   /* the template for the modal containing the canvas link */
   modalTemplate: Mirador.Handlebars.compile([
-    '<div id="canvasLinkModal" class="modal fade" tabindex="-1" role="dialog">',
+    '<div id="canvas-link-modal" class="modal fade" tabindex="-1" role="dialog">',
     '<div class="modal-dialog" role="document">',
     '<div class="modal-content">',
     '<div class="modal-header">',
@@ -36,18 +36,18 @@ var CanvasLink = {
     '</div>',
     '<div class="modal-body">',
     '<p>',
-    '<input id="canvasLink" type="text">',
-    '<button type="button" class="btn btn-default" id="copyToClipboard" title="{{t "copyToClipboard"}}">',
+    '<input id="canvas-link" type="text">',
+    '<button type="button" class="btn btn-default" id="copy-to-clipboard" title="{{t "copyToClipboard"}}">',
     '<i class="fa fa-clipboard" aria-hidden="true"></i>',
     '</button>',
     '</p>',
     '</div>',
     '<div class="modal-footer">',
     '{{#if showSocialMediaButtons}}',
-    '<a type="button" class="btn btn-default pull-left" id="shareOnFacebook" title="{{t "shareOnFacebook"}}" target="_blank">',
+    '<a type="button" class="btn btn-default pull-left" id="share-on-facebook" title="{{t "shareOnFacebook"}}" target="_blank">',
     '<i class="fa fa-facebook" aria-hidden="true"></i>',
     '</a>',
-    '<a type="button" class="btn btn-default pull-left" id="shareOnTwitter" title="{{t "shareOnTwitter"}}" target="_blank">',
+    '<a type="button" class="btn btn-default pull-left" id="share-on-twitter" title="{{t "shareOnTwitter"}}" target="_blank">',
     '<i class="fa fa-twitter" aria-hidden="true"></i>',
     '</a>',
     '{{/if}}',
@@ -92,8 +92,8 @@ var CanvasLink = {
 
   /* adds event handlers to the modal */
   addEventHandlers: function(){
-    $(document.body).on('click', '#canvasLinkModal #copyToClipboard', function(){
-      $('#canvasLinkModal #canvasLink').select();
+    $(document.body).on('click', '#canvas-link-modal #copy-to-clipboard', function(){
+      $('#canvas-link-modal #canvas-link').select();
       document.execCommand('copy');
     }.bind(this));
   },
@@ -119,14 +119,14 @@ var CanvasLink = {
       origFunc.apply(this);
       this.element.find('.mirador-icon-canvas-link').on('click', function(){
         var canvasLink = this.canvasID + '/view';
-        $('#canvasLinkModal #canvasLink').attr('value', canvasLink);
+        $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
         if(this_.options.showSocialMediaButtons){
-          $('#canvasLinkModal #shareOnFacebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + canvasLink);
-          $('#canvasLinkModal #shareOnTwitter').attr('href', 'https://twitter.com/intent/tweet?text=' + canvasLink);
+          $('#canvas-link-modal #share-on-facebook').attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + canvasLink);
+          $('#canvas-link-modal #share-on-twitter').attr('href', 'https://twitter.com/intent/tweet?text=' + canvasLink);
         }
-        $('#canvasLinkModal').modal('show');
-        $('#canvasLinkModal').on('shown.bs.modal', function(){
-          $('#canvasLinkModal #canvasLink').select();
+        $('#canvas-link-modal').modal('show');
+        $('#canvas-link-modal').on('shown.bs.modal', function(){
+          $('#canvas-link-modal #canvas-link').select();
         });
       }.bind(this));
     };

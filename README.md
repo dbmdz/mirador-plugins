@@ -63,7 +63,7 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/canvasLink.js"></script>
 ```
 
-You can configure the ruler with the `canvasLink` configuration attribute in your Mirador configuration:
+You can configure the modal dialog containing the canvas link with the `canvasLink` configuration attribute in your Mirador configuration:
 
 ```javascript
 var mirador = Mirador({

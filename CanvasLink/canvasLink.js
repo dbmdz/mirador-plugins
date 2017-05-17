@@ -5,22 +5,22 @@ var CanvasLink = {
   /* all of the needed locales */
   locales: {
     'de': {
-      'copyToClipboard': 'In die Zwischenablage kopieren',
-      'linkToPage': 'Diese Seite zitieren/teilen',
-      'shareOnFacebook': 'Auf Facebook teilen',
-      'shareOnTwitter': 'Auf Twitter teilen'
+      'cite-share-page': 'Diese Seite zitieren/teilen',
+      'copy-to-clipboard': 'In die Zwischenablage kopieren',
+      'share-on-facebook': 'Auf Facebook teilen',
+      'share-on-twitter': 'Auf Twitter teilen'
     },
     'en': {
-      'copyToClipboard': 'Copy to clipboard',
-      'linkToPage': 'Cite/share this page',
-      'shareOnFacebook': 'Share on Facebook',
-      'shareOnTwitter': 'Share on Twitter'
+      'cite-share-page': 'Cite/share this page',
+      'copy-to-clipboard': 'Copy to clipboard',
+      'share-on-facebook': 'Share on Facebook',
+      'share-on-twitter': 'Share on Twitter'
     }
   },
 
   /* the template for the link button */
   buttonTemplate: Mirador.Handlebars.compile([
-    '<a title="{{t "linkToPage"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
+    '<a title="{{t "cite-share-page"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
     '<i class="fa fa-lg fa-fw fa-share-alt"></i>',
     '</a>'
   ].join('')),
@@ -32,22 +32,22 @@ var CanvasLink = {
     '<div class="modal-content">',
     '<div class="modal-header">',
     '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-    '<h4 class="modal-title">{{t "linkToPage"}}</h4>',
+    '<h4 class="modal-title">{{t "cite-share-page"}}</h4>',
     '</div>',
     '<div class="modal-body">',
     '<p>',
     '<input id="canvas-link" type="text">',
-    '<button type="button" class="btn btn-default" id="copy-to-clipboard" title="{{t "copyToClipboard"}}">',
+    '<button type="button" class="btn btn-default" id="copy-to-clipboard" title="{{t "copy-to-clipboard"}}">',
     '<i class="fa fa-clipboard" aria-hidden="true"></i>',
     '</button>',
     '</p>',
     '</div>',
     '<div class="modal-footer">',
     '{{#if showSocialMediaButtons}}',
-    '<a type="button" class="btn btn-default pull-left" id="share-on-facebook" title="{{t "shareOnFacebook"}}" target="_blank">',
+    '<a type="button" class="btn btn-default pull-left" id="share-on-facebook" title="{{t "share-on-facebook"}}" target="_blank">',
     '<i class="fa fa-facebook" aria-hidden="true"></i>',
     '</a>',
-    '<a type="button" class="btn btn-default pull-left" id="share-on-twitter" title="{{t "shareOnTwitter"}}" target="_blank">',
+    '<a type="button" class="btn btn-default pull-left" id="share-on-twitter" title="{{t "share-on-twitter"}}" target="_blank">',
     '<i class="fa fa-twitter" aria-hidden="true"></i>',
     '</a>',
     '{{/if}}',

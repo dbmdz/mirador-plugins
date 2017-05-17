@@ -20,7 +20,7 @@ var CanvasLink = {
 
   /* the template for the link button */
   buttonTemplate: Mirador.Handlebars.compile([
-    '<a title="{{t "linkToPage"}}" class="mirador-btn mirador-icon-canvas-link">',
+    '<a title="{{t "linkToPage"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
     '<i class="fa fa-lg fa-fw fa-link"></i>',
     '</a>'
   ].join('')),
@@ -117,7 +117,7 @@ var CanvasLink = {
     var origFunc = Mirador.Window.prototype.bindEvents;
     Mirador.Window.prototype.bindEvents = function(){
       origFunc.apply(this);
-      this.element.find('.mirador-icon-canvas-link').on('click', function(){
+      this.element.find('.mirador-icon-canvas-cite-share').on('click', function(){
         var canvasLink = this.canvasID + '/view';
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
         if(this_.options.showSocialMediaButtons){

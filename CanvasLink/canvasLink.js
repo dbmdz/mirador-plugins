@@ -138,7 +138,7 @@ var CanvasLink = {
     Mirador.Window.prototype.bindEvents = function(){
       origFunc.apply(this);
       this.element.find('.mirador-icon-canvas-cite-share').on('click', function(){
-        var canvasLink = this.canvasID + '/view';
+        var canvasLink = this.canvasID + (this_.options.urlExtension || '/view');
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
         if(this_.options.showSocialMediaButtons){
           $('#canvas-link-modal .share-button').attr('href', function(){

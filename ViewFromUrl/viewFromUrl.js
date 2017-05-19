@@ -13,7 +13,9 @@ var UpdateUrlFromView = {
           loadedManifest: params.manifest,
           canvasID: params.canvas
         };
-        this.state['currentConfig'].windowObjects = [windowObj];
+        this.state['currentConfig'].windowObjects = [
+          $.extend(true, {}, this.state['currentConfig'].windowObjects[0], windowObj)
+        ];
       }
       this.eventEmitter.subscribe('slotsUpdated', this_.onSlotsUpdated);
       this.eventEmitter.subscribe('windowUpdated', this_.onWindowUpdated);

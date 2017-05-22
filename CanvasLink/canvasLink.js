@@ -7,6 +7,7 @@ var CanvasLink = {
     'de': {
       'cite-share-page': 'Diese Seite zitieren/teilen',
       'copy-to-clipboard': 'In die Zwischenablage kopieren',
+      'share-buttons-info': 'Beim Klick auf einen der Teilen-Buttons verlassen Sie diese Webseite!',
       'share-on-envelope': 'Per Mail teilen',
       'share-on-facebook': 'Auf Facebook teilen',
       'share-on-pinterest': 'Auf Pinterest teilen',
@@ -17,6 +18,7 @@ var CanvasLink = {
     'en': {
       'cite-share-page': 'Cite/share this page',
       'copy-to-clipboard': 'Copy to clipboard',
+      'share-buttons-info': 'By clicking on one of the share buttons, you will leave this website!',
       'share-on-envelope': 'Share via mail',
       'share-on-facebook': 'Share on Facebook',
       'share-on-pinterest': 'Share on Pinterest',
@@ -60,8 +62,11 @@ var CanvasLink = {
     '</p>',
     '</div>',
     '<div class="modal-footer">',
-    '{{#if showSocialMediaButtons}}',
-    '{{#each socialMediaButtons}}',
+    '{{#if showShareButtons}}',
+    '{{#if showShareButtonsInfo}}',
+    '<div id="share-buttons-info" role="alert">{{t "share-buttons-info"}}</div>',
+    '{{/if}}',
+    '{{#each shareButtons}}',
     '<a type="button" class="btn btn-default pull-left share-button" id="share-on-{{this}}" title="{{t (concat this)}}" target="_blank" data-target="{{this}}">',
     '<i class="fa fa-{{this}}" aria-hidden="true"></i>',
     '</a>',
@@ -103,8 +108,9 @@ var CanvasLink = {
         this_.options = options;
       }
       document.body.insertAdjacentHTML('beforeend', this_.modalTemplate({
-        'showSocialMediaButtons': this_.options.showSocialMediaButtons || false,
-        'socialMediaButtons': ['facebook', 'twitter', 'pinterest', 'tumblr', 'envelope', 'whatsapp']
+        'shareButtons': ['facebook', 'twitter', 'pinterest', 'tumblr', 'envelope', 'whatsapp'],
+        'showShareButtons': this_.options.showShareButtons || false,
+        'showShareButtonsInfo': this_.options.showShareButtonsInfo || false
       }));
     };
     this.addEventHandlers();

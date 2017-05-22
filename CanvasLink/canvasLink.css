@@ -19,6 +19,16 @@
   width: 40px;
 }
 
+#canvas-link-modal #share-buttons-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 15px;
+  text-align: left;
+}
+
 #canvas-link-modal .share-button {
   border: none;
   border-radius: 20px;

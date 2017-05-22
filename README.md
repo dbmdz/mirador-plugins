@@ -68,7 +68,7 @@ You can configure the modal dialog containing the canvas link with the `canvasLi
 ```javascript
 var mirador = Mirador({
   canvasLink: {
-    showSocialMediaButtons: true // Display social media buttons to share the canvas link on e.g. Facebook or Twitter
+    showShareButtons: true // Display buttons to share the canvas link on e.g. Facebook or Twitter
   }
 });
 ```

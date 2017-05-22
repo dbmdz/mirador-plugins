@@ -7,6 +7,18 @@
   color: black;
 }
 
+@media screen and (min-width: 800px) {
+  #canvas-link-modal .modal-dialog {
+    width: 700px;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  #canvas-link-modal .modal-dialog {
+    width: 90%;
+  }
+}
+
 #canvas-link-modal #canvas-link {
   box-sizing: border-box;
   height: 33px;

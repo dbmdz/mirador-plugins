@@ -5,7 +5,6 @@ var CanvasLink = {
   /* all of the needed locales */
   locales: {
     'de': {
-      'cite-share-page': 'Diese Seite zitieren/teilen',
       'copy-to-clipboard': 'In die Zwischenablage kopieren',
       'share-buttons-info': 'Beim Klick auf einen der Teilen-Buttons verlassen Sie diese Webseite.',
       'share-on-envelope': 'Per Mail teilen',
@@ -13,10 +12,10 @@ var CanvasLink = {
       'share-on-pinterest': 'Auf Pinterest teilen',
       'share-on-tumblr': 'Auf Tumblr teilen',
       'share-on-twitter': 'Auf Twitter teilen',
-      'share-on-whatsapp': 'Per Whatsapp teilen'
+      'share-on-whatsapp': 'Per Whatsapp teilen',
+      'share-page': 'Link auf diese Seite teilen'
     },
     'en': {
-      'cite-share-page': 'Cite/share this page',
       'copy-to-clipboard': 'Copy to clipboard',
       'share-buttons-info': 'By clicking on one of the share buttons, you will leave this website.',
       'share-on-envelope': 'Share via mail',
@@ -24,7 +23,8 @@ var CanvasLink = {
       'share-on-pinterest': 'Share on Pinterest',
       'share-on-tumblr': 'Share on Tumblr',
       'share-on-twitter': 'Share on Twitter',
-      'share-on-whatsapp': 'Share via Whatsapp'
+      'share-on-whatsapp': 'Share via Whatsapp',
+      'share-page': 'Share link to this page'
     }
   },
 
@@ -39,7 +39,7 @@ var CanvasLink = {
 
   /* the template for the link button */
   buttonTemplate: Mirador.Handlebars.compile([
-    '<a title="{{t "cite-share-page"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
+    '<a title="{{t "share-page"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
     '<i class="fa fa-lg fa-fw fa-share-alt"></i>',
     '</a>'
   ].join('')),
@@ -51,7 +51,7 @@ var CanvasLink = {
     '<div class="modal-content">',
     '<div class="modal-header">',
     '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-    '<h4 class="modal-title">{{t "cite-share-page"}}</h4>',
+    '<h4 class="modal-title">{{t "share-page"}}</h4>',
     '</div>',
     '<div class="modal-body">',
     '<p>',

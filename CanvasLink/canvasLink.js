@@ -7,7 +7,7 @@ var CanvasLink = {
     'de': {
       'cite-share-page': 'Diese Seite zitieren/teilen',
       'copy-to-clipboard': 'In die Zwischenablage kopieren',
-      'share-buttons-info': 'Beim Klick auf einen der Teilen-Buttons verlassen Sie diese Webseite!',
+      'share-buttons-info': 'Beim Klick auf einen der Teilen-Buttons verlassen Sie diese Webseite.',
       'share-on-envelope': 'Per Mail teilen',
       'share-on-facebook': 'Auf Facebook teilen',
       'share-on-pinterest': 'Auf Pinterest teilen',
@@ -18,7 +18,7 @@ var CanvasLink = {
     'en': {
       'cite-share-page': 'Cite/share this page',
       'copy-to-clipboard': 'Copy to clipboard',
-      'share-buttons-info': 'By clicking on one of the share buttons, you will leave this website!',
+      'share-buttons-info': 'By clicking on one of the share buttons, you will leave this website.',
       'share-on-envelope': 'Share via mail',
       'share-on-facebook': 'Share on Facebook',
       'share-on-pinterest': 'Share on Pinterest',

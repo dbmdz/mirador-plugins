@@ -69,7 +69,8 @@ You can configure the modal dialog containing the canvas link with the `canvasLi
 var mirador = Mirador({
   canvasLink: {
     showShareButtons: true, // Display buttons to share the canvas link on e.g. Facebook or Twitter
-    showShareButtonsInfo: true // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
+    showShareButtonsInfo: true, // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
+    urlExtension: '/example' // Define the url extension appended to the canvas url
   }
 });
 ```

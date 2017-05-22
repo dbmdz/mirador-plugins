@@ -146,7 +146,7 @@ var CanvasLink = {
       this.element.find('.mirador-icon-canvas-cite-share').on('click', function(){
         var canvasLink = this.canvasID + (this_.options.urlExtension || '/view');
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
-        if(this_.options.showSocialMediaButtons){
+        if(this_.options.showShareButtons){
           $('#canvas-link-modal .share-button').attr('href', function(){
             return this_.linkPrefixes[$(this).data('target')] + canvasLink
           });

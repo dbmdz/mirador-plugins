@@ -28,13 +28,25 @@ var CanvasLink = {
     }
   },
 
-  linkPrefixes: {
-    'envelope': 'mailto:?body=',
-    'facebook': 'https://www.facebook.com/sharer/sharer.php?u=',
-    'pinterest': 'http://pinterest.com/pin/create/link/?url=',
-    'tumblr': 'http://www.tumblr.com/share/link?url=',
-    'twitter': 'https://twitter.com/intent/tweet?text=',
-    'whatsapp': 'whatsapp://send?text='
+  linkTemplates: {
+    'envelope': Mirador.Handlebars.compile(
+      'mailto:?subject={{{label}}}{{#if attribution}} ({{attribution}}){{/if}}&body={{{label}}}{{#if attribution}} ({{{attribution}}}){{/if}}: {{link}}'
+    ),
+    'facebook': Mirador.Handlebars.compile(
+      'https://www.facebook.com/sharer/sharer.php?title={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}&u={{link}}'
+    ),
+    'pinterest': Mirador.Handlebars.compile(
+      'http://pinterest.com/pin/create/bookmarklet/?url={{link}}&description={{{label}}}%20{{#if attribution}}%20({{attribution}}){{/if}}&media={{{thumbnailUrl}}}'
+    ),
+    'tumblr': Mirador.Handlebars.compile(
+      'http://www.tumblr.com/share/link?url={{link}}&name={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}&tags=iiif'
+    ),
+    'twitter': Mirador.Handlebars.compile(
+      'https://twitter.com/intent/tweet?text={{{truncate label attribution}}}&url={{link}}&hashtags=iiif'
+    ),
+    'whatsapp': Mirador.Handlebars.compile(
+      'whatsapp://send?text={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}: {{link}}'
+    )
   },
 
   /* the template for the link button */
@@ -86,6 +98,13 @@ var CanvasLink = {
   init: function(){
     Mirador.Handlebars.registerHelper('concat', function(target){
       return 'share-on-' + target;
+    });
+    Mirador.Handlebars.registerHelper('truncate', function(label, attribution){
+      var text = label.concat(attribution ? ' (' + attribution + ')' : '');
+      if(text.length > 60){
+        text = text.substring(0, 60).concat('...');
+      }
+      return text;
     });
     i18next.on('initialized', function(){
       this.addLocalesToViewer();
@@ -147,11 +166,23 @@ var CanvasLink = {
     Mirador.Window.prototype.bindEvents = function(){
       origFunc.apply(this);
       this.element.find('.mirador-icon-canvas-cite-share').on('click', function(){
+        var label = this.manifest.jsonLd.label;
+        var attribution = this.manifest.jsonLd.attribution || false;
         var canvasLink = this.canvasID + (this_.options.urlExtension || '/view');
+        var currentImage = this.imagesList[this.focusModules[this.viewType].currentImgIndex];
+        var service = currentImage.images[0].resource.service || currentImage.images[0].resource.default.service;
+        var thumbnailUrl = Mirador.Iiif.getImageUrl(currentImage).concat('/full/600,/0/').concat((
+          Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default.jpg' : 'native.jpg'
+        ));
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
         if(this_.options.showShareButtons){
           $('#canvas-link-modal .share-button').attr('href', function(){
-            return this_.linkPrefixes[$(this).data('target')] + canvasLink
+            return this_.linkTemplates[$(this).data('target')]({
+              'label': label,
+              'attribution': attribution,
+              'link': canvasLink,
+              'thumbnailUrl': thumbnailUrl
+            });
           });
         }
         $('#canvas-link-modal').modal('show');

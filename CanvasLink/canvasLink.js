@@ -129,8 +129,12 @@ var CanvasLink = {
       if($.isPlainObject(options)){
         this_.options = options;
       }
+      var shareButtons = ['facebook', 'twitter', 'pinterest', 'tumblr', 'envelope'];
+      if('ontouchstart' in window || navigator.maxTouchPoints){
+        shareButtons.push('whatsapp');
+      }
       document.body.insertAdjacentHTML('beforeend', this_.modalTemplate({
-        'shareButtons': ['facebook', 'twitter', 'pinterest', 'tumblr', 'envelope', 'whatsapp'],
+        'shareButtons': shareButtons,
         'showShareButtons': this_.options.showShareButtons || false,
         'showShareButtonsInfo': this_.options.showShareButtonsInfo || false
       }));

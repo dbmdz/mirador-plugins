@@ -22,7 +22,7 @@
 #canvas-link-modal #canvas-link {
   box-sizing: border-box;
   height: 33px;
-  padding: 6px;
+  padding: 0 6px;
   width: calc(100% - 45px);
 }
 

@@ -6,6 +6,8 @@ if(typeof window.URLSearchParams === 'undefined'){
 
 var UpdateUrlFromView = {
   updateUrl: false,
+  // represents query params not added by this plugin
+  furtherParams: '',
 
   init: function() {
     var this_ = this;
@@ -13,15 +15,23 @@ var UpdateUrlFromView = {
     Mirador.Viewer.prototype.setupViewer = function() {
       if (window.location.search) {
         var params = this_.parseRequestParams(window.location.search);
-        this.data.unshift({'manifestUri': params.manifest});
-        var windowObj = {
-          viewType: params.view || 'ImageView',
-          loadedManifest: params.manifest,
-          canvasID: params.canvas
-        };
-        this.state.currentConfig.windowObjects = [
-          $.extend(true, {}, this.state.currentConfig.windowObjects[0], windowObj)
-        ];
+        this_.furtherParams = Object.keys(params).reduce(function(paramString, paramKey){
+          if(!/(view|manifest|canvas)/.test(paramKey)){
+            return paramString + paramKey + '=' + params[paramKey] + '&';
+          }
+          return paramString;
+        }, '');
+        if (params.hasOwnProperty('manifest')) {
+          this.data.unshift({'manifestUri': params.manifest});
+          var windowObj = {
+            viewType: params.view || 'ImageView',
+            loadedManifest: params.manifest,
+            canvasID: params.canvas
+          };
+          this.state.currentConfig.windowObjects = [
+            $.extend(true, {}, this.state.currentConfig.windowObjects[0], windowObj)
+          ];
+        }
       }
       this.eventEmitter.subscribe('slotsUpdated', this_.onSlotsUpdated.bind(this_));
       this.eventEmitter.subscribe('windowUpdated', this_.onWindowUpdated.bind(this_));
@@ -56,7 +66,7 @@ var UpdateUrlFromView = {
   },
 
   constructSearchParams: function(data) {
-    var newParams = new URLSearchParams();
+    var newParams = new URLSearchParams(this.furtherParams);
     newParams.set('view', data.viewType);
     if (data.loadedManifest) {
       newParams.set('manifest', data.loadedManifest);

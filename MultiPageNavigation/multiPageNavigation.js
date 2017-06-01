@@ -67,32 +67,8 @@ var MultiPageNavigation = {
     var extendedBindEvents = function(){
       originalBindEvents.apply(this, arguments);
       $(this.element[0]).on('click', '.extendedNav > .hud-control', function(event){
-        switch(event.currentTarget.classList[0]){
-          case 'mirador-osd-first':
-            this.first();
-            break;
-          case 'mirador-osd-previous-10':
-            this.previous(9);
-            break;
-          case 'mirador-osd-previous-5':
-            this.previous(4);
-            break;
-          case 'mirador-osd-previous-3':
-            this.previous(2);
-            break;
-          case 'mirador-osd-next-3':
-            this.next(2);
-            break;
-          case 'mirador-osd-next-5':
-            this.next(4);
-            break;
-          case 'mirador-osd-next-10':
-            this.next(9);
-            break;
-          case 'mirador-osd-last':
-            this.last();
-            break;
-        }
+        var functionAndParameter = event.currentTarget.classList[0].split('-').slice(2);
+        this[functionAndParameter[0]].call(this, functionAndParameter[1]-1);
       }.bind(this));
     };
     var extendedListenForActions = function(){
@@ -150,10 +126,8 @@ var MultiPageNavigation = {
     Mirador.BookView.prototype.first = Mirador.ImageView.prototype.first = this.first;
     Mirador.BookView.prototype.last = Mirador.ImageView.prototype.last = this.last;
     // overwrite functions in Mirador
-    Mirador.BookView.prototype.next = this.next('BookView');
-    Mirador.ImageView.prototype.next = this.next('ImageView');
-    Mirador.BookView.prototype.previous = this.previous('BookView');
-    Mirador.ImageView.prototype.previous = this.previous('ImageView');
+    Mirador.BookView.prototype.next = Mirador.ImageView.prototype.next = this.next;
+    Mirador.BookView.prototype.previous = Mirador.ImageView.prototype.previous = this.previous;
     // add some event handlers to Mirador
     this.addEventHandlersToViewer('ImageView');
     this.addEventHandlersToViewer('BookView');
@@ -182,81 +156,43 @@ var MultiPageNavigation = {
   },
 
   /* turns to the next canvas (overwritten) */
-  next: function(viewType){
-    switch(viewType){
-      case 'BookView':
-        return function(skip){
-          // calculate the offset to the next canvas
-          var offset = this.currentImgIndex + (this.currentImgIndex % 2 === 0 ? 1 : 2) + (skip ? skip * 2 : 0);
+  next: function(skip){
+    // calculate the offset to the next canvas
+    var offset = this.currentImgIndex + 1 + (skip ? skip : 0);
+    if(this instanceof Mirador.BookView){
+      offset += 1 + (skip ? skip : 0);
+    }
 
-          // jump to the canvas, if it is in the range
-          if(offset < this.imagesList.length){
-            this.eventEmitter.publish(
-              'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
-            );
-          }else{
-            this.last();
-          }
-        };
-
-      case 'ImageView':
-        return function(skip){
-          // calculate the offset to the next canvas
-          var offset = this.currentImgIndex + 1 + (skip ? skip : 0);
-
-          // jump to the canvas, if it is in the range
-          if(offset < this.imagesList.length){
-            this.eventEmitter.publish(
-              'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
-            );
-          }else{
-            this.last();
-          }
-        };
+    // jump to the canvas, if it is in the range
+    if(offset < this.imagesList.length){
+      this.eventEmitter.publish(
+        'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
+      );
+    }else{
+      this.last();
     }
   },
 
   /* turns to the previous canvas (overwritten) */
-  previous: function(viewType){
-    switch(viewType){
-      case 'BookView':
-        return function(skip){
-          // calculate the offset to the previous canvas
-          var offset = this.currentImgIndex - (this.currentImgIndex % 2 === 0 ? 1 : 2) - (skip ? skip * 2 : 0);
+  previous: function(skip){
+    var offset = this.currentImgIndex - 1 - (skip ? skip : 0);
+    if(this instanceof Mirador.BookView){
+      offset = offset - 1 - (skip ? skip : 0);
+    }
 
-          // jump to the canvas, if it is in the range
-          if(offset >= 0){
-            this.eventEmitter.publish(
-              'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
-            );
-          }else{
-            this.first();
-          }
-        };
-
-      case 'ImageView':
-        return function(skip){
-          // calculate the offset to the previous canvas
-          var offset = this.currentImgIndex - 1 - (skip ? skip : 0);
-
-          // jump to the canvas, if it is in the range
-          if(offset >= 0){
-            this.eventEmitter.publish(
-              'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
-            );
-          }else{
-            this.first();
-          }
-        };
+    // jump to the canvas, if it is in the range
+    if(offset >= 0){
+      this.eventEmitter.publish(
+        'SET_CURRENT_CANVAS_ID.' + this.windowId, this.imagesList[offset]['@id']
+      );
+    }else{
+      this.first();
     }
   },
 
   // shows respectively hides the skip x buttons corresponding to the current image index
   handleExtendedNavigation: function(viewType){
     var currentImgIndex = this.currentImgIndex;
-    if(viewType === 'BookView' && currentImgIndex % 2 === 1){
-      currentImgIndex += 1;
-    }
     var lastImgIndex = this.imagesList.length - 1;
     var factor = viewType === 'ImageView' ? 1 : 2;
 

@@ -428,7 +428,7 @@
       // Handle multiple services, try to find first physical dimensions service
       if (service && Array.isArray(service)) {
         service = service.find(function(s) {
-          return service.profile === "http://iiif.io/api/annex/services/physdim";
+          return s.profile === "http://iiif.io/api/annex/services/physdim";
         });
       }
       if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {

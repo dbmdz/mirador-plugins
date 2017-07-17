@@ -133,3 +133,30 @@ Installation:
 // ...
 </script>
 ```
+
+
+## Piwik Tracking of Mirador Events
+
+This plugin records user interactions with Mirador to a Piwik instance.
+
+You can configure the plugin with the `piwikTracking` configuration Key:
+
+```js
+{
+    // Only set trackerUrl and siteId if you did not use the Piwik
+    // JavaScript snippet
+    trackerUrl: undefined,
+    siteId: undefined,
+
+    // Can be 'event' or 'content', what kind of interaction to record
+    // in Piwik. 'event' will trigger an Event, 'content' a Content Interaction.
+    method: 'event',
+    events: [
+      'change-page',
+      'zoom',
+      'enable-annotations',
+      'add-annotation',
+      'add-window'
+    ]
+}
+```

@@ -32,6 +32,30 @@ var mirador = Mirador({
 });
 ```
 
+## Image cropper
+
+Adds an overlay to the canvas for retrieving the image url for the selected area.
+
+To enable it, include the CSS and the JavaScript (**after** loading Mirador).
+
+```html
+<link rel="stylesheet" type="text/css" href="<url to the plugin>/imageCropper.css" />
+...
+<script src="<url to the plugin>/imageCropper.js"></script>
+```
+
+To activate the plugin at startup of Mirador, you can achieve this by adding an option to your Mirador configuration:
+
+```js
+var mirador = Mirador({
+  ...
+  activateImageCropping: true
+  ...
+});
+```
+
+By default, it's deactivated.
+
 ## Manifest button
 
 Adds an extra button to every window that links to the loaded manifest.

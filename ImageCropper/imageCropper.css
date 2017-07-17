@@ -1,0 +1,156 @@
+/*
+ * styles for the toggle button
+ */
+.image-view .cropping-controls > a.active {
+  color: yellow;
+  opacity: 1;
+}
+
+/*
+ * styles for the cropping overlay
+ */
+.image-view .cropping-overlay {
+  height: 200px;
+  left: 1000px;
+  padding: 3px;
+  position: absolute;
+  top: 200px;
+  width: 300px;
+}
+
+.image-view .cropping-overlay > .share-button {
+  color: #046;
+  cursor: pointer;
+  font-size: 22px;
+  left: calc(50% - 11px);
+  position: absolute;
+  top: -22px;
+}
+
+.image-view .cropping-overlay > .resize-frame {
+  border: 3px dashed #046;
+  border-radius: 3px;
+  box-sizing: border-box;
+  cursor: move;
+  height: 100%;
+}
+
+.image-view .cropping-overlay > .resize-anchor {
+  background: #046;
+  height: 8px;
+  position: absolute;
+  width: 8px;
+}
+
+.image-view .cropping-overlay > .resize-anchor.top-left {
+  cursor: nw-resize;
+  left: 0;
+  top: 0;
+}
+
+.image-view .cropping-overlay > .resize-anchor.top-right {
+  cursor: ne-resize;
+  right: 0;
+  top: 0;
+}
+
+.image-view .cropping-overlay > .resize-anchor.bottom-left {
+  cursor: sw-resize;
+  bottom: 0;
+  left: 0;
+}
+
+.image-view .cropping-overlay > .resize-anchor.bottom-right {
+  cursor: se-resize;
+  bottom: 0;
+  right: 0;
+}
+
+.image-view .cropping-overlay > .resize-bar {
+  background-color: transparent;
+  position: absolute;
+}
+
+.image-view .cropping-overlay > .resize-bar.top,
+.image-view .cropping-overlay > .resize-bar.bottom {
+  cursor: ns-resize;
+  height: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+}
+
+.image-view .cropping-overlay > .resize-bar.top {
+  top: 0;
+}
+
+.image-view .cropping-overlay > .resize-bar.bottom {
+  bottom: 0;
+}
+
+.image-view .cropping-overlay > .resize-bar.left,
+.image-view .cropping-overlay > .resize-bar.right {
+  cursor: ew-resize;
+  height: calc(100% - 16px);
+  top: 8px;
+  width: 8px;
+}
+
+.image-view .cropping-overlay > .resize-bar.left {
+  left: 0;
+}
+
+.image-view .cropping-overlay > .resize-bar.right {
+  right: 0;
+}
+
+/*
+ * styles for the modal
+ */
+@media screen and (min-width: 800px) {
+  #image-cropper-modal .modal-dialog {
+    width: 700px;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  #image-cropper-modal .modal-dialog {
+    width: 90%;
+  }
+}
+
+#image-cropper-modal #image-url {
+  box-sizing: border-box;
+  height: 33px;
+  padding: 0 6px;
+  width: calc(100% - 45px);
+}
+
+#image-cropper-modal #copy-to-clipboard {
+  height: 34px;
+  width: 40px;
+}
+
+#image-cropper-modal h4.options {
+  margin-bottom: 10px;
+}
+
+#image-cropper-modal h4.options ~ label {
+  margin-left: 10px;
+}
+
+#image-cropper-modal h4.options ~ label > input {
+  margin-right: 2px;
+}
+
+#image-cropper-modal div.size,
+#image-cropper-modal div.rotation,
+#image-cropper-modal div.quality {
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+
+#image-cropper-modal #preview-image {
+  display:block;
+  height: auto;
+  max-width: 100%;
+}

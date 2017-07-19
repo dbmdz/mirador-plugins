@@ -135,7 +135,7 @@ var ImageCropper = {
     }.bind(this));
   },
 
-  /* converts osd viewport to image coordinates */
+  /* converts web to image coordinates */
   calculateImageCoordinates: function(element, osdViewport){
     var top = parseInt(element.css('top'));
     var left = parseInt(element.css('left'));

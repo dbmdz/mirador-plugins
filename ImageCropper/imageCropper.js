@@ -85,7 +85,7 @@ var ImageCropper = {
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="color">color</label>',
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">gray</label>',
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">bitonal</label>',
-    '<h4 class="options">{{t "preview"}}</h4>',
+    '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
     '<img id="preview-image">',
     '</div>',
     '<div class="modal-footer">',
@@ -124,9 +124,12 @@ var ImageCropper = {
       $('#image-cropper-modal #image-url').attr(
         'value', this.imageUrlTemplate(this.imageUrlParams)
       ).select();
+      $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
       $('#image-cropper-modal #preview-image').attr(
         'src', this.imageUrlTemplate($.extend({}, this.imageUrlParams, {'size': '!500,500'}))
-      );
+      ).on('error load', function(){
+        $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
+      });
     }.bind(this));
   },
 
@@ -356,9 +359,12 @@ var ImageCropper = {
         $('#image-cropper-modal #image-url').attr(
           'value', this_.imageUrlTemplate(this_.imageUrlParams)
         );
+        $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
         $('#image-cropper-modal #preview-image').attr(
           'src', this_.imageUrlTemplate($.extend({}, this_.imageUrlParams, {'size': '!500,500'}))
-        );
+        ).on('error load', function(){
+          $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
+        });
         $($('#image-cropper-modal').find('.quality + label > input')).attr(
           'data-quality', this_.imageUrlParams.quality
         );

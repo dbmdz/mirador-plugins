@@ -152,5 +152,7 @@
 #image-cropper-modal #preview-image {
   display:block;
   height: auto;
-  max-width: 100%;
+  max-height: 500px;
+  max-width: 500px;
+  width: 100%;
 }

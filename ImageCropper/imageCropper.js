@@ -128,7 +128,7 @@ var ImageCropper = {
       ).select();
       $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
       $('#image-cropper-modal #preview-image').attr(
-        'src', this.imageUrlTemplate($.extend({}, this.imageUrlParams, {'size': '!500,500'}))
+        'src', this.imageUrlTemplate(this.imageUrlParams)
       ).on('error load', function(){
         $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
       });
@@ -363,7 +363,7 @@ var ImageCropper = {
         );
         $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
         $('#image-cropper-modal #preview-image').attr(
-          'src', this_.imageUrlTemplate($.extend({}, this_.imageUrlParams, {'size': '!500,500'}))
+          'src', this_.imageUrlTemplate(this_.imageUrlParams)
         ).on('error load', function(){
           $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
         });

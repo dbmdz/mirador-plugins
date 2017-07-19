@@ -11,6 +11,7 @@ var ImageCropper = {
   /* all of the needed locales */
   locales: {
     'de': {
+      'image-error-message': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
       'options': 'Optionen',
       'preview': 'Vorschau',
       'quality': 'Qualität',
@@ -20,6 +21,7 @@ var ImageCropper = {
       'toggle-cropping': 'Auswahl eines Bildausschnitts aktivieren'
     },
     'en': {
+      'image-error-message': 'The selected parameters are not supported for this resource!',
       'options': 'Options',
       'preview': 'Preview',
       'quality': 'Quality',
@@ -86,7 +88,7 @@ var ImageCropper = {
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">gray</label>',
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">bitonal</label>',
     '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
-    '<img id="preview-image">',
+    '<img id="preview-image" alt="{{t "image-error-message"}}">',
     '</div>',
     '<div class="modal-footer">',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',

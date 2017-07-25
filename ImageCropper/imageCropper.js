@@ -192,8 +192,8 @@ var ImageCropper = {
     }
   },
 
-  /* checks the position of the overlay */
-  checkPosition: function(positions, offsets, overlay, parent){
+  /* changes the overlay position */
+  changeOverlayPosition: function(positions, offsets, overlay, parent){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
     if(newElementTop < 0){
@@ -210,7 +210,10 @@ var ImageCropper = {
     if(newElementLeft + parseInt(overlay.css('width')) > parseInt($(parent).css('width'))){
       newElementLeft = maxLeft;
     }
-    return { 'top': newElementTop, 'left': newElementLeft};
+    overlay.css({
+      'top': newElementTop,
+      'left': newElementLeft
+    });
   },
 
   /* initializes the plugin */
@@ -270,8 +273,7 @@ var ImageCropper = {
         if(this_.dragging){
           event.preventDefault();
           currentPositions = this_.calculatePositions(this.croppingOverlay, event);
-          var newOverlayPosition = this_.checkPosition(currentPositions, offsets, this.croppingOverlay, event.currentTarget);
-          this.croppingOverlay.css(newOverlayPosition);
+          this_.changeOverlayPosition(currentPositions, offsets, this.croppingOverlay, event.currentTarget);
         }
       }.bind(this)).on('mouseup', '.cropping-overlay > .resize-frame', function(){
         this_.dragging = false;

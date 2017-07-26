@@ -195,18 +195,21 @@ var ImageCropper = {
   changeOverlayPosition: function(positions, offsets, overlay, parent){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
+    var elementHeight = parseInt(overlay.css('height'));
+    var elementWidth = parseInt(overlay.css('width'));
+
     if(newElementTop < 0){
       newElementTop = 0;
     }
     if(newElementLeft < 0){
       newElementLeft = 0;
     }
-    var maxTop = parseInt($(parent).css('height')) - parseInt(overlay.css('height'));
-    if(newElementTop + parseInt(overlay.css('height')) > parseInt($(parent).css('height'))){
+    var maxTop = parseInt($(parent).css('height')) - elementHeight;
+    if(newElementTop + elementHeight > parseInt($(parent).css('height'))){
       newElementTop = maxTop;
     }
-    var maxLeft = parseInt($(parent).css('width')) - parseInt(overlay.css('width'));
-    if(newElementLeft + parseInt(overlay.css('width')) > parseInt($(parent).css('width'))){
+    var maxLeft = parseInt($(parent).css('width')) - elementWidth;
+    if(newElementLeft + elementWidth > parseInt($(parent).css('width'))){
       newElementLeft = maxLeft;
     }
     overlay.css({

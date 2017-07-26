@@ -146,13 +146,13 @@ var ImageCropper = {
     var webBottomLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top + dimensions.height);
 
     var imageTopLeft = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixel(webTopLeft)
+      osdViewport.pointFromPixelNoRotate(webTopLeft)
     );
     var imageTopRight = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixel(webTopRight)
+      osdViewport.pointFromPixelNoRotate(webTopRight)
     );
     var imageBottomLeft = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixel(webBottomLeft)
+      osdViewport.pointFromPixelNoRotate(webBottomLeft)
     );
 
     return {

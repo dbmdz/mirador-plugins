@@ -11,10 +11,10 @@
  */
 .image-view .cropping-overlay {
   height: 200px;
-  left: 1000px;
+  left: calc(50% - 150px);
   padding: 3px;
   position: absolute;
-  top: 200px;
+  top: calc(50% - 100px);
   width: 300px;
 }
 

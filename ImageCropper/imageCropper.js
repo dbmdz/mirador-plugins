@@ -136,15 +136,14 @@ var ImageCropper = {
   },
 
   /* converts web to image coordinates */
-  calculateImageCoordinates: function(element, osdViewport){
-    var top = parseInt(element.css('top'));
-    var left = parseInt(element.css('left'));
-    var height = parseInt(element.css('height'));
-    var width = parseInt(element.css('width'));
+  calculateImageCoordinates: function(dimensions, osdViewport){
+    $.map(dimensions, function(value, key){
+      dimensions[key] = parseInt(value);
+    });
 
-    var webTopLeft = new OpenSeadragon.Point(left, top);
-    var webTopRight = new OpenSeadragon.Point(left + width, top);
-    var webBottomLeft = new OpenSeadragon.Point(left, top + height);
+    var webTopLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top);
+    var webTopRight = new OpenSeadragon.Point(dimensions.left + dimensions.width, dimensions.top);
+    var webBottomLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top + dimensions.height);
 
     var imageTopLeft = osdViewport.viewportToImageCoordinates(
       osdViewport.pointFromPixel(webTopLeft)
@@ -352,9 +351,12 @@ var ImageCropper = {
       this.element.on('click', '.cropping-overlay > .share-button', function(event){
         var currentImage = this.imagesList[this.currentImgIndex];
         var service = currentImage.images[0].resource.service || currentImage.images[0].resource.default.service;
+        var currentOverlayDimensions = $(event.target).parent().css(
+          ['top', 'left', 'height', 'width']
+        );
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
-          'region': this_.calculateImageCoordinates($(event.target).parent(), this.osd.viewport),
+          'region': this_.calculateImageCoordinates(currentOverlayDimensions, this.osd.viewport),
           'size': 'full',
           'rotation': 0,
           'quality': Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default' : 'native'

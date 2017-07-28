@@ -13,9 +13,12 @@
   height: 200px;
   left: calc(50% - 150px);
   padding: 3px;
+  padding-left: 0;
+  padding-top: 0;
   position: absolute;
   top: calc(50% - 100px);
   width: 300px;
+  z-index: 3;
 }
 
 .image-view .cropping-overlay > .share-button {

@@ -2,6 +2,7 @@ var ImageCropper = {
   /* some needed flags and variables */
   croppingActive: false,
   dragging: false,
+  imageDimensions: {},
   imageUrlParams: {},
   resizing: false,
 
@@ -411,6 +412,27 @@ var ImageCropper = {
             'checked', true
           );
         });
+      }.bind(this));
+    };
+  },
+
+  /* injects an event handler for saving the image dimensions in the windows */
+  injectWindowEventHandler: function(){
+    var this_ = this;
+    var origFunc = Mirador.Window.prototype.listenForActions;
+    Mirador.Window.prototype.listenForActions = function(){
+      origFunc.apply(this);
+      this.eventEmitter.subscribe('windowUpdated', function(event, data){
+        if (this.id !== data.id || !data.viewType) {
+          return;
+        }
+        if (data.viewType === 'ImageView') {
+          this_.imageDimensions[this.id] = {
+            'height': this.canvases[data.canvasID].canvas.height,
+            'width': this.canvases[data.canvasID].canvas.width
+          };
+        }
+
       }.bind(this));
     };
   }

@@ -198,18 +198,33 @@ var ImageCropper = {
   },
 
   /* changes the overlay position */
-  changeOverlayPosition: function(positions, offsets, overlay, parent){
+  changeOverlayPosition: function(positions, offsets, overlay, parent, osdViewport){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
     var elementHeight = parseInt(overlay.css('height'));
     var elementWidth = parseInt(overlay.css('width'));
 
+    var imageCoordinates = this.calculateImageCoordinates({
+      'top': newElementTop,
+      'left': newElementLeft,
+      'height': elementHeight,
+      'width': elementWidth
+    }, osdViewport);
+    var minPositions = this.calculateImageBounds(osdViewport, null);
+
+    if(imageCoordinates.y < 0){
+      newElementTop = minPositions.y - offsets.canvas.top;
+    }
     if(newElementTop < 0){
       newElementTop = 0;
+    }
+    if(imageCoordinates.x < 0){
+      newElementLeft = minPositions.x - offsets.canvas.left;
     }
     if(newElementLeft < 0){
       newElementLeft = 0;
     }
+
     var maxTop = parseInt($(parent).css('height')) - elementHeight;
     if(newElementTop + elementHeight > parseInt($(parent).css('height'))){
       newElementTop = maxTop;
@@ -281,7 +296,9 @@ var ImageCropper = {
         if(this_.dragging){
           event.preventDefault();
           currentPositions = this_.calculatePositions(this.croppingOverlay, event);
-          this_.changeOverlayPosition(currentPositions, offsets, this.croppingOverlay, event.currentTarget);
+          this_.changeOverlayPosition(
+            currentPositions, offsets, this.croppingOverlay, event.currentTarget, this.osd.viewport
+          );
         }
       }.bind(this)).on('mouseup', '.cropping-overlay > .resize-frame', function(){
         this_.dragging = false;

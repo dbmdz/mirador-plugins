@@ -135,6 +135,12 @@ var ImageCropper = {
     }.bind(this));
   },
 
+  /* calculates the image bounds as window coordinates */
+  calculateImageBounds: function(osdViewport, windowId){
+    var windowTopLeft = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(0, 0));
+    return windowTopLeft;
+  },
+
   /* converts web to image coordinates */
   calculateImageCoordinates: function(dimensions, osdViewport){
     $.map(dimensions, function(value, key){

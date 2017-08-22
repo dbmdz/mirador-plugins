@@ -1,0 +1,14 @@
+{
+  "lerna": "2.0.0",
+  "packages": [
+    "CanvasLink",
+    "ImageCropper",
+    "KeyboardNavigation",
+    "ManifestButton",
+    "MultiPageNavigation",
+    "PhysicalRuler",
+    "PiwikTracking",
+    "ViewFromUrl"
+  ],
+  "version": "independent"
+}

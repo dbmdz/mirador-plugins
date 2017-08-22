@@ -1,0 +1,19 @@
+{
+  "name": "@dbmdz/mirador-keyboardnavigation",
+  "version": "0.0.0",
+  "description": "Adds keyboard nagivation features to Mirador.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Marcus Bitzl",
+  "main": "keyboardNavigation.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

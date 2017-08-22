@@ -1,0 +1,19 @@
+{
+  "name": "@dbmdz/mirador-multipagenavigation",
+  "version": "0.0.0",
+  "description": "Adds a small additional navigation bar to the top of the viewport that allows faster seeking through a manifest.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Matthias Lindinger",
+  "main": "multiPageNavigation.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

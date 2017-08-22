@@ -1,0 +1,19 @@
+{
+  "name": "@dbmdz/mirador-piwiktracking",
+  "version": "0.0.0",
+  "description": "This plugin records user interactions with Mirador to a Piwik instance.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Johannes Baiter",
+  "main": "piwikTracking.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

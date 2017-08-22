@@ -1,0 +1,19 @@
+{
+  "name": "@dbmdz/mirador-viewfromurl",
+  "version": "0.0.0",
+  "description": "Modifies Mirador to dynamically update the URL to reflect the currently selected view type (image, book, etc), manifest and canvas and to reconstruct a Mirador session from such an URL hash.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Johannes Baiter",
+  "main": "viewFromUrl.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

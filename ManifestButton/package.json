@@ -1,0 +1,19 @@
+{
+  "name": "@dbmdz/mirador-manifestbutton",
+  "version": "0.0.0",
+  "description": "Adds an extra button to every window that links to the loaded manifest.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Matthias Lindinger",
+  "main": "manifestButton.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

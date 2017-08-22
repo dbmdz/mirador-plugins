@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-canvaslink",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds an extra button to every window that displays a link to the currently shown canvas.",
   "keywords": [
     "iiif",

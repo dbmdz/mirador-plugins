@@ -1,0 +1,12 @@
+{
+  "name": "mirador-plugins",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "devDependencies": {
+    "lerna": "^2.0.0"
+  },
+  "private": true
+}

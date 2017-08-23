@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-multipagenavigation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds a small additional navigation bar to the top of the viewport that allows faster seeking through a manifest.",
   "keywords": [
     "iiif",

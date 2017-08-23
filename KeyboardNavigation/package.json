@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-keyboardnavigation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds keyboard nagivation features to Mirador.",
   "keywords": [
     "iiif",

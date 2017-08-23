@@ -139,7 +139,17 @@ var ImageCropper = {
   /* calculates the image bounds as window coordinates */
   calculateImageBounds: function(osdViewport, windowId){
     var windowTopLeft = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(0, 0));
-    return windowTopLeft;
+    var windowTopRight = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(
+      this.imageDimensions[windowId].width, 0
+    ));
+    var windowBottomLeft = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(
+      0, this.imageDimensions[windowId].height
+    ));
+    return {
+      'topLeft': windowTopLeft,
+      'topRight': windowTopRight,
+      'bottomLeft': windowTopLeft
+    };
   },
 
   /* converts web to image coordinates */
@@ -199,7 +209,7 @@ var ImageCropper = {
   },
 
   /* changes the overlay position */
-  changeOverlayPosition: function(positions, offsets, overlay, parent, osdViewport){
+  changeOverlayPosition: function(positions, offsets, overlay, parent, osdViewport, windowId){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
     var elementHeight = parseInt(overlay.css('height'));
@@ -211,16 +221,16 @@ var ImageCropper = {
       'height': elementHeight,
       'width': elementWidth
     }, osdViewport);
-    var minPositions = this.calculateImageBounds(osdViewport, null);
+    var imageBounds = this.calculateImageBounds(osdViewport, windowId);
 
     if(imageCoordinates.y < 0){
-      newElementTop = minPositions.y - offsets.canvas.top;
+      newElementTop = imageBounds.topLeft.y - offsets.canvas.top;
     }
     if(newElementTop < 0){
       newElementTop = 0;
     }
     if(imageCoordinates.x < 0){
-      newElementLeft = minPositions.x - offsets.canvas.left;
+      newElementLeft = imageBounds.topLeft.x - offsets.canvas.left;
     }
     if(newElementLeft < 0){
       newElementLeft = 0;
@@ -298,7 +308,8 @@ var ImageCropper = {
           event.preventDefault();
           currentPositions = this_.calculatePositions(this.croppingOverlay, event);
           this_.changeOverlayPosition(
-            currentPositions, offsets, this.croppingOverlay, event.currentTarget, this.osd.viewport
+            currentPositions, offsets, this.croppingOverlay,
+            event.currentTarget, this.osd.viewport, this.windowId
           );
         }
       }.bind(this)).on('mouseup', '.cropping-overlay > .resize-frame', function(){

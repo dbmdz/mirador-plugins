@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-manifestbutton",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds an extra button to every window that links to the loaded manifest.",
   "keywords": [
     "iiif",

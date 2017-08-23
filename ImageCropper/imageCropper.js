@@ -189,7 +189,13 @@ var ImageCropper = {
   },
 
   /* changes the overlay dimensions depending on the resize element */
-  changeOverlayDimensions: function(type, mousePosition, offsets, element){
+  changeOverlayDimensions: function(type, mousePosition, offsets, element, osdViewport, windowId){
+    var imageBounds = this.calculateImageBounds(osdViewport, windowId);
+    if(mousePosition.top > imageBounds.bottomLeft.y || mousePosition.left > imageBounds.topRight.x){
+      this.resizing = false;
+      return;
+    }
+
     var newElementHeight = mousePosition.top - offsets.element.top;
     var newElementWidth = mousePosition.left - offsets.element.left;
     if(type === 'right' || type === 'bottom-right'){
@@ -376,7 +382,10 @@ var ImageCropper = {
         if(this_.resizing){
           event.preventDefault();
           currentMousePosition = this_.calculatePositions(this.croppingOverlay, event).mouse;
-          this_.changeOverlayDimensions(typeOfResizeElement, currentMousePosition, offsets, this.croppingOverlay);
+          this_.changeOverlayDimensions(
+            typeOfResizeElement, currentMousePosition, offsets,
+            this.croppingOverlay, this.osd.viewport, this.windowId
+          );
         }
       }.bind(this)).on('mouseup', '.resize-anchor, .resize-bar', function(){
         this_.resizing = false;

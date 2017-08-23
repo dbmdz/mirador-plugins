@@ -148,7 +148,7 @@ var ImageCropper = {
     return {
       'topLeft': windowTopLeft,
       'topRight': windowTopRight,
-      'bottomLeft': windowTopLeft
+      'bottomLeft': windowBottomLeft
     };
   },
 

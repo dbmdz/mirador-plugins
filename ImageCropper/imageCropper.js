@@ -236,13 +236,17 @@ var ImageCropper = {
       newElementLeft = 0;
     }
 
-    var maxTop = parseInt($(parent).css('height')) - elementHeight;
-    if(newElementTop + elementHeight > parseInt($(parent).css('height'))){
-      newElementTop = maxTop;
+    if(imageCoordinates.y + imageCoordinates.h > this.imageDimensions[windowId].height){
+      newElementTop = imageBounds.bottomLeft.y - offsets.canvas.top - elementHeight;
     }
-    var maxLeft = parseInt($(parent).css('width')) - elementWidth;
+    if(newElementTop + elementHeight > parseInt($(parent).css('height'))){
+      newElementTop = parseInt($(parent).css('height')) - elementHeight;
+    }
+    if(imageCoordinates.x + imageCoordinates.w > this.imageDimensions[windowId].width){
+      newElementLeft = imageBounds.topRight.x - offsets.canvas.left - elementWidth;
+    }
     if(newElementLeft + elementWidth > parseInt($(parent).css('width'))){
-      newElementLeft = maxLeft;
+      newElementLeft = parseInt($(parent).css('width')) - elementWidth;
     }
     overlay.css({
       'top': newElementTop,

@@ -5,6 +5,9 @@
     "type": "git",
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
+  "scripts": {
+    "release": "lerna publish"
+  },
   "devDependencies": {
     "lerna": "^2.1.0"
   },

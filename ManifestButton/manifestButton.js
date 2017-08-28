@@ -62,7 +62,7 @@ var ManifestButton = {
       );
     }
   }
-}
+};
 
 $(document).ready(function(){
   ManifestButton.init();

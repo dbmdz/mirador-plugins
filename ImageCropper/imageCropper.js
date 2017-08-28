@@ -185,7 +185,7 @@ var ImageCropper = {
     return {
       'element': element.offset(),
       'mouse': { 'top': event.pageY, 'left': event.pageX }
-    }
+    };
   },
 
   /* changes the overlay dimensions depending on the resize element */
@@ -289,7 +289,7 @@ var ImageCropper = {
         $('.cropping-toggle', button).click(function(){
           $(this).toggleClass('active');
           $(this).closest('.image-view').find('.cropping-overlay').toggle();
-        })
+        });
       }
     };
   },
@@ -357,7 +357,11 @@ var ImageCropper = {
       }));
       croppingOverlay.appendTo(this.appendTo.find('.mirador-osd'));
       this.croppingOverlay = croppingOverlay;
-      this_.croppingActive ? croppingOverlay.show() : croppingOverlay.hide();
+      if(this_.croppingActive){
+        croppingOverlay.show();
+      }else{
+        croppingOverlay.hide();
+      }
     };
   },
 
@@ -460,7 +464,7 @@ var ImageCropper = {
       }.bind(this));
     };
   }
-}
+};
 
 $(document).ready(function(){
   ImageCropper.init();

@@ -1,25 +1,26 @@
 (function() {
 
 function currentView(window) {
-    switch (window.viewType) {
-      case 'ImageView':
-        console.log('Go to previous image');
-        return window.focusModules.ImageView;
+  var currentView = null;
+  switch (window.viewType) {
+    case 'ImageView':
+      console.log('Go to previous image');
+      currentView = window.focusModules.ImageView;
       break;
-      case 'BookView':
-        console.log('Go to previous image');
-        return window.focusModules.BookView;
+    case 'BookView':
+      console.log('Go to previous image');
+      currentView = window.focusModules.BookView;
       break;
-    }
-    return null;
+  }
+  return currentView;
 }
 
 function windowIsZoomed(window) {
-    var view = currentView(window);
-    if (view) {
-      return 1 < view.osd.viewport.getZoom(true);  
-    }
-    return false;
+  var view = currentView(window);
+  if (view) {
+    return 1 < view.osd.viewport.getZoom(true);
+  }
+  return false;
 }
 
 function anyViewIsZoomed(workspace) {
@@ -71,7 +72,7 @@ var KeyboardNavigation = {
         }
         forEveryActiveView(workspace, function(view){
           view.next();
-        })
+        });
       });
       Mousetrap.bind(['ctrl+right'], function(){
         console.log('Got key ←, going to previous page.');
@@ -99,13 +100,13 @@ var KeyboardNavigation = {
           w.toggleMetadataOverlay(w.viewType);
         });
       });
-    }
+    };
   }
-}
+};
 
 $(document).ready(function() {
   console.log('Loading Keyboard Navigation...');
   KeyboardNavigation.init();
-})
+});
 
-})()
+})();

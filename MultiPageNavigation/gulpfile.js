@@ -18,7 +18,7 @@ gulp.task('lint', function(){
   );
 });
 
-gulp.task('minify-css', function(){
+gulp.task('minify-css', ['clean'], function(){
   return gulp.src('*.css').pipe(
     minifyCSS()
   ).pipe(
@@ -26,7 +26,7 @@ gulp.task('minify-css', function(){
   );
 });
 
-gulp.task('minify-js', function(){
+gulp.task('minify-js', ['clean'], function(){
   return gulp.src(['*.js', '!gulpfile.js']).pipe(
     minifyJS({
       exclude: ['dist'],

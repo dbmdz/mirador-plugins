@@ -11,11 +11,11 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
-    "gulp-clean-css": "^3.7.0",
+    "gulp-clean-css": "^3.8.0",
     "gulp-jshint": "^2.0.4",
     "gulp-minify": "^1.0.0",
     "jshint": "^2.9.5",
-    "lerna": "^2.1.0"
+    "lerna": "^2.1.2"
   },
   "private": true
 }

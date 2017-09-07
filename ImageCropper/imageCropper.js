@@ -153,7 +153,7 @@ var ImageCropper = {
   },
 
   /* converts web to image coordinates */
-  calculateImageCoordinates: function(dimensions, osdViewport){
+  calculateImageCoordinates: function(dimensions, osdViewport, validate, windowId){
     $.map(dimensions, function(value, key){
       dimensions[key] = parseInt(value);
     });
@@ -172,12 +172,21 @@ var ImageCropper = {
       osdViewport.pointFromPixelNoRotate(webBottomLeft)
     );
 
-    return {
+    var imageCoordinates = {
       'x': Math.floor(imageTopLeft.x),
       'y': Math.floor(imageTopLeft.y),
       'w': Math.ceil(imageTopRight.x - imageTopLeft.x),
       'h': Math.ceil(imageBottomLeft.y - imageTopLeft.y)
     };
+
+    if(validate){
+      imageCoordinates.x = Math.max(0, imageCoordinates.x);
+      imageCoordinates.y = Math.max(0, imageCoordinates.y);
+      imageCoordinates.w = Math.min(imageCoordinates.w, this.imageDimensions[windowId].width);
+      imageCoordinates.h = Math.min(imageCoordinates.h, this.imageDimensions[windowId].height);
+    }
+
+    return imageCoordinates;
   },
 
   /* calculates the positions of the given element and the cursor */
@@ -226,7 +235,7 @@ var ImageCropper = {
       'left': newElementLeft,
       'height': elementHeight,
       'width': elementWidth
-    }, osdViewport);
+    }, osdViewport, false);
     var imageBounds = this.calculateImageBounds(osdViewport, windowId);
 
     if(imageCoordinates.y < 0){
@@ -411,7 +420,9 @@ var ImageCropper = {
         );
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
-          'region': this_.calculateImageCoordinates(currentOverlayDimensions, this.osd.viewport),
+          'region': this_.calculateImageCoordinates(
+            currentOverlayDimensions, this.osd.viewport, true, this.windowId
+          ),
           'size': 'full',
           'rotation': 0,
           'quality': Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default' : 'native'

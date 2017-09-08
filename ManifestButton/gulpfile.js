@@ -3,10 +3,11 @@ var clean = require('gulp-clean');
 var linter = require('gulp-jshint');
 var minifyCSS = require('gulp-clean-css');
 var minifyJS = require('gulp-minify');
+var rename = require('gulp-rename');
 
 gulp.task('clean', function(){
   return gulp.src(
-    'dist', {read: false}
+    ['*.min.css', '*.min.js'], {read: false}
   ).pipe(clean());
 });
 
@@ -22,7 +23,9 @@ gulp.task('minify-css', ['clean'], function(){
   return gulp.src('*.css').pipe(
     minifyCSS()
   ).pipe(
-    gulp.dest('dist')
+    rename({ suffix: '.min' })
+  ).pipe(
+    gulp.dest('.')
   );
 });
 
@@ -31,12 +34,12 @@ gulp.task('minify-js', ['clean'], function(){
     minifyJS({
       exclude: ['dist'],
       ext:{
-        min:'.js'
+        min:'.min.js'
       },
       noSource: true
     })
   ).pipe(
-    gulp.dest('dist')
+    gulp.dest('.')
   );
 });
 

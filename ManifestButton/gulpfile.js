@@ -43,4 +43,4 @@ gulp.task('minify-js', ['clean'], function(){
   );
 });
 
-gulp.task('build', ['clean', 'minify-css', 'minify-js']);
+gulp.task('minify', ['clean', 'minify-css', 'minify-js']);

@@ -40,4 +40,4 @@ gulp.task('minify-js', ['clean'], function(){
   );
 });
 
-gulp.task('default', ['clean', 'minify-css', 'minify-js']);
+gulp.task('build', ['clean', 'minify-css', 'minify-js']);

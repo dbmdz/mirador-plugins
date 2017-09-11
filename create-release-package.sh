@@ -10,6 +10,6 @@ version=${tag_parts[1]}
 # install dependencies
 npm install
 # create minified files
-./node_modules/lerna/bin/lerna.js run minify
+npm run minify
 # pack all the corresponding files to a zip archive
 find -not -iwholename '*.git*' -iname *${plugin_name}* -type f | zip ${plugin_name}-${version}.zip -@

@@ -6,7 +6,9 @@
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
   "scripts": {
-    "release": "lerna publish"
+    "lint": "./node_modules/lerna/bin/lerna.js run lint",
+    "minify": "./node_modules/lerna/bin/lerna.js run minify",
+    "release": "./node_modules/lerna/bin/lerna.js publish"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

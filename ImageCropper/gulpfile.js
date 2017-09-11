@@ -12,7 +12,7 @@ gulp.task('clean', function(){
 });
 
 gulp.task('lint', function(){
-  return gulp.src('*.js').pipe(
+  return gulp.src(['*.js', '!*.min.js', '!gulpfile.js']).pipe(
     linter()
   ).pipe(
     linter.reporter('default')

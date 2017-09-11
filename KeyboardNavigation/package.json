@@ -14,6 +14,7 @@
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
   "scripts": {
+    "lint": "gulp lint",
     "minify": "gulp minify",
     "prepublishOnly": "npm run minify"
   },

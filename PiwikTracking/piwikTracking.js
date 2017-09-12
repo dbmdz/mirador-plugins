@@ -70,11 +70,6 @@ var MiradorPiwikTracker = {
         });
       }
 
-      if (config.events.indexOf('add-annotation') > -1) {
-        this.eventEmitter.subscribe("annotationCreated." + this.id, function(evt) {
-          _this.trackingCallback.apply(_this, ['add-annotation', this.manifest.jsonLd['@id']]);
-        });
-      }
       origFunc.apply(this);
     }
   },

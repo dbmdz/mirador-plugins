@@ -10,6 +10,7 @@
  * styles for the cropping overlay
  */
 .image-view .cropping-overlay {
+  box-sizing: content-box !important;
   height: 200px;
   left: calc(50% - 150px);
   padding: 3px;

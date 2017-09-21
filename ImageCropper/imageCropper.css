@@ -146,11 +146,20 @@
   margin-right: 2px;
 }
 
-#image-cropper-modal div.size,
-#image-cropper-modal div.rotation,
-#image-cropper-modal div.quality {
+#image-cropper-modal div.option-type {
   margin-bottom: 5px;
   text-decoration: underline;
+}
+
+#image-cropper-modal #size-selector {
+  display: inline-block;
+  width: 35%;
+}
+
+#image-cropper-modal #size-label {
+  margin-left: 10px;
+  position: relative;
+  top: -5px;
 }
 
 #image-cropper-modal #preview-image {

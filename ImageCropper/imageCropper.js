@@ -12,22 +12,26 @@ var ImageCropper = {
   /* all of the needed locales */
   locales: {
     'de': {
-      'image-error-message': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
       'options': 'Optionen',
       'preview': 'Vorschau',
+      'preview-image-error': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
+      'preview-image-link': '<a href="#" id="preview-image-link" target="_blank">In oben ausgewählter Größe anzeigen</a>',
       'quality': 'Qualität',
       'region-link': 'Link zum ausgewählten Ausschnitt',
       'rotation': 'Rotation',
+      'selected-size': 'Ausgewählte Größe',
       'size': 'Größe',
       'toggle-cropping': 'Auswahl eines Bildausschnitts aktivieren'
     },
     'en': {
-      'image-error-message': 'The selected parameters are not supported for this resource!',
       'options': 'Options',
       'preview': 'Preview',
+      'preview-image-error': 'The selected parameters are not supported for this resource!',
+      'preview-image-link': '<a href="#" id="preview-image-link" target="_blank">Show in size selected above</a>',
       'quality': 'Quality',
       'region-link': 'Link to the selected region',
       'rotation': 'Rotation',
+      'selected-size': 'Selected size',
       'size': 'Size',
       'toggle-cropping': 'Toggle image cropping'
     }
@@ -77,7 +81,8 @@ var ImageCropper = {
     '</button>',
     '<h4 class="options">{{t "options"}}</h4>',
     '<div class="option-type size">{{t "size"}}:</div>',
-    '<label class="radio-inline"><input type="radio" name="size" data-size="full" checked>full</label>',
+    '<input id="size-selector" type="range" min="1" name="size" value="100">',
+    '<span id="size-label">{{t "selected-size"}}: <span>100%</span></span>',
     '<div class="option-type rotation">{{t "rotation"}}:</div>',
     '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="0" checked>0°</label>',
     '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="90">90°</label>',
@@ -88,8 +93,10 @@ var ImageCropper = {
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="color">color</label>',
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">gray</label>',
     '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">bitonal</label>',
+    '<hr>',
     '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
-    '<img id="preview-image" alt="{{t "image-error-message"}}">',
+    '<h5>{{t "preview-image-link"}}</h5>',
+    '<img id="preview-image" alt="{{t "preview-image-error"}}">',
     '</div>',
     '<div class="modal-footer">',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',
@@ -118,7 +125,9 @@ var ImageCropper = {
     $(document.body).on('change', 'input[name="size"], input[name="rotation"], input[name="quality"]', function(event){
       var buttonName = $(event.target).attr('name');
       if(buttonName === 'size'){
-        this.imageUrlParams.size = $(event.target).data('size');
+        var size = $(event.target).val();
+        this.imageUrlParams.size = 'pct:'.concat(size);
+        $('#image-cropper-modal #size-label > span').text(size.concat('%'));
       }else if(buttonName === 'rotation'){
         this.imageUrlParams.rotation = $(event.target).data('rotation');
       }else if(buttonName === 'quality'){
@@ -127,9 +136,12 @@ var ImageCropper = {
       $('#image-cropper-modal #image-url').attr(
         'value', this.imageUrlTemplate(this.imageUrlParams)
       ).select();
+      $('#image-cropper-modal #preview-image-link').attr(
+        'href', this.imageUrlTemplate(this.imageUrlParams)
+      )
       $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
       $('#image-cropper-modal #preview-image').attr(
-        'src', this.imageUrlTemplate(this.imageUrlParams)
+        'src', this.imageUrlTemplate($.extend({}, this.imageUrlParams, {'size': 'full'}))
       ).on('error load', function(){
         $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
       });
@@ -430,6 +442,9 @@ var ImageCropper = {
         $('#image-cropper-modal #image-url').attr(
           'value', this_.imageUrlTemplate(this_.imageUrlParams)
         );
+        $('#image-cropper-modal #preview-image-link').attr(
+          'href', this_.imageUrlTemplate(this_.imageUrlParams)
+        );
         $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
         $('#image-cropper-modal #preview-image').attr(
           'src', this_.imageUrlTemplate(this_.imageUrlParams)
@@ -450,6 +465,8 @@ var ImageCropper = {
           $($('#image-cropper-modal').find('.option-type + label > input')).prop(
             'checked', true
           );
+          $('#image-cropper-modal .option-type + input[name="size"]').val(100);
+          $('#image-cropper-modal #size-label > span').text('100%');
         });
       }.bind(this));
     };

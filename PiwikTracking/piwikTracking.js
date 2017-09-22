@@ -10,7 +10,7 @@ var MiradorPiwikTracker = {
 
   options: {
     // Only set trackerUrl and siteId if you did not use the Piwik
-    // JavaScript snippet 
+    // JavaScript snippet
     trackerUrl: undefined,
     siteId: undefined,
 
@@ -36,11 +36,11 @@ var MiradorPiwikTracker = {
       if (window.Piwik) {
         _this.tracker = Piwik.getTracker(_this.config.trackerUrl, _this.config.siteId);
       } else {
-        console.error("Piwik ist not defined, disabling Piwik Mirador integration")
+        console.error("Piwik ist not defined, disabling Piwik Mirador integration");
       }
       this._initialWindowLoaded = false;
       this._annotationsEnabled = false;
-    }
+    };
     this.injectWindowEventHandler();
   },
 
@@ -87,7 +87,7 @@ var MiradorPiwikTracker = {
       }
 
       origFunc.apply(this);
-    }
+    };
   },
 
   /** Fire off a tracking event to Piwik **/
@@ -96,7 +96,7 @@ var MiradorPiwikTracker = {
       this.tracker.trackEvent("Mirador", this.eventMap[interaction], target);
     }
   }
-}
+};
 
 
 MiradorPiwikTracker.init();

@@ -138,7 +138,7 @@ var ImageCropper = {
       ).select();
       $('#image-cropper-modal #preview-image-link').attr(
         'href', this.imageUrlTemplate(this.imageUrlParams)
-      )
+      );
       $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
       $('#image-cropper-modal #preview-image').attr(
         'src', this.imageUrlTemplate($.extend({}, this.imageUrlParams, {'size': 'full'}))

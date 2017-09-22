@@ -36,7 +36,7 @@ var UpdateUrlFromView = {
       this.eventEmitter.subscribe('slotsUpdated', this_.onSlotsUpdated.bind(this_));
       this.eventEmitter.subscribe('windowUpdated', this_.onWindowUpdated.bind(this_));
       origFunc.apply(this);
-    }
+    };
   },
 
   parseRequestParams: function(qstr) {
@@ -78,7 +78,7 @@ var UpdateUrlFromView = {
     }
     return newParams.toString();
   }
-}
+};
 
 $(document).ready(function() {
   UpdateUrlFromView.init();

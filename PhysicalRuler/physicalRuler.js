@@ -395,7 +395,7 @@
         unit: unitDefinition.unit
       };
     }
-  }
+  };
 }(OpenSeadragon));
 
 
@@ -451,5 +451,5 @@
         document.querySelector('.mirador-osd-previous').style.left = '2.3%';
       }
     });
-  }
+  };
 }(Mirador));

@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "./node_modules/lerna/bin/lerna.js run lint",
     "minify": "./node_modules/lerna/bin/lerna.js run minify",
-    "release": "./node_modules/lerna/bin/lerna.js publish"
+    "release": "./node_modules/lerna/bin/lerna.js publish",
+    "updated": "./node_modules/lerna/bin/lerna.js updated"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

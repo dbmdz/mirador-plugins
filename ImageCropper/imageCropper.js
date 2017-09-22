@@ -12,6 +12,10 @@ var ImageCropper = {
   /* all of the needed locales */
   locales: {
     'de': {
+      'bitonal': 'bitonal',
+      'color': 'in Farbe',
+      'default': 'Voreinstellung',
+      'gray': 'in Graustufen',
       'options': 'Optionen',
       'preview': 'Vorschau',
       'preview-image-error': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
@@ -24,6 +28,10 @@ var ImageCropper = {
       'toggle-cropping': 'Auswahl eines Bildausschnitts aktivieren'
     },
     'en': {
+      'bitonal': 'bitonal',
+      'color': 'in color',
+      'default': 'default',
+      'gray': 'in gray scale',
       'options': 'Options',
       'preview': 'Preview',
       'preview-image-error': 'The selected parameters are not supported for this resource!',
@@ -89,10 +97,10 @@ var ImageCropper = {
     '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="180">180°</label>',
     '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="270">270°</label>',
     '<div class="option-type quality">{{t "quality"}}:</div>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="default" checked><span>default</span></label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="color">color</label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">gray</label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">bitonal</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" data-quality="default" checked>{{t "default"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" data-quality="color">{{t "color"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">{{t "gray"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">{{t "bitonal"}}</label>',
     '<hr>',
     '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
     '<h5>{{t "preview-image-link"}}</h5>',

@@ -19,7 +19,6 @@ var MiradorPiwikTracker = {
     method: 'event',
     events: [
       'change-page',
-      'zoom',
       'enable-annotations',
       'add-annotation',
       'add-window'
@@ -34,7 +33,13 @@ var MiradorPiwikTracker = {
       origFunc.apply(this);
       _this.config = _this.options;
       jQuery.extend(_this.config, this.state.getStateProperty("piwikTracking"));
-      _this.tracker = Piwik.getTracker(_this.config.trackerUrl, _this.config.siteId);
+      if (window.Piwik) {
+        _this.tracker = Piwik.getTracker(_this.config.trackerUrl, _this.config.siteId);
+      } else {
+        console.error("Piwik ist not defined, disabling Piwik Mirador integration")
+      }
+      this._initialWindowLoaded = false;
+      this._annotationsEnabled = false;
     }
     this.injectWindowEventHandler();
   },
@@ -46,15 +51,18 @@ var MiradorPiwikTracker = {
     Mirador.Window.prototype.init = function() {
       var config = _this.config;
 
-      if (config.events.indexOf('add-window') > -1) {
-        _this.trackingCallback('add-window', this.manifest.jsonLd['@id']);
+      if (config.events.indexOf('add-window') > -1 &&
+          this.manifest && this.manifest.jsonLd['@id']) {
+        if (!_this._initialWindowLoaded) {
+          _this._initialWindowLoaded = true;
+        } else {
+          _this.trackingCallback('add-window', this.manifest.jsonLd['@id']);
+        }
       }
 
-      if (config.events.indexOf('change-page') > -1) {
-        this.eventEmitter.subscribe("SET_CURRENT_CANVAS_ID." + this.id, function(evt, canvasId) {
-          _this.trackingCallback.apply(_this, ['change-page', canvasId]);
-        });
-      }
+      this.eventEmitter.subscribe("SET_CURRENT_CANVAS_ID." + this.id, function(evt, canvasId) {
+        _this.trackingCallback.apply(_this, ['change-page', canvasId]);
+      });
 
       if (config.events.indexOf('zoom') > -1) {
         this.eventEmitter.subscribe("imageBoundsUpdated", function(evt, data) {
@@ -66,7 +74,15 @@ var MiradorPiwikTracker = {
 
       if (config.events.indexOf('enable-annotations') > -1) {
         this.eventEmitter.subscribe("annotationsRendered." + this.id, function(evt) {
-          _this.trackingCallback.apply(_this, ['enable-annotations', this.manifest.jsonLd['@id']]);
+          if (this.manifest && this.manifest.jsonLd['@id'] && !_this._annotationsEnabled) {
+            _this.trackingCallback.apply(_this, ['enable-annotations', this.manifest.jsonLd['@id']]);
+            _this._annotationsEnabled = true;
+          }
+        }.bind(this));
+      }
+      if (config.events.indexOf('add-annotation') > -1) {
+        this.eventEmitter.subscribe("annotationCreated." + this.id, function(evt) {
+          _this.trackingCallback.apply(_this, ['add-annotation']);
         });
       }
 
@@ -76,7 +92,9 @@ var MiradorPiwikTracker = {
 
   /** Fire off a tracking event to Piwik **/
   trackingCallback: function(interaction, target) {
-    this.tracker.trackEvent("Mirador", this.eventMap[interaction], target)
+    if (this.tracker) {
+      this.tracker.trackEvent("Mirador", this.eventMap[interaction], target);
+    }
   }
 }
 

@@ -8,7 +8,6 @@
  * - Evaluate using SVG for drawing the rulers
  */
 
-
 // Hook up OpenSeadragon plugin
 (function(osd) {
   // ChildNode.remove() polyfill
@@ -31,15 +30,32 @@
   })([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
 
 
-  osd.Viewer.prototype.documentRuler = function(options) {
+  osd.Viewer.prototype.enableDocumentRuler = function(options, tiledImage) {
     if (!this.rulerInstance) {
       options = options || {};
       options.viewer = this;
       this.rulerInstance = new osd.DocumentRuler(options);
-    } else {
-      this.rulerInstance.refresh(options);
+    }
+    if (tiledImage) {
+      this.rulerInstance.refresh(tiledImage);
     }
   };
+
+  osd.Viewer.prototype.hideDocumentRuler = function() {
+    this.rulerInstance.hide();
+  }
+
+  osd.Viewer.prototype.showDocumentRuler = function() {
+    this.rulerInstance.show();
+  }
+
+  osd.Viewer.prototype.disableDocumentRuler = function() {
+    if (!this.rulerInstance) {
+      return;
+    }
+    this.rulerInstance.unregister();
+    this.rulerInstance = null;
+  }
 
   /** Construct a new ruler.
    *
@@ -78,25 +94,28 @@
       vertical: this.makeRulerElements('vertical'),
       unit: this.makeUnitElement()
     };
-    var parentElement = document.createElement('div');
-    parentElement.appendChild(this.elems.horizontal.ruler);
-    parentElement.appendChild(this.elems.unit);
-    parentElement.appendChild(this.elems.vertical.ruler);
-    this.viewer.container.appendChild(parentElement);
+    this.parentElement = document.createElement('div');
+    this.parentElement.style.visibility = options.show ? 'visible': 'hidden';
+    this.parentElement.appendChild(this.elems.horizontal.ruler);
+    this.parentElement.appendChild(this.elems.unit);
+    this.parentElement.appendChild(this.elems.vertical.ruler);
+    this.viewer.container.appendChild(this.parentElement);
 
     // Register OSD callbacks
     var self = this;
-    this.viewer.addHandler("open", function() {
-      self.refresh();
-      self.updateSize();
-    });
-    this.viewer.addHandler("animation", function() {
-      self.refresh();
-    });
-    this.viewer.addHandler("resize", function() {
-      self.refresh();
-      self.updateSize();
-    });
+    this._handlers = [
+      this.viewer.addHandler("open", function() {
+        self.refresh();
+        self.updateSize();
+      }),
+      this.viewer.addHandler("animation", function() {
+        self.refresh();
+      }),
+      this.viewer.addHandler("resize", function() {
+        self.refresh();
+        self.updateSize();
+      })
+    ]
   };
 
   osd.DocumentRuler.Location = {
@@ -169,6 +188,21 @@
     pointsPerMillimeter: undefined,
     smallDashSize: undefined,
     largeDashSize: undefined,
+
+    unregister: function() {
+      this.viewer.container.removeChild(this.parentElement);
+      this._handlers.forEach(function(h) {
+        this.viewer.removeHandler(h);
+      }.bind(this));
+    },
+
+    hide: function() {
+      this.parentElement.style.visibility = 'hidden';
+    },
+
+    show: function() {
+      this.parentElement.style.visibility = 'visible';
+    },
 
     /** Create the DOM element used for displaying the scale unit **/
     makeUnitElement: function() {
@@ -264,11 +298,16 @@
     },
 
     /** Calculate the new pixels<->physicalUnit factor and update the scales  **/
-    refresh: function(options) {
-      var viewport = this.viewer.viewport;
-      var zoom = viewport.viewportToImageZoom(viewport.getZoom(true));
-      var currentPixelsPerMillimeter = zoom * this.pixelsPerMillimeter;
-      this.updateScales(currentPixelsPerMillimeter);
+    refresh: function(tiledImage) {
+      if (tiledImage instanceof OpenSeadragon.TiledImage && tiledImage != this.tiledImage) {
+        this.tiledImage = tiledImage;
+      }
+      if (this.tiledImage) {
+        var viewport = this.viewer.viewport;
+        var zoom = this.tiledImage.viewportToImageZoom(viewport.getZoom(true));
+        var currentPixelsPerMillimeter = zoom * this.pixelsPerMillimeter;
+        this.updateScales(currentPixelsPerMillimeter);
+      }
     },
 
     /** Update the scales with the new pixelsPerMillimeter value **/
@@ -401,31 +440,104 @@
 
 // Hook up Mirador plugin
 (function(mirador) {
-  mirador.ImageView.prototype.enablePhysicalRuler = function(service) {
-    var options = this.state.getStateProperty("physicalRuler") || {};
-    if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
-      var millimetersPerPhysicalUnit = {
-        'mm': 1.0,
-        'cm': 10.0,
-        'in': 25.4
-      };
-      options.pixelsPerMillimeter = 1 / (millimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
-      jQuery.extend(true, this.osd, {
-        documentRulerConfig: options
-      });
-      this.osd.documentRuler(this.osd.documentRulerConfig);
-      this.osd.rulerInstance.refresh();
-      this.osd.rulerInstance.updateSize();
+  function patchInit() {
+    var oldFn = mirador.ImageView.prototype.init;
+    mirador.ImageView.prototype.init = function() {
+      oldFn.apply(this);
+      this.physicalRulerPlugin = new mirador.PhysicalRulerPlugin(
+        this.osd,
+        this.state.getStateProperty("physicalRuler") || {});
     }
+  }
+
+  function patchShowImage() {
+    var oldFn = mirador.ImageView.prototype.showImage
+    mirador.ImageView.prototype.showImage = function(evt, imgRes) {
+      oldFn.apply(this, [evt, imgRes]);
+      if (imgRes.osdTiledImage) {
+        var service = imgRes.parent.canvas.service;
+        var _this = this;
+        this.physicalRulerPlugin.checkDimensionsService(service, function(service) {
+          _this.physicalRulerPlugin.enable(service);
+          _this.physicalRulerPlugin.update(imgRes.osdTiledImage);
+        });
+      }
+    }
+  }
+
+  function patchHideImage() {
+    var oldFn = mirador.ImageView.prototype.hideImage;
+    mirador.ImageView.prototype.hideImage = function(evt, imgRes) {
+      oldFn.apply(this, [evt, imgRes]);
+      var service = imgRes.parent.canvas.service;
+      this.physicalRulerPlugin.checkDimensionsService(
+        service, function() {
+          this.physicalRulerPlugin.disable();
+        }.bind(this));
+    }
+  }
+
+  function patchLoadImage() {
+    var oldLoadImage = mirador.ImageView.prototype.loadImage;
+    mirador.ImageView.prototype.loadImage = function(event, imageResource) {
+      var _this = this;
+      if ("drawn" !== imageResource.status) {
+        imageResource.setStatus("requested");
+        var bounds = imageResource.getGlobalBounds();
+        _this.osd.addTiledImage({
+          x: bounds.x,
+          y: bounds.y,
+          width: bounds.width,
+          tileSource: imageResource.tileSource,
+          opacity: imageResource.opacity,
+          clip: imageResource.clipRegion,
+          index: imageResource.zIndex,
+          success: function(event) {
+            var tiledImage = event.item;
+            // <monkeyPatch>
+            if (!_this.osd.rulerInstance) {
+              var service = imageResource.parent.canvas.service;
+              _this.physicalRulerPlugin.checkDimensionsService(service, function(service) {
+                _this.physicalRulerPlugin.enable(service);
+                _this.physicalRulerPlugin.update(tiledImage);
+              });
+            } else {
+                _this.physicalRulerPlugin.update(tiledImage);
+            }
+            // </monkeyPatch>
+            imageResource.osdTiledImage = tiledImage,
+              imageResource.setStatus("loaded"),
+              _this.syncAllImageResourceProperties(imageResource);
+            var tileDrawnHandler = function(event) {
+              event.tiledImage === tiledImage && (imageResource.setStatus("drawn"),
+                _this.osd.removeHandler("tile-drawn", tileDrawnHandler))
+            };
+            _this.osd.addHandler("tile-drawn", tileDrawnHandler)
+          },
+          error: function(event) {
+            imageResource.setStatus("failed")
+          }
+        })
+      }
+    }
+  }
+
+  mirador.PhysicalRulerPlugin = function(osd, config) {
+    this.osd = osd;
+    this.config = config;
+    this.config.show = false;
   };
 
-  var oldFn = mirador.ImageView.prototype.createOpenSeadragonInstance;
-  mirador.ImageView.prototype.createOpenSeadragonInstance = function(imageUrl) {
-    oldFn.apply(this, [imageUrl]);
-    var _this = this;
-    this.eventEmitter.subscribe('osdOpen.'+this.windowId, function() {
-      var service = _this.currentImg.service;
-      // Handle multiple services, try to find first physical dimensions service
+  mirador.PhysicalRulerPlugin.prototype = {
+    buttonTemplate: mirador.Handlebars.compile([
+      '<div class="mirador-ruler-controls">',
+      '<a class="mirador-ruler-toggle hud-control{{#if active}} selected{{/if}}"',
+      '   role="button" title="{{t "toggle-ruler"}}" aria-label="{{t "toggle-ruler"}}">',
+      '    <i class="material-icons">straighten</i>',
+      '  </a>',
+      '</div>'].join('\n')),
+
+    checkDimensionsService: function(service, cb) {
       if (service && Array.isArray(service)) {
         service = service.find(function(s) {
           return s.profile === "http://iiif.io/api/annex/services/physdim";
@@ -434,22 +546,103 @@
       if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
         if ((!service.physicalScale || !service.physicalUnits) && service['@id']) {
           // Remote Service
-          jQuery.getJSON(service['@id'], _this.enablePhysicalRuler.bind(_this));
+          jQuery.getJSON(service['@id'], function(remoteService) {
+            jQuery.extend(service, remoteService);
+            cb(service);
+          });
+          return true;
         } else if (service.physicalScale && service.physicalUnits) {
           // Embedded Service
-          _this.enablePhysicalRuler(service);
+          cb(service);
+          return true;
         } else {
-          return;
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
+
+    enable: function(service) {
+      if (service && service.profile === "http://iiif.io/api/annex/services/physdim") {
+        var millimetersPerPhysicalUnit = {
+          'mm': 1.0,
+          'cm': 10.0,
+          'in': 25.4
+        };
+        this.config.pixelsPerMillimeter = 1 / (millimetersPerPhysicalUnit[service.physicalUnits] * service.physicalScale);
+        jQuery.extend(true, this.osd, {
+          documentRulerConfig: this.config
+        });
+        this.osd.enableDocumentRuler(this.osd.documentRulerConfig);
+
+        if (this.config.show) {
+          // Adjust styling
+          // move annotation, image tools away from scale
+          document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
+          // move navigation arrow right
+          document.querySelector('.mirador-osd-previous').style.left = '2.3%';
         }
 
-        // Adjust styling
-        // move annotation, image tools away from scale
-        document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
-        // keep thumbnails and ruler from overlapping
-        document.querySelector('.bottomPanel').style.left = '40px';
-        // move navigation arrow right
-        document.querySelector('.mirador-osd-previous').style.left = '2.3%';
+        // Add HUD button
+        var button = jQuery(this.buttonTemplate({'active': this.config.show}))[0];
+        button.addEventListener('click', function() {
+          this.config.show ? this.hide() : this.show();
+        }.bind(this));
+        document.querySelector('.hud-container').appendChild(button);
       }
-    });
+    },
+
+    show: function() {
+      this.config.show = true;
+      this.osd.showDocumentRuler();
+      document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
+      document.querySelector('.mirador-osd-previous').style.left = '2.3%';
+      document.querySelector('.mirador-ruler-toggle').classList.add("selected");
+    },
+
+    hide: function() {
+      this.config.show = false;
+      this.osd.hideDocumentRuler();
+      document.querySelector('.mirador-osd-context-controls').style.left = '';
+      document.querySelector('.mirador-osd-previous').style.left = '';
+      document.querySelector('.mirador-ruler-toggle').classList.remove("selected");
+    },
+
+    disable: function() {
+      this.osd.disableDocumentRuler();
+      if (this.config.show) {
+        // Adjust styling
+        document.querySelector('.mirador-osd-context-controls').style.left = '';
+        document.querySelector('.mirador-osd-previous').style.left = '';
+      }
+      var hudControls = document.querySelector('.hud-container');
+      hudControls.removeChild(document.querySelector('.mirador-ruler-controls'));
+    },
+
+    update: function(tiledImage) {
+        this.osd.rulerInstance.tiledImage = tiledImage;
+        this.osd.rulerInstance.refresh();
+        this.osd.rulerInstance.updateSize();
+    }
   };
+
+  var locales = {
+    'de': {
+      'toggle-ruler': 'Lineal'
+    },
+    'en': {
+      'toggle-ruler': 'Document Ruler'
+    }
+  };
+
+  patchInit();
+  patchShowImage();
+  patchHideImage();
+  patchLoadImage();
+  i18next.on('initialized', function() {
+    Object.keys(locales).forEach(function(lang) {
+      i18next.addResources(lang, 'translation', locales[lang])
+    });
+  });
 }(Mirador));

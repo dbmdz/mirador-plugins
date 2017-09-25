@@ -207,6 +207,7 @@
     /** Create the DOM element used for displaying the scale unit **/
     makeUnitElement: function() {
       var elem = document.createElement('span');
+      elem.className = 'ruler-unit';
       var margin = (this.largeDashSize * 1.25) + 'px';
       elem.style.position = "absolute";
       if (this.location[0] === 0) {
@@ -645,4 +646,7 @@
       i18next.addResources(lang, 'translation', locales[lang])
     });
   });
+
+  document.styleSheets[0].insertRule(
+    ".ruler-label, .ruler-unit { text-shadow: rgb(0, 0, 0) 1px 1px 2px; }", 1)
 }(Mirador));

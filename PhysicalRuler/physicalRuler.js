@@ -446,6 +446,7 @@
     mirador.ImageView.prototype.init = function() {
       oldFn.apply(this);
       this.physicalRulerPlugin = new mirador.PhysicalRulerPlugin(
+        this.appendTo[0],
         this.osd,
         this.state.getStateProperty("physicalRuler") || {});
     }
@@ -523,7 +524,8 @@
     }
   }
 
-  mirador.PhysicalRulerPlugin = function(osd, config) {
+  mirador.PhysicalRulerPlugin = function(viewElem, osd, config) {
+    this.viewElem = viewElem;
     this.osd = osd;
     this.config = config;
     this.config.show = false;
@@ -578,11 +580,7 @@
         this.osd.enableDocumentRuler(this.osd.documentRulerConfig);
 
         if (this.config.show) {
-          // Adjust styling
-          // move annotation, image tools away from scale
-          document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
-          // move navigation arrow right
-          document.querySelector('.mirador-osd-previous').style.left = '2.3%';
+          this.toggleStyleAdjustments();
         }
 
         // Add HUD button
@@ -590,35 +588,43 @@
         button.addEventListener('click', function() {
           this.config.show ? this.hide() : this.show();
         }.bind(this));
-        document.querySelector('.hud-container').appendChild(button);
+        this.viewElem.querySelector('.hud-container').appendChild(button);
       }
+    },
+
+    toggleStyleAdjustments: function() {
+      ['.mirador-osd-context-controls', '.mirador-osd-previous'].forEach(function(sel) {
+        var elem = this.viewElem.querySelector(sel);
+        if (!elem.style.left) {
+          elem.style.left = '2.3%';
+        } else {
+          elem.style.left = '';
+        }
+      }.bind(this));
     },
 
     show: function() {
       this.config.show = true;
       this.osd.showDocumentRuler();
-      document.querySelector('.mirador-osd-context-controls').style.left = '2.3%';
-      document.querySelector('.mirador-osd-previous').style.left = '2.3%';
-      document.querySelector('.mirador-ruler-toggle').classList.add("selected");
+      this.toggleStyleAdjustments();
+      this.viewElem.querySelector('.mirador-ruler-toggle').classList.add("selected");
     },
 
     hide: function() {
       this.config.show = false;
       this.osd.hideDocumentRuler();
-      document.querySelector('.mirador-osd-context-controls').style.left = '';
-      document.querySelector('.mirador-osd-previous').style.left = '';
-      document.querySelector('.mirador-ruler-toggle').classList.remove("selected");
+      this.toggleStyleAdjustments();
+      this.viewElem.querySelector('.mirador-ruler-toggle').classList.remove("selected");
     },
 
     disable: function() {
       this.osd.disableDocumentRuler();
       if (this.config.show) {
-        // Adjust styling
-        document.querySelector('.mirador-osd-context-controls').style.left = '';
-        document.querySelector('.mirador-osd-previous').style.left = '';
+        this.toggleStyleAdjustments();
       }
-      var hudControls = document.querySelector('.hud-container');
-      hudControls.removeChild(document.querySelector('.mirador-ruler-controls'));
+      var hudElement = this.viewElem.querySelector('.hud-container');
+      hudElement.removeChild(
+        hudElement.querySelector('.mirador-ruler-controls'));
     },
 
     update: function(tiledImage) {

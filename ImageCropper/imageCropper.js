@@ -16,6 +16,7 @@ var ImageCropper = {
       'color': 'in Farbe',
       'default': 'Voreinstellung',
       'gray': 'in Graustufen',
+      'license-message': 'Bitte beachten Sie die Lizenzinformationen',
       'options': 'Optionen',
       'preview': 'Vorschau',
       'preview-image-error': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
@@ -32,6 +33,7 @@ var ImageCropper = {
       'color': 'in color',
       'default': 'default',
       'gray': 'in gray scale',
+      'license-message': 'Please note the license information',
       'options': 'Options',
       'preview': 'Preview',
       'preview-image-error': 'The selected parameters are not supported for this resource!',
@@ -105,6 +107,10 @@ var ImageCropper = {
     '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
     '<h5>{{t "preview-image-link"}}</h5>',
     '<img id="preview-image" alt="{{t "preview-image-error"}}">',
+    '<div id="license-message" role="alert">',
+    '{{t "license-message"}}:',
+    '<a href="#" id="license-link" target="_blank"></a>',
+    '</div>',
     '</div>',
     '<div class="modal-footer">',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',
@@ -289,6 +295,14 @@ var ImageCropper = {
     });
   },
 
+  /* extracts the license link from the manifest entry */
+  getLicenseInformation: function(license){
+    if(typeof license !== 'undefined'){
+      return $(Mirador.MetadataView.prototype.addLinksToUris(license)).attr('href');
+    }
+    return false;
+  },
+
   /* initializes the plugin */
   init: function(){
     i18next.on('initialized', function(){
@@ -438,6 +452,7 @@ var ImageCropper = {
         var currentOverlayDimensions = $(event.target).parent().css(
           ['top', 'left', 'height', 'width']
         );
+        var license = this_.getLicenseInformation(this.manifest.jsonLd.license);
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
           'region': this_.calculateImageCoordinates(
@@ -476,6 +491,12 @@ var ImageCropper = {
           $('#image-cropper-modal .option-type + input[name="size"]').val(100);
           $('#image-cropper-modal #size-label > span').text('100%');
         });
+        if(license){
+          $('#license-link').attr('href', license).text(license);
+          $('#license-message').show();
+        }else{
+          $('#license-message').hide();
+        }
       }.bind(this));
     };
   },

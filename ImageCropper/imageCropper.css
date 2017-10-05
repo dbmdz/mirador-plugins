@@ -168,3 +168,17 @@
   max-height: 500px;
   max-width: 100%;
 }
+
+#image-cropper-modal #license-message {
+  color: #31708f;
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+  margin-top: 15px;
+  padding: 15px;
+  text-align: left;
+}
+
+#image-cropper-modal #license-link {
+  margin-left: 3px;
+}

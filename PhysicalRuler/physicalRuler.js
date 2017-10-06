@@ -43,11 +43,11 @@
 
   osd.Viewer.prototype.hideDocumentRuler = function() {
     this.rulerInstance.hide();
-  }
+  };
 
   osd.Viewer.prototype.showDocumentRuler = function() {
     this.rulerInstance.show();
-  }
+  };
 
   osd.Viewer.prototype.disableDocumentRuler = function() {
     if (!this.rulerInstance) {
@@ -55,7 +55,7 @@
     }
     this.rulerInstance.unregister();
     this.rulerInstance = null;
-  }
+  };
 
   /** Construct a new ruler.
    *
@@ -115,7 +115,7 @@
         self.refresh();
         self.updateSize();
       })
-    ]
+    ];
   };
 
   osd.DocumentRuler.Location = {
@@ -449,11 +449,11 @@
         this.appendTo[0],
         this.osd,
         this.state.getStateProperty("physicalRuler") || {});
-    }
+    };
   }
 
   function patchShowImage() {
-    var oldFn = mirador.ImageView.prototype.showImage
+    var oldFn = mirador.ImageView.prototype.showImage;
     mirador.ImageView.prototype.showImage = function(evt, imgRes) {
       oldFn.apply(this, [evt, imgRes]);
       if (imgRes.osdTiledImage) {
@@ -464,7 +464,7 @@
           _this.physicalRulerPlugin.update(imgRes.osdTiledImage);
         });
       }
-    }
+    };
   }
 
   function patchHideImage() {
@@ -476,7 +476,7 @@
         service, function() {
           this.physicalRulerPlugin.disable();
         }.bind(this));
-    }
+    };
   }
 
   function patchLoadImage() {
@@ -512,16 +512,16 @@
               _this.syncAllImageResourceProperties(imageResource);
             var tileDrawnHandler = function(event) {
               event.tiledImage === tiledImage && (imageResource.setStatus("drawn"),
-                _this.osd.removeHandler("tile-drawn", tileDrawnHandler))
+                _this.osd.removeHandler("tile-drawn", tileDrawnHandler));
             };
-            _this.osd.addHandler("tile-drawn", tileDrawnHandler)
+            _this.osd.addHandler("tile-drawn", tileDrawnHandler);
           },
           error: function(event) {
-            imageResource.setStatus("failed")
+            imageResource.setStatus("failed");
           }
-        })
+        });
       }
-    }
+    };
   }
 
   mirador.PhysicalRulerPlugin = function(viewElem, osd, config) {
@@ -649,10 +649,10 @@
   patchLoadImage();
   i18next.on('initialized', function() {
     Object.keys(locales).forEach(function(lang) {
-      i18next.addResources(lang, 'translation', locales[lang])
+      i18next.addResources(lang, 'translation', locales[lang]);
     });
   });
 
   document.styleSheets[0].insertRule(
-    ".ruler-label, .ruler-unit { text-shadow: rgb(0, 0, 0) 1px 1px 2px; }", 1)
+    ".ruler-label, .ruler-unit { text-shadow: rgb(0, 0, 0) 1px 1px 2px; }", 1);
 }(Mirador));

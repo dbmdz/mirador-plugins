@@ -44,12 +44,16 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/imageCropper.js"></script>
 ```
 
-To activate the plugin at startup of Mirador, you can achieve this by adding an option to your Mirador configuration:
+You can configuration the behaviour of the plugin with the `imageCropper` configuration key:
 
 ```js
 var mirador = Mirador({
   ...
-  activateImageCropping: true
+  imageCropper: {
+    activeOnStart: true, // Activate the cropping selection frame for every window in Mirador, default is false
+    roundingPrecision: 3, // Define the number of decimals in the relative region coordinates, default is 5
+    showLicense: true // Show a license link defined in the containing manifest, default is false
+  }
   ...
 });
 ```

@@ -72,7 +72,7 @@ var ImageCropper = {
 
   /* the template for the image url */
   imageUrlTemplate: Mirador.Handlebars.compile(
-    '{{imageBaseUrl}}/{{region.x}},{{region.y}},{{region.w}},{{region.h}}/{{size}}/{{rotation}}/{{quality}}.jpg'
+    '{{imageBaseUrl}}/pct:{{region.x}},{{region.y}},{{region.w}},{{region.h}}/{{size}}/{{rotation}}/{{quality}}.jpg'
   ),
 
   /* the template for the modal containing the image url for the selection */
@@ -179,7 +179,7 @@ var ImageCropper = {
   },
 
   /* converts web to image coordinates */
-  calculateImageCoordinates: function(dimensions, osdViewport, validate, windowId){
+  calculateImageCoordinates: function(dimensions, osdViewport, validate, relative, windowId){
     $.map(dimensions, function(value, key){
       dimensions[key] = parseInt(value);
     });
@@ -210,6 +210,17 @@ var ImageCropper = {
       imageCoordinates.y = Math.max(0, imageCoordinates.y);
       imageCoordinates.w = Math.min(imageCoordinates.w, this.imageDimensions[windowId].width);
       imageCoordinates.h = Math.min(imageCoordinates.h, this.imageDimensions[windowId].height);
+    }
+
+    if(relative){
+      var roundingPrecision = this.options.roundingPrecision;
+      if(typeof roundingPrecision !== 'number' || roundingPrecision < 0 || roundingPrecision > 20){
+        roundingPrecision = 5;
+      }
+      imageCoordinates.x = parseFloat(((imageCoordinates.x / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
+      imageCoordinates.y = parseFloat(((imageCoordinates.y / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
+      imageCoordinates.w = parseFloat(((imageCoordinates.w / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
+      imageCoordinates.h = parseFloat(((imageCoordinates.h / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
     }
 
     return imageCoordinates;
@@ -261,7 +272,7 @@ var ImageCropper = {
       'left': newElementLeft,
       'height': elementHeight,
       'width': elementWidth
-    }, osdViewport, false);
+    }, osdViewport, false, false);
     var imageBounds = this.calculateImageBounds(osdViewport, windowId);
 
     if(imageCoordinates.y < 0){
@@ -459,7 +470,7 @@ var ImageCropper = {
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
           'region': this_.calculateImageCoordinates(
-            currentOverlayDimensions, this.osd.viewport, true, this.windowId
+            currentOverlayDimensions, this.osd.viewport, true, true, this.windowId
           ),
           'size': 'full',
           'rotation': 0,

@@ -62,11 +62,11 @@ Adds an extra button to every window that links to the loaded manifest.
 
 To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 
-It's possible to define the icon class of the button in the Mirador configuration with the attribute `iconClass` in the section `ManifestButton`:
+It's possible to define the icon class of the button in the Mirador configuration with the attribute `iconClass` in the section `manifestButton`:
 
 ```js
 var mirador = Mirador({
-  canvasLink: {
+  manifestButton: {
     iconClass: 'fa-file' // Define the icon class of the button
   }
 });

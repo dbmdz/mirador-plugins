@@ -32,7 +32,7 @@
 }
 
 .image-view .cropping-overlay > .resize-frame {
-  border: 3px dashed #046;
+  border: 5px dashed #046;
   border-radius: 3px;
   box-sizing: border-box;
   cursor: move;

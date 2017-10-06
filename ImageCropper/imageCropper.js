@@ -324,7 +324,7 @@ var ImageCropper = {
     Mirador.Hud.prototype.init = function(){
       origFunc.apply(this);
       if(this.appendTo.hasClass('image-view')){
-        this_.croppingActive = this.state.getStateProperty('activateImageCropping') || false;
+        this_.croppingActive = this_.options.activeOnStart || false;
         var button = $(this_.buttonTemplate({
           'active': this_.croppingActive
         }));
@@ -452,7 +452,10 @@ var ImageCropper = {
         var currentOverlayDimensions = $(event.target).parent().css(
           ['top', 'left', 'height', 'width']
         );
-        var license = this_.getLicenseInformation(this.manifest.jsonLd.license);
+        var license = false;
+        if(this_.options.showLicense){
+          license = this_.getLicenseInformation(this.manifest.jsonLd.license);
+        }
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
           'region': this_.calculateImageCoordinates(
@@ -496,6 +499,7 @@ var ImageCropper = {
           $('#license-message').show();
         }else{
           $('#license-message').hide();
+          $('#license-link').attr('href', '#').text('');
         }
       }.bind(this));
     };

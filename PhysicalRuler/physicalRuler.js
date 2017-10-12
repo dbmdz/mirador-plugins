@@ -507,12 +507,14 @@
                 _this.physicalRulerPlugin.update(tiledImage);
             }
             // </monkeyPatch>
-            imageResource.osdTiledImage = tiledImage,
-              imageResource.setStatus("loaded"),
-              _this.syncAllImageResourceProperties(imageResource);
+            imageResource.osdTiledImage = tiledImage;
+            imageResource.setStatus("loaded");
+            _this.syncAllImageResourceProperties(imageResource);
             var tileDrawnHandler = function(event) {
-              event.tiledImage === tiledImage && (imageResource.setStatus("drawn"),
-                _this.osd.removeHandler("tile-drawn", tileDrawnHandler));
+              if(event.tiledImage === tiledImage) {
+                imageResource.setStatus("drawn");
+                 _this.osd.removeHandler("tile-drawn", tileDrawnHandler);
+              }
             };
             _this.osd.addHandler("tile-drawn", tileDrawnHandler);
           },

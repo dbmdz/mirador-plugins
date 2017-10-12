@@ -181,10 +181,6 @@ var ImageCropper = {
 
   /* converts web to image coordinates */
   calculateImageCoordinates: function(dimensions, osdViewport, validate, relative, windowId){
-    $.map(dimensions, function(value, key){
-      dimensions[key] = parseInt(value);
-    });
-
     var webTopLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top);
     var webTopRight = new OpenSeadragon.Point(dimensions.left + dimensions.width, dimensions.top);
     var webBottomLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top + dimensions.height);
@@ -238,26 +234,38 @@ var ImageCropper = {
   /* changes the overlay dimensions depending on the resize element */
   changeOverlayDimensions: function(type, mousePosition, offsets, element, osdViewport, windowId){
     var imageBounds = this.calculateImageBounds(osdViewport, windowId);
-    if(mousePosition.top > imageBounds.bottomLeft.y || mousePosition.left > imageBounds.topRight.x){
+    if(mousePosition.top < imageBounds.topLeft.y || mousePosition.left < imageBounds.topLeft.x ||
+       mousePosition.top > imageBounds.bottomLeft.y || mousePosition.left > imageBounds.topRight.x){
       this.resizing = false;
       return;
     }
 
-    var newElementHeight = mousePosition.top - offsets.element.top;
-    var newElementWidth = mousePosition.left - offsets.element.left;
-    if(type === 'right' || type === 'bottom-right'){
-      if(newElementWidth >= 32){
-        element.css('width', newElementWidth);
-      }else{
-        this.resizing = false;
-      }
+    var position = element.position();
+    var height = element.height();
+    var width = element.width();
+    if(type === 'top-left' || type === 'top' || type === 'top-right'){
+      position.top = mousePosition.top - offsets.canvas.top;
+      height = element.height() + (element.position().top - position.top);
     }
-    if(type === 'bottom' || type === 'bottom-right'){
-      if(newElementHeight >= 32){
-        element.css('height', newElementHeight);
-      }else{
-        this.resizing = false;
-      }
+    if(type === 'top-right' || type === 'right' || type === 'bottom-right'){
+       width = mousePosition.left - offsets.element.left;
+    }
+    if(type === 'bottom-left' || type === 'bottom' || type === 'bottom-right'){
+       height = mousePosition.top - offsets.element.top;
+    }
+    if(type === 'bottom-left' || type === 'left' || type === 'top-left'){
+      position.left = mousePosition.left - offsets.canvas.left;
+      width = element.width() + (element.position().left - position.left);
+    }
+    if(height >= 60 && width >= 60){
+      element.css({
+        'top': position.top,
+        'left': position.left,
+        'height': height,
+        'width': width
+      });
+    }else{
+      this.resizing = false;
     }
   },
 
@@ -265,8 +273,8 @@ var ImageCropper = {
   changeOverlayPosition: function(positions, offsets, overlay, parent, osdViewport, windowId){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
-    var elementHeight = parseInt(overlay.css('height'));
-    var elementWidth = parseInt(overlay.css('width'));
+    var elementHeight = overlay.height();
+    var elementWidth = overlay.width();
 
     var imageCoordinates = this.calculateImageCoordinates({
       'top': newElementTop,
@@ -292,14 +300,14 @@ var ImageCropper = {
     if(imageCoordinates.y + imageCoordinates.h > this.imageDimensions[windowId].height){
       newElementTop = imageBounds.bottomLeft.y - offsets.canvas.top - elementHeight;
     }
-    if(newElementTop + elementHeight > parseInt($(parent).css('height'))){
-      newElementTop = parseInt($(parent).css('height')) - elementHeight;
+    if(newElementTop + elementHeight > $(parent).height()){
+      newElementTop = $(parent).height() - elementHeight;
     }
     if(imageCoordinates.x + imageCoordinates.w > this.imageDimensions[windowId].width){
       newElementLeft = imageBounds.topRight.x - offsets.canvas.left - elementWidth;
     }
-    if(newElementLeft + elementWidth > parseInt($(parent).css('width'))){
-      newElementLeft = parseInt($(parent).css('width')) - elementWidth;
+    if(newElementLeft + elementWidth > $(parent).width()){
+      newElementLeft = $(parent).width() - elementWidth;
     }
     overlay.css({
       'top': newElementTop,
@@ -406,8 +414,8 @@ var ImageCropper = {
       origFunc.apply(this);
       var croppingOverlay = $(this_.croppingOverlayTemplate({
         'resizeControls': {
-          'anchors': ['bottom-right'],
-          'bars': ['right', 'bottom']
+          'anchors': ['top-left', 'top-right', 'bottom-right', 'bottom-left'],
+          'bars': ['top', 'right', 'bottom', 'left']
         }
       }));
       croppingOverlay.appendTo(this.appendTo.find('.mirador-osd'));
@@ -446,7 +454,7 @@ var ImageCropper = {
             this.croppingOverlay, this.osd.viewport, this.windowId
           );
         }
-      }.bind(this)).on('mouseup', '.resize-anchor, .resize-bar', function(){
+      }.bind(this)).on('mouseup', '.mirador-osd', function(){
         this_.resizing = false;
       });
     };
@@ -461,9 +469,11 @@ var ImageCropper = {
       this.element.on('click', '.cropping-overlay > .share-button', function(event){
         var currentImage = this.imagesList[this.currentImgIndex];
         var service = currentImage.images[0].resource.service || currentImage.images[0].resource.default.service;
-        var currentOverlayDimensions = $(event.target).parent().css(
-          ['top', 'left', 'height', 'width']
-        );
+        var currentOverlayDimensions = $.extend(
+          $(event.target).closest('.cropping-overlay').position(), {
+            'height': $(event.target).closest('.cropping-overlay').height(),
+            'width': $(event.target).closest('.cropping-overlay').width()
+        });
         var license = false;
         if(this_.options.showLicense){
           license = this_.getLicenseInformation(this.manifest.jsonLd.license);

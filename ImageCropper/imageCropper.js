@@ -181,6 +181,13 @@ var ImageCropper = {
 
   /* converts web to image coordinates */
   calculateImageCoordinates: function(dimensions, osdViewport, validate, relative, windowId){
+    if(validate){
+      dimensions.top += 5;
+      dimensions.left += 5;
+      dimensions.height -= 5;
+      dimensions.width -= 5;
+    }
+
     var webTopLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top);
     var webTopRight = new OpenSeadragon.Point(dimensions.left + dimensions.width, dimensions.top);
     var webBottomLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top + dimensions.height);
@@ -284,17 +291,17 @@ var ImageCropper = {
     }, osdViewport, false, false);
     var imageBounds = this.calculateImageBounds(osdViewport, windowId);
 
-    if(imageCoordinates.y < 0){
-      newElementTop = imageBounds.topLeft.y - offsets.canvas.top;
+    if(imageCoordinates.y < -5){
+      newElementTop = imageBounds.topLeft.y - offsets.canvas.top - 5;
     }
-    if(newElementTop < 0){
-      newElementTop = 0;
+    if(newElementTop < -5){
+      newElementTop = -5;
     }
-    if(imageCoordinates.x < 0){
-      newElementLeft = imageBounds.topLeft.x - offsets.canvas.left;
+    if(imageCoordinates.x < -5){
+      newElementLeft = imageBounds.topLeft.x - offsets.canvas.left - 5;
     }
-    if(newElementLeft < 0){
-      newElementLeft = 0;
+    if(newElementLeft < -5){
+      newElementLeft = -5;
     }
 
     if(imageCoordinates.y + imageCoordinates.h > this.imageDimensions[windowId].height){

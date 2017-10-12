@@ -14,8 +14,6 @@
   height: 200px;
   left: calc(50% - 150px);
   padding: 3px;
-  padding-left: 0;
-  padding-top: 0;
   position: absolute;
   top: calc(50% - 100px);
   width: 300px;
@@ -23,30 +21,33 @@
 }
 
 .image-view .cropping-overlay > .share-button {
-  color: #046;
+  color: white;
   cursor: pointer;
   font-size: 22px;
-  left: calc(50% - 11px);
+  left: 5px;
   position: absolute;
-  top: -22px;
+  text-shadow: 3px 3px 12px black;
+  top: 5px;
 }
 
 .image-view .cropping-overlay > .resize-frame {
-  border: 5px dashed #046;
+  border: 2px dashed lightgray;
   border-radius: 3px;
-  box-sizing: border-box;
+  box-shadow: 3px 3px 12px black, inset 3px 3px 12px black;
   cursor: move;
   height: 100%;
 }
 
 .image-view .cropping-overlay > .resize-anchor {
-  background: #046;
+  background: lightgray;
+  box-shadow: 5px 5px 10px black;
   height: 8px;
   position: absolute;
   width: 8px;
 }
 
 .image-view .cropping-overlay > .resize-anchor.top-left {
+  box-shadow: none;
   cursor: nw-resize;
   left: 0;
   top: 0;

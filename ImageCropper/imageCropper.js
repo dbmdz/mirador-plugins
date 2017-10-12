@@ -59,7 +59,8 @@ var ImageCropper = {
   /* the template for the cropping overlay */
   croppingOverlayTemplate: Mirador.Handlebars.compile([
     '<div class="cropping-overlay">',
-    '<i class="fa fa-share-alt-square share-button" aria-hidden="true"></i>',
+    '<span class="fa-stack share-button"><i class="fa fa-square-o fa-stack-2x"></i>',
+    '<i class="fa fa-share-alt fa-stack-1x"></i></span>',
     '<div class="resize-frame"></div>',
     '{{#each resizeControls.anchors}}',
     '<div class="resize-anchor {{this}}"></div>',

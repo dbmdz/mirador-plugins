@@ -164,12 +164,12 @@ var ImageCropper = {
   },
 
   /* calculates the image bounds as window coordinates */
-  calculateImageBounds: function(osdViewport, windowId){
-    var windowTopLeft = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(0, 0));
-    var windowTopRight = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(
+  calculateImageBounds: function(tiledImage, windowId){
+    var windowTopLeft = tiledImage.imageToWindowCoordinates(new OpenSeadragon.Point(0, 0));
+    var windowTopRight = tiledImage.imageToWindowCoordinates(new OpenSeadragon.Point(
       this.imageDimensions[windowId].width, 0
     ));
-    var windowBottomLeft = osdViewport.imageToWindowCoordinates(new OpenSeadragon.Point(
+    var windowBottomLeft = tiledImage.imageToWindowCoordinates(new OpenSeadragon.Point(
       0, this.imageDimensions[windowId].height
     ));
     return {
@@ -180,7 +180,7 @@ var ImageCropper = {
   },
 
   /* converts web to image coordinates */
-  calculateImageCoordinates: function(dimensions, osdViewport, validate, relative, windowId){
+  calculateImageCoordinates: function(dimensions, tiledImage, validate, relative, windowId){
     if(validate){
       dimensions.top += 5;
       dimensions.left += 5;
@@ -192,14 +192,14 @@ var ImageCropper = {
     var webTopRight = new OpenSeadragon.Point(dimensions.left + dimensions.width, dimensions.top);
     var webBottomLeft = new OpenSeadragon.Point(dimensions.left, dimensions.top + dimensions.height);
 
-    var imageTopLeft = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixelNoRotate(webTopLeft)
+    var imageTopLeft = tiledImage.viewportToImageCoordinates(
+      tiledImage.viewport.pointFromPixelNoRotate(webTopLeft)
     );
-    var imageTopRight = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixelNoRotate(webTopRight)
+    var imageTopRight = tiledImage.viewportToImageCoordinates(
+      tiledImage.viewport.pointFromPixelNoRotate(webTopRight)
     );
-    var imageBottomLeft = osdViewport.viewportToImageCoordinates(
-      osdViewport.pointFromPixelNoRotate(webBottomLeft)
+    var imageBottomLeft = tiledImage.viewportToImageCoordinates(
+      tiledImage.viewport.pointFromPixelNoRotate(webBottomLeft)
     );
 
     var imageCoordinates = {
@@ -239,8 +239,8 @@ var ImageCropper = {
   },
 
   /* changes the overlay dimensions depending on the resize element */
-  changeOverlayDimensions: function(type, mousePosition, offsets, element, osdViewport, windowId){
-    var imageBounds = this.calculateImageBounds(osdViewport, windowId);
+  changeOverlayDimensions: function(type, mousePosition, offsets, element, tiledImage, windowId){
+    var imageBounds = this.calculateImageBounds(tiledImage, windowId);
     if(mousePosition.top < imageBounds.topLeft.y || mousePosition.left < imageBounds.topLeft.x ||
        mousePosition.top > imageBounds.bottomLeft.y || mousePosition.left > imageBounds.topRight.x){
       this.resizing = false;
@@ -277,7 +277,7 @@ var ImageCropper = {
   },
 
   /* changes the overlay position */
-  changeOverlayPosition: function(positions, offsets, overlay, parent, osdViewport, windowId){
+  changeOverlayPosition: function(positions, offsets, overlay, parent, tiledImage, windowId){
     var newElementTop = positions.mouse.top - offsets.canvas.top - offsets.mouse.y;
     var newElementLeft = positions.mouse.left - offsets.canvas.left - offsets.mouse.x;
     var elementHeight = overlay.height();
@@ -288,8 +288,8 @@ var ImageCropper = {
       'left': newElementLeft,
       'height': elementHeight,
       'width': elementWidth
-    }, osdViewport, false, false);
-    var imageBounds = this.calculateImageBounds(osdViewport, windowId);
+    }, tiledImage, false, false);
+    var imageBounds = this.calculateImageBounds(tiledImage, windowId);
 
     if(imageCoordinates.y < -5){
       newElementTop = imageBounds.topLeft.y - offsets.canvas.top - 5;
@@ -387,9 +387,10 @@ var ImageCropper = {
         if(this_.dragging){
           event.preventDefault();
           currentPositions = this_.calculatePositions(this.croppingOverlay, event);
+          var currentTiledImage = this.canvases[this.canvasID].getVisibleImages()[0].osdTiledImage;
           this_.changeOverlayPosition(
             currentPositions, offsets, this.croppingOverlay,
-            event.currentTarget, this.osd.viewport, this.windowId
+            event.currentTarget, currentTiledImage, this.windowId
           );
         }
       }.bind(this)).on('mouseup', '.cropping-overlay > .resize-frame', function(){
@@ -456,9 +457,10 @@ var ImageCropper = {
         if(this_.resizing){
           event.preventDefault();
           currentMousePosition = this_.calculatePositions(this.croppingOverlay, event).mouse;
+          var currentTiledImage = this.canvases[this.canvasID].getVisibleImages()[0].osdTiledImage;
           this_.changeOverlayDimensions(
             typeOfResizeElement, currentMousePosition, offsets,
-            this.croppingOverlay, this.osd.viewport, this.windowId
+            this.croppingOverlay, currentTiledImage, this.windowId
           );
         }
       }.bind(this)).on('mouseup', '.mirador-osd', function(){
@@ -481,6 +483,7 @@ var ImageCropper = {
             'height': $(event.target).closest('.cropping-overlay').height(),
             'width': $(event.target).closest('.cropping-overlay').width()
         });
+        var currentTiledImage = this.canvases[this.canvasID].getVisibleImages()[0].osdTiledImage;
         var license = false;
         if(this_.options.showLicense){
           license = this_.getLicenseInformation(this.manifest.jsonLd.license);
@@ -488,7 +491,7 @@ var ImageCropper = {
         this_.imageUrlParams = {
           'imageBaseUrl': Mirador.Iiif.getImageUrl(currentImage),
           'region': this_.calculateImageCoordinates(
-            currentOverlayDimensions, this.osd.viewport, true, true, this.windowId
+            currentOverlayDimensions, currentTiledImage, true, true, this.windowId
           ),
           'size': 'full',
           'rotation': 0,

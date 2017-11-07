@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-physicalruler",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Adds a vertical and a horizontal ruler with metric or imperial units to the canvas display if the canvas has a physical dimensions service set.",
   "keywords": [
     "iiif",

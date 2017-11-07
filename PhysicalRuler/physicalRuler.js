@@ -542,6 +542,26 @@
       '  </a>',
       '</div>'].join('\n')),
 
+    modalTemplate: mirador.Handlebars.compile([
+      '<div class="modal fade ruler-info" tabindex="-1" role="dialog">',
+      '<div class="modal-dialog" role="document">',
+      '<div class="modal-content">',
+      '<div class="modal-header">',
+      '<button type="button" class="close" data-dismiss="modal" aria-label="Close">',
+      '<span aria-hidden="true">&times;</span></button>',
+      '<h4 class="modal-title">{{t "ruler-info-heading"}}</h4>',
+      '</div>',
+      '<div class="modal-body">',
+      '{{t "ruler-info"}}',
+      '</div>',
+      '<div class="modal-footer">',
+      '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>',
+      '</div>',
+      '</div>',
+      '</div>',
+      '</div>'
+    ].join('\n')),
+
     checkDimensionsService: function(service, cb) {
       if (service && Array.isArray(service)) {
         service = service.find(function(s) {
@@ -591,6 +611,9 @@
           this.config.show ? this.hide() : this.show();
         }.bind(this));
         this.viewElem.querySelector('.hud-container').appendChild(button);
+
+        // Add info modal to the DOM
+        document.body.insertAdjacentHTML('beforeend', this.modalTemplate());
       }
     },
 
@@ -605,10 +628,20 @@
       }.bind(this));
     },
 
+    handleInfoModal: function() {
+      if (localStorage.getItem("rulerInfoShowed")) {
+        return;
+      }
+      jQuery('.ruler-info').modal('show').on('hidden.bs.modal', function() {
+        localStorage.setItem("rulerInfoShowed", true);
+      });
+    },
+
     show: function() {
       this.config.show = true;
       this.osd.showDocumentRuler();
       this.toggleStyleAdjustments();
+      this.handleInfoModal();
       this.viewElem.querySelector('.mirador-ruler-toggle').classList.add("selected");
     },
 
@@ -638,9 +671,19 @@
 
   var locales = {
     'de': {
+      'ruler-info': [
+        'Aufgrund von technischen Einschränkungen beim Scan-Prozess sind die hier dargestellten Abmessung lediglich als ungefähr zu verstehen.',
+        'Sie eignen sich nicht für Zwecke, die wissenschaftliche Exaktheit verlangen.'
+      ].join(' '),
+      'ruler-info-heading': 'Anmerkung zur Lineal-Funktionalität',
       'toggle-ruler': 'Lineal'
     },
     'en': {
+      'ruler-info': [
+        'Due to technical limitations in the scanning process, the dimensions shown here are approximate.',
+        'They are not suitable for purposes that demand scientific accuracy.'
+      ].join(' '),
+      'ruler-info-heading': 'Note on the document ruler functionality',
       'toggle-ruler': 'Document Ruler'
     }
   };

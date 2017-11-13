@@ -672,7 +672,7 @@
   var locales = {
     'de': {
       'ruler-info': [
-        'Aufgrund von technischen Einschränkungen beim Scan-Prozess sind die hier dargestellten Abmessung lediglich als ungefähr zu verstehen.',
+        'Aufgrund von technischen Einschränkungen beim Scan-Prozess sind die hier dargestellten Abmessungen lediglich als ungefähr zu verstehen.',
         'Sie eignen sich nicht für Zwecke, die wissenschaftliche Exaktheit verlangen.'
       ].join(' '),
       'ruler-info-heading': 'Anmerkung zur Lineal-Funktionalität',

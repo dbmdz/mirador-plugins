@@ -611,9 +611,6 @@
           this.config.show ? this.hide() : this.show();
         }.bind(this));
         this.viewElem.querySelector('.hud-container').appendChild(button);
-
-        // Add info modal to the DOM
-        document.body.insertAdjacentHTML('beforeend', this.modalTemplate());
       }
     },
 
@@ -632,6 +629,8 @@
       if (localStorage.getItem("rulerInfoShowed")) {
         return;
       }
+      // Add info modal to the DOM
+      document.body.insertAdjacentHTML('beforeend', this.modalTemplate());
       jQuery('.ruler-info').modal('show').on('hidden.bs.modal', function() {
         localStorage.setItem("rulerInfoShowed", true);
       });

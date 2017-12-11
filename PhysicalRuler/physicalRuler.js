@@ -298,22 +298,22 @@ if (!Array.prototype.find) {
 
       if (direction == 'horizontal') {
         smallScale.style.height = this.smallDashSize + 'px';
-        smallScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + '1px, transparent 0px)';
-        smallScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
-        smallScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, transparent 0px)';
+        smallScale.style.backgroundImage = 'linear-gradient(to left, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
+        smallScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
+        smallScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
         largeScale.style.height = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 2px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(to left, ' + this.color + ' 2px, rgba(0, 0, 0, 0) 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(left, ' + this.color + ' 2px, rgba(0, 0, 0, 0) 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(left, ' + this.color + ' 2px, rgba(0, 0, 0, 0) 0px)';
       } else {
         smallScale.style.width = this.smallDashSize + 'px';
-        smallScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
-        smallScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
-        smallScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color + ' 1px, transparent 0px)';
+        smallScale.style.backgroundImage = 'linear-gradient(to top, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
+        smallScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
+        smallScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color + ' 1px, rgba(0, 0, 0, 0) 0px)';
         largeScale.style.width = this.largeDashSize + 'px';
-        largeScale.style.backgroundImage = 'linear-gradient(top, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 2px, transparent 0px)';
-        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 2px, transparent 0px)';
+        largeScale.style.backgroundImage = 'linear-gradient(to top, ' + this.color + ' 2px, rgba(0, 0, 0, 0) 0px)';
+        largeScale.style.backgroundImage = '-moz-linear-gradient(top, ' + this.color + ' 2px, rgba(0, 0, 0, 0) 0px)';
+        largeScale.style.backgroundImage = '-webkit-linear-gradient(top, ' + this.color +  ' 2px, rgba(0, 0, 0, 0) 0px)';
       }
       rulerElem.appendChild(smallScale);
       rulerElem.appendChild(largeScale);

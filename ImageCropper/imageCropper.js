@@ -12,12 +12,14 @@ var ImageCropper = {
   /* all of the needed locales */
   locales: {
     'de': {
+      'approx': 'ca.',
       'bitonal': 'bitonal',
       'color': 'in Farbe',
       'default': 'Voreinstellung',
       'gray': 'in Graustufen',
       'license-message': 'Bitte beachten Sie die Lizenzinformationen',
       'options': 'Optionen',
+      'pixel': 'Pixel',
       'preview': 'Vorschau',
       'preview-image-error': 'Die ausgewählten Parameter werden für diese Ressource leider nicht unterstützt!',
       'preview-image-link': '<a href="#" id="preview-image-link" target="_blank">In oben ausgewählter Größe anzeigen</a>',
@@ -29,12 +31,14 @@ var ImageCropper = {
       'toggle-cropping': 'Auswahl eines Bildausschnitts aktivieren'
     },
     'en': {
+      'approx': 'approx.',
       'bitonal': 'bitonal',
       'color': 'in color',
       'default': 'default',
       'gray': 'in gray scale',
       'license-message': 'Please note the license information',
       'options': 'Options',
+      'pixel': 'pixels',
       'preview': 'Preview',
       'preview-image-error': 'The selected parameters are not supported for this resource!',
       'preview-image-link': '<a href="#" id="preview-image-link" target="_blank">Show in size selected above</a>',
@@ -73,7 +77,7 @@ var ImageCropper = {
 
   /* the template for the image url */
   imageUrlTemplate: Mirador.Handlebars.compile(
-    '{{imageBaseUrl}}/pct:{{region.x}},{{region.y}},{{region.w}},{{region.h}}/{{size}}/{{rotation}}/{{quality}}.jpg'
+    '{{imageBaseUrl}}/pct:{{region.relative.x}},{{region.relative.y}},{{region.relative.w}},{{region.relative.h}}/{{size}}/{{rotation}}/{{quality}}.jpg'
   ),
 
   /* the template for the modal containing the image url for the selection */
@@ -90,24 +94,28 @@ var ImageCropper = {
     '<button type="button" class="btn btn-default" id="copy-to-clipboard" title="{{t "copy-to-clipboard"}}">',
     '<i class="fa fa-clipboard" aria-hidden="true"></i>',
     '</button>',
-    '<h4 class="options">{{t "options"}}</h4>',
+    '<div id="options">',
+    '<h4 class="block-title">{{t "options"}}</h4>',
     '<div class="option-type size">{{t "size"}}:</div>',
     '<input id="size-selector" type="range" min="1" name="size" value="100">',
-    '<span id="size-label">{{t "selected-size"}}: <span>100%</span></span>',
+    '<span id="size-label">{{t "selected-size"}}:<span id="relative">100%</span>({{t "approx"}}<span id="absolute"></span>{{t "pixel"}})</span>',
     '<div class="option-type rotation">{{t "rotation"}}:</div>',
-    '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="0" checked>0°</label>',
-    '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="90">90°</label>',
-    '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="180">180°</label>',
-    '<label class="radio-inline"><input type="radio" name="rotation" data-rotation="270">270°</label>',
+    '<label class="radio-inline"><input type="radio" name="rotation" value="0" checked>0°</label>',
+    '<label class="radio-inline"><input type="radio" name="rotation" value="90">90°</label>',
+    '<label class="radio-inline"><input type="radio" name="rotation" value="180">180°</label>',
+    '<label class="radio-inline"><input type="radio" name="rotation" value="270">270°</label>',
     '<div class="option-type quality">{{t "quality"}}:</div>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="default" checked>{{t "default"}}</label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="color">{{t "color"}}</label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="gray">{{t "gray"}}</label>',
-    '<label class="radio-inline"><input type="radio" name="quality" data-quality="bitonal">{{t "bitonal"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" value="default" checked>{{t "default"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" value="color">{{t "color"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" value="gray">{{t "gray"}}</label>',
+    '<label class="radio-inline"><input type="radio" name="quality" value="bitonal">{{t "bitonal"}}</label>',
     '<hr>',
-    '<h4 class="options">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
+    '</div>',
+    '<div id="preview">',
+    '<h4 class="block-title">{{t "preview"}} <i class="fa fa-spinner" aria-hidden="true"></i></h4>',
     '<h5>{{t "preview-image-link"}}</h5>',
     '<img id="preview-image" alt="{{t "preview-image-error"}}">',
+    '</div>',
     '<div id="license-message" role="alert">',
     '{{t "license-message"}}:',
     '<a href="#" id="license-link" target="_blank"></a>',
@@ -139,14 +147,23 @@ var ImageCropper = {
     });
     $(document.body).on('change', 'input[name="size"], input[name="rotation"], input[name="quality"]', function(event){
       var buttonName = $(event.target).attr('name');
+      var scaleFactor = $(event.target).closest('#options').find('#size-selector').val();
       if(buttonName === 'size'){
-        var size = $(event.target).val();
-        this.imageUrlParams.size = 'pct:'.concat(size);
-        $('#image-cropper-modal #size-label > span').text(size.concat('%'));
+        this.imageUrlParams.size = 'pct:' + scaleFactor;
+        $('#image-cropper-modal #size-label > #relative').text(scaleFactor + '%');
       }else if(buttonName === 'rotation'){
-        this.imageUrlParams.rotation = $(event.target).data('rotation');
+        this.imageUrlParams.rotation = $(event.target).val();
       }else if(buttonName === 'quality'){
-        this.imageUrlParams.quality = $(event.target).data('quality');
+        this.imageUrlParams.quality = $(event.target).val();
+      }
+      if(['size', 'rotation'].indexOf(buttonName) !== -1){
+        var absoluteWidth = Math.ceil(scaleFactor / 100 * this.imageUrlParams.region.w);
+        var absoluteHeight = Math.ceil(scaleFactor / 100 * this.imageUrlParams.region.h);
+        $('#image-cropper-modal #size-label > #absolute').text(
+          ['0', '180'].indexOf(this.imageUrlParams.rotation) !== -1
+          ? absoluteWidth + 'x' + absoluteHeight
+          : absoluteHeight + 'x' + absoluteWidth
+        );
       }
       $('#image-cropper-modal #image-url').attr(
         'value', this.imageUrlTemplate(this.imageUrlParams)
@@ -221,10 +238,11 @@ var ImageCropper = {
       if(typeof roundingPrecision !== 'number' || roundingPrecision < 0 || roundingPrecision > 20){
         roundingPrecision = 5;
       }
-      imageCoordinates.x = parseFloat(((imageCoordinates.x / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
-      imageCoordinates.y = parseFloat(((imageCoordinates.y / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
-      imageCoordinates.w = parseFloat(((imageCoordinates.w / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
-      imageCoordinates.h = parseFloat(((imageCoordinates.h / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
+      imageCoordinates.relative = {};
+      imageCoordinates.relative.x = parseFloat(((imageCoordinates.x / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
+      imageCoordinates.relative.y = parseFloat(((imageCoordinates.y / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
+      imageCoordinates.relative.w = parseFloat(((imageCoordinates.w / this.imageDimensions[windowId].width) * 100).toFixed(roundingPrecision));
+      imageCoordinates.relative.h = parseFloat(((imageCoordinates.h / this.imageDimensions[windowId].height) * 100).toFixed(roundingPrecision));
     }
 
     return imageCoordinates;
@@ -509,8 +527,8 @@ var ImageCropper = {
         ).on('error load', function(){
           $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
         });
-        $($('#image-cropper-modal').find('.quality + label > input')).attr(
-          'data-quality', this_.imageUrlParams.quality
+        $($('#image-cropper-modal').find('.quality + label > input')).val(
+          this_.imageUrlParams.quality
         );
         $($('#image-cropper-modal').find('.quality + label > span')).text(
           this_.imageUrlParams.quality
@@ -518,13 +536,16 @@ var ImageCropper = {
         $('#image-cropper-modal').modal('show');
         $('#image-cropper-modal').on('shown.bs.modal', function(){
           $('#image-cropper-modal #image-url').select();
+          $('#image-cropper-modal #size-label > #absolute').text(
+            this_.imageUrlParams.region.w + 'x' + this_.imageUrlParams.region.h
+          );
         });
         $('#image-cropper-modal').on('hidden.bs.modal', function(){
           $($('#image-cropper-modal').find('.option-type + label > input')).prop(
             'checked', true
           );
           $('#image-cropper-modal .option-type + input[name="size"]').val(100);
-          $('#image-cropper-modal #size-label > span').text('100%');
+          $('#image-cropper-modal #size-label > #relative').text('100%');
         });
         if(license){
           $('#license-link').attr('href', license).text(license);

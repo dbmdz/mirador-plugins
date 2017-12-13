@@ -135,15 +135,15 @@
   width: 40px;
 }
 
-#image-cropper-modal h4.options {
+#image-cropper-modal h4.block-title {
   margin-bottom: 10px;
 }
 
-#image-cropper-modal h4.options ~ label {
+#image-cropper-modal h4.block-title ~ label {
   margin-left: 10px;
 }
 
-#image-cropper-modal h4.options ~ label > input {
+#image-cropper-modal h4.block-title ~ label > input {
   margin-right: 2px;
 }
 
@@ -161,6 +161,14 @@
   margin-left: 10px;
   position: relative;
   top: -5px;
+}
+
+#image-cropper-modal #size-label > #relative {
+  margin: 0 3px;
+}
+
+#image-cropper-modal #size-label > #absolute {
+  margin: 0 2px;
 }
 
 #image-cropper-modal #preview-image {

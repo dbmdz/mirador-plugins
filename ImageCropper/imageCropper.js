@@ -165,9 +165,7 @@ var ImageCropper = {
           : absoluteHeight + 'x' + absoluteWidth
         );
       }
-      $('#image-cropper-modal #image-url').attr(
-        'value', this.imageUrlTemplate(this.imageUrlParams)
-      ).select();
+      $('#image-cropper-modal #image-url').val(this.imageUrlTemplate(this.imageUrlParams)).select();
       $('#image-cropper-modal #preview-image-link').attr(
         'href', this.imageUrlTemplate(this.imageUrlParams)
       );
@@ -515,9 +513,7 @@ var ImageCropper = {
           'rotation': 0,
           'quality': Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default' : 'native'
         };
-        $('#image-cropper-modal #image-url').attr(
-          'value', this_.imageUrlTemplate(this_.imageUrlParams)
-        );
+        $('#image-cropper-modal #image-url').val(this_.imageUrlTemplate(this_.imageUrlParams));
         $('#image-cropper-modal #preview-image-link').attr(
           'href', this_.imageUrlTemplate(this_.imageUrlParams)
         );

@@ -1,1 +1,61 @@
-For documentation see [here](https://github.com/dbmdz/mirador-plugins#image-cropper).
+# Image cropper
+
+[![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-imagecropper.svg)](https://www.npmjs.com/package/@dbmdz/mirador-imagecropper)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-imagecropper.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-imagecropper%22)
+
+Adds an overlay to the canvas for retrieving the image url for the selected area.
+
+## Installation
+
+You can find production-ready build artifacts in the [releases section](https://github.com/dbmdz/mirador-plugins/releases).
+
+Alternatively, you can use `npm` to install the artifacts:
+
+```sh
+$ npm install @dbmdz/mirador-imagecropper
+```
+
+If you have a Java Web-Application managed with `mvn`, there is also a WebJar, which can be included as follows:
+
+```xml
+<dependency>
+  <groupId>org.webjars.npm</groupId>
+  <artifactId>dbmdz__mirador-imagecropper</artifactId>
+  <version>2.4.0</version>
+</dependency>
+```
+
+## Usage
+
+To enable it, include the CSS and the JavaScript (**after** loading Mirador).
+
+```html
+<link rel="stylesheet" type="text/css" href="<url to the plugin>/imageCropper.css" />
+...
+<script src="<url to the plugin>/imageCropper.js"></script>
+```
+
+You can configuration the behaviour of the plugin with the `imageCropper` configuration key:
+
+```js
+var mirador = Mirador({
+  ...
+  imageCropper: {
+     // Activate the cropping selection frame for every window in Mirador, default is false
+    activeOnStart: true,
+    // Define the number of decimals in the relative region coordinates, default is 5
+    roundingPrecision: 3,
+    // Show a license link defined in the containing manifest, default is false
+    showLicense: true,
+    // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
+    showShareButtonsInfo: true,
+  }
+  ...
+});
+```
+
+The configuration key `showShareButtonsInfo` is only evaluated, if you have also included the [ShareButtons extension](https://github.com/dbmdz/mirador-plugins/tree/master/ShareButtons).
+
+## Demo
+
+![Demo](https://gfycat.com/gifs/detail/UnsungExcellentIsabellinewheatear)

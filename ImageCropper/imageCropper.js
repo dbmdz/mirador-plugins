@@ -167,9 +167,9 @@ var ImageCropper = {
         var absoluteWidth = Math.ceil(scaleFactor / 100 * this.imageUrlParams.region.w);
         var absoluteHeight = Math.ceil(scaleFactor / 100 * this.imageUrlParams.region.h);
         $('#image-cropper-modal #size-label > #absolute').text(
-          ['0', '180'].indexOf(this.imageUrlParams.rotation) !== -1
-          ? absoluteWidth + 'x' + absoluteHeight
-          : absoluteHeight + 'x' + absoluteWidth
+          ['0', '180'].indexOf(this.imageUrlParams.rotation) !== -1 ?
+          absoluteWidth + 'x' + absoluteHeight :
+          absoluteHeight + 'x' + absoluteWidth
         );
       }
       var imageUrl = this.imageUrlTemplate(this.imageUrlParams);

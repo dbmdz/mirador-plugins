@@ -4,6 +4,8 @@ var ImageCropper = {
   dragging: false,
   imageDimensions: {},
   imageUrlParams: {},
+  manifestAttribution: null,
+  manifestLabel: null,
   resizing: false,
 
   /* options of the plugin */
@@ -131,10 +133,15 @@ var ImageCropper = {
 
   /* adds the locales to the internationalization module of the viewer */
   addLocalesToViewer: function(){
+    var currentLocales = {};
     for(var language in this.locales){
+      currentLocales = this.locales[language];
+      if(window.ShareButtons !== undefined && ShareButtons.locales[language]){
+        $.extend(currentLocales, ShareButtons.locales[language]);
+      }
       i18next.addResources(
         language, 'translation',
-        this.locales[language]
+        currentLocales
       );
     }
   },
@@ -174,6 +181,16 @@ var ImageCropper = {
       ).on('error load', function(){
         $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
       });
+      if(window.ShareButtons !== undefined){
+        ShareButtons.updateButtonLinks({
+          'attribution': this.manifestAttribution,
+          'label': this.manifestLabel,
+          'link': imageUrl,
+          'thumbnailUrl': this.imageUrlTemplate(
+            $.extend({}, this.imageUrlParams, {'size': '280,'})
+          )
+        });
+      }
     }.bind(this));
   },
 
@@ -425,6 +442,10 @@ var ImageCropper = {
         this_.options = options;
       }
       document.body.insertAdjacentHTML('beforeend', this_.modalTemplate());
+      if(window.ShareButtons !== undefined){
+        ShareButtons.init(this_.options.showShareButtonsInfo);
+        ShareButtons.injectButtonsToDom('#image-cropper-modal .modal-footer', 'afterbegin');
+      }
     };
     this.addModalEventHandlers();
   },
@@ -546,6 +567,17 @@ var ImageCropper = {
           $('#license-message').hide();
           $('#license-link').attr('href', '#').text('');
         }
+        if(window.ShareButtons !== undefined){
+          this_.setManifestData(this.manifest.jsonLd);
+          ShareButtons.updateButtonLinks({
+            'attribution': this_.manifestAttribution,
+            'label': this_.manifestLabel,
+            'link': imageUrl,
+            'thumbnailUrl': this_.imageUrlTemplate(
+              $.extend({}, this_.imageUrlParams, {'size': '280,'})
+            )
+          });
+        }
       }.bind(this));
     };
   },
@@ -569,6 +601,12 @@ var ImageCropper = {
 
       }.bind(this));
     };
+  },
+
+  /* sets the label and attribution of the given manifest */
+  setManifestData: function(manifest){
+    this.manifestAttribution = manifest.attribution;
+    this.manifestLabel = manifest.label;
   }
 };
 

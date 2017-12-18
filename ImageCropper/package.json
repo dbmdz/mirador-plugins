@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-imagecropper",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Adds an overlay to the canvas for retrieving the image url for the selected area.",
   "keywords": [
     "iiif",

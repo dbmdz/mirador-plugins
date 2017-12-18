@@ -165,10 +165,9 @@ var ImageCropper = {
           : absoluteHeight + 'x' + absoluteWidth
         );
       }
-      $('#image-cropper-modal #image-url').val(this.imageUrlTemplate(this.imageUrlParams)).select();
-      $('#image-cropper-modal #preview-image-link').attr(
-        'href', this.imageUrlTemplate(this.imageUrlParams)
-      );
+      var imageUrl = this.imageUrlTemplate(this.imageUrlParams);
+      $('#image-cropper-modal #image-url').val(imageUrl).select();
+      $('#image-cropper-modal #preview-image-link').attr('href', imageUrl);
       $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
       $('#image-cropper-modal #preview-image').attr(
         'src', this.imageUrlTemplate($.extend({}, this.imageUrlParams, {'size': 'full'}))
@@ -513,14 +512,11 @@ var ImageCropper = {
           'rotation': 0,
           'quality': Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default' : 'native'
         };
-        $('#image-cropper-modal #image-url').val(this_.imageUrlTemplate(this_.imageUrlParams));
-        $('#image-cropper-modal #preview-image-link').attr(
-          'href', this_.imageUrlTemplate(this_.imageUrlParams)
-        );
+        var imageUrl = this_.imageUrlTemplate(this_.imageUrlParams);
+        $('#image-cropper-modal #image-url').val(imageUrl);
+        $('#image-cropper-modal #preview-image-link').attr('href', imageUrl);
         $('#image-cropper-modal .fa-spinner').addClass('fa-spin').show();
-        $('#image-cropper-modal #preview-image').attr(
-          'src', this_.imageUrlTemplate(this_.imageUrlParams)
-        ).on('error load', function(){
+        $('#image-cropper-modal #preview-image').attr('src', imageUrl).on('error load', function(){
           $('#image-cropper-modal .fa-spinner').hide().removeClass('fa-spin');
         });
         $($('#image-cropper-modal').find('.quality + label > input')).val(

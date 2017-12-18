@@ -58,4 +58,4 @@ The configuration key `showShareButtonsInfo` is only evaluated, if you have also
 
 ## Demo
 
-![Demo](https://gfycat.com/gifs/detail/UnsungExcellentIsabellinewheatear)
+![Demo](https://thumbs.gfycat.com/UnsungExcellentIsabellinewheatear-size_restricted.gif)

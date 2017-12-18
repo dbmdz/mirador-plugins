@@ -116,7 +116,7 @@ var ImageCropper = {
     '<h5>{{t "preview-image-link"}}</h5>',
     '<img id="preview-image" alt="{{t "preview-image-error"}}">',
     '</div>',
-    '<div id="license-message" role="alert">',
+    '<div id="license-message" class="alert alert-warning" role="alert">',
     '{{t "license-message"}}:',
     '<a href="#" id="license-link" target="_blank"></a>',
     '</div>',

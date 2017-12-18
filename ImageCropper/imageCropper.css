@@ -179,12 +179,7 @@
 }
 
 #image-cropper-modal #license-message {
-  color: #31708f;
-  background-color: #d9edf7;
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  margin-top: 15px;
-  padding: 15px;
+  margin: 15px 0 0;
   text-align: left;
 }
 

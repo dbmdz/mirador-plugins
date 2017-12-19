@@ -1,5 +1,8 @@
 # Link to the current canvas
 
+[![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-canvaslink.svg)](https://www.npmjs.com/package/@dbmdz/mirador-canvaslink)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-canvaslink.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-canvaslink%22)
+
 Adds an extra button to every window that displays a link to the currently shown canvas. The URL will look like this:
 
 ```html

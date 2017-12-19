@@ -48,7 +48,7 @@ var mirador = Mirador({
     // Show a license link defined in the containing manifest, default is false
     showLicense: true,
     // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
-    showShareButtonsInfo: true,
+    showShareButtonsInfo: true
   }
   ...
 });

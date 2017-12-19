@@ -27,7 +27,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 
 ## Usage
 
-To enable it, include the CSS and the JavaScript (**after** loading Mirador).
+* enable the plugin by including the CSS and the JavaScript (**after** loading Mirador):
 
 ```html
 <link rel="stylesheet" type="text/css" href="<url to the plugin>/imageCropper.css" />
@@ -35,7 +35,9 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/imageCropper.js"></script>
 ```
 
-You can configuration the behaviour of the plugin with the `imageCropper` configuration key:
+* include the [ShareButtons extension](https://github.com/dbmdz/mirador-plugins/tree/master/ShareButtons) - the usage is explained in the corresponding README - if you want to have some share buttons displayed in the modal dialog
+
+* configure the behaviour of the plugin with the `imageCropper` configuration key:
 
 ```js
 var mirador = Mirador({
@@ -47,14 +49,14 @@ var mirador = Mirador({
     roundingPrecision: 3,
     // Show a license link defined in the containing manifest, default is false
     showLicense: true,
-    // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
+    // Display an info that the website containing the Mirador instance is left by clicking on the share buttons, default is false
     showShareButtonsInfo: true
   }
   ...
 });
 ```
 
-The configuration key `showShareButtonsInfo` is only evaluated, if you have also included the [ShareButtons extension](https://github.com/dbmdz/mirador-plugins/tree/master/ShareButtons).
+**NOTE:** The configuration key `showShareButtonsInfo` is only evaluated, if you have also included the [ShareButtons extension](https://github.com/dbmdz/mirador-plugins/tree/master/ShareButtons).
 
 ## Demo
 

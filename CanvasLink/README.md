@@ -33,7 +33,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 
 ## Usage
 
-To enable it, include the CSS and the JavaScript (**after** loading Mirador).
+* enable the plugin by including the CSS and the JavaScript (**after** loading Mirador):
 
 ```html
 <link rel="stylesheet" type="text/css" href="<url to the plugin>/canvasLink.css" />
@@ -41,17 +41,21 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/canvasLink.js"></script>
 ```
 
-You can configure the modal dialog containing the canvas link with the `canvasLink` configuration attribute in your Mirador configuration:
+* include the [ShareButtons extension](https://github.com/dbmdz/mirador-plugins/tree/master/ShareButtons) - the usage is explained in the corresponding README - if you want to have some share buttons displayed in the modal dialog
+
+* configure the modal dialog containing the canvas link with the `canvasLink` configuration attribute in your Mirador configuration:
 
 ```js
 var mirador = Mirador({
   ...
   canvasLink: {
-    // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
+    // Display an info that the website containing the Mirador instance is left by clicking on the share buttons, default is false
     showShareButtonsInfo: true,
-    // Define the url extension appended to the canvas url
+    // Define the url extension appended to the canvas url, default is /view
     urlExtension: '/example'
   }
   ...
 });
 ```
+
+**NOTE:** The configuration key `showShareButtonsInfo` is only evaluated, if you have also included the `ShareButtons` extension.

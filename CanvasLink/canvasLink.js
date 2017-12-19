@@ -28,6 +28,13 @@ var CanvasLink = {
     }
   },
 
+  /* the template for the link button */
+  buttonTemplate: Mirador.Handlebars.compile([
+    '<a title="{{t "share-page"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
+    '<i class="fa fa-lg fa-fw fa-share-alt"></i>',
+    '</a>'
+  ].join('')),
+
   linkTemplates: {
     'envelope': Mirador.Handlebars.compile(
       'mailto:?subject={{{label}}}{{#if attribution}} ({{attribution}}){{/if}}&body={{{label}}}{{#if attribution}} ({{{attribution}}}){{/if}}: {{link}}'
@@ -48,13 +55,6 @@ var CanvasLink = {
       'whatsapp://send?text={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}: {{link}}'
     )
   },
-
-  /* the template for the link button */
-  buttonTemplate: Mirador.Handlebars.compile([
-    '<a title="{{t "share-page"}}" class="mirador-btn mirador-icon-canvas-cite-share">',
-    '<i class="fa fa-lg fa-fw fa-share-alt"></i>',
-    '</a>'
-  ].join('')),
 
   /* the template for the modal containing the canvas link */
   modalTemplate: Mirador.Handlebars.compile([
@@ -93,6 +93,25 @@ var CanvasLink = {
     '</div>',
     '</div>'
   ].join('')),
+
+  /* adds event handlers to the modal */
+  addEventHandlers: function(){
+    $(document.body).on('click', '#canvas-link-modal #copy-to-clipboard', function(){
+      $('#canvas-link-modal #canvas-link').select();
+      document.execCommand('copy');
+    }.bind(this));
+  },
+
+
+  /* adds the locales to the internationalization module of the viewer */
+  addLocalesToViewer: function(){
+    for(var language in this.locales){
+      i18next.addResources(
+        language, 'translation',
+        this.locales[language]
+      );
+    }
+  },
 
   /* initializes the plugin */
   init: function(){
@@ -142,14 +161,6 @@ var CanvasLink = {
     this.addEventHandlers();
   },
 
-  /* adds event handlers to the modal */
-  addEventHandlers: function(){
-    $(document.body).on('click', '#canvas-link-modal #copy-to-clipboard', function(){
-      $('#canvas-link-modal #canvas-link').select();
-      document.execCommand('copy');
-    }.bind(this));
-  },
-
   /* injects the needed workspace event handler */
   injectWorkspaceEventHandler: function(){
     var this_ = this;
@@ -195,17 +206,7 @@ var CanvasLink = {
         });
       }.bind(this));
     };
-  },
-
-  /* adds the locales to the internationalization module of the viewer */
-  addLocalesToViewer: function(){
-    for(var language in this.locales){
-      i18next.addResources(
-        language, 'translation',
-        this.locales[language]
-      );
-    }
-  },
+  }
 };
 
 $(document).ready(function(){

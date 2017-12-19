@@ -63,36 +63,6 @@ To enable it, include the CSS and the JavaScript (**after** loading Mirador).
 <script src="<url to the plugin>/multiPageNavigation.js"></script>
 ```
 
-## Link to the current canvas
-
-Adds an extra button to every window that displays a link to the currently shown canvas. The URL will look like this:
-
-```html
-<canvas uri>/view
-```
-
-**NOTE:** This means that the server serving Mirador needs a rule for resolving this URL.
-
-To enable it, include the CSS and the JavaScript (**after** loading Mirador).
-
-```html
-<link rel="stylesheet" type="text/css" href="<url to the plugin>/canvasLink.css" />
-...
-<script src="<url to the plugin>/canvasLink.js"></script>
-```
-
-You can configure the modal dialog containing the canvas link with the `canvasLink` configuration attribute in your Mirador configuration:
-
-```javascript
-var mirador = Mirador({
-  canvasLink: {
-    showShareButtons: true, // Display buttons to share the canvas link on e.g. Facebook or Twitter
-    showShareButtonsInfo: true, // Display an info that the website containing the Mirador instance is left by clicking on the share buttons
-    urlExtension: '/example' // Define the url extension appended to the canvas url
-  }
-});
-```
-
 ## Bookmarkable Viewer State
 
 Modifies Mirador to dynamically update the URL to reflect the currently

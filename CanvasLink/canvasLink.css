@@ -1,3 +1,6 @@
+/*
+ * styles for the share button
+ */
 .window-manifest-navigation > .mirador-btn.mirador-icon-canvas-cite-share {
   color: #929191;
   margin-right: 5px;
@@ -7,6 +10,9 @@
   color: black;
 }
 
+/*
+ * styles for the modal
+ */
 @media screen and (min-width: 800px) {
   #canvas-link-modal .modal-dialog {
     width: 700px;
@@ -29,42 +35,4 @@
 #canvas-link-modal #copy-to-clipboard {
   height: 34px;
   width: 40px;
-}
-
-#canvas-link-modal #share-buttons-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border: 1px solid #bce8f1;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  padding: 15px;
-  text-align: left;
-}
-
-#canvas-link-modal .share-button {
-  color: white;
-}
-
-#canvas-link-modal #share-on-envelope .fa-circle {
-  color: #7d7d7d;
-}
-
-#canvas-link-modal #share-on-facebook .fa-circle {
-  color: #3B5998;
-}
-
-#canvas-link-modal #share-on-pinterest .fa-circle {
-  color: #CB2027;
-}
-
-#canvas-link-modal #share-on-tumblr .fa-circle {
-  color: #32506d;
-}
-
-#canvas-link-modal #share-on-twitter .fa-circle {
-  color: #55acee;
-}
-
-#canvas-link-modal #share-on-whatsapp .fa-circle {
-  color: #25d366;
 }

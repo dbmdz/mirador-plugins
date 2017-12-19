@@ -6,24 +6,10 @@ var CanvasLink = {
   locales: {
     'de': {
       'copy-to-clipboard': 'In die Zwischenablage kopieren',
-      'share-buttons-info': 'Beim Klick auf einen der Teilen-Buttons verlassen Sie diese Webseite.',
-      'share-on-envelope': 'Per Mail teilen',
-      'share-on-facebook': 'Auf Facebook teilen',
-      'share-on-pinterest': 'Auf Pinterest teilen',
-      'share-on-tumblr': 'Auf Tumblr teilen',
-      'share-on-twitter': 'Auf Twitter teilen',
-      'share-on-whatsapp': 'Per Whatsapp teilen',
       'share-page': 'Link auf diese Seite teilen'
     },
     'en': {
       'copy-to-clipboard': 'Copy to clipboard',
-      'share-buttons-info': 'By clicking on one of the share buttons, you will leave this website.',
-      'share-on-envelope': 'Share via mail',
-      'share-on-facebook': 'Share on Facebook',
-      'share-on-pinterest': 'Share on Pinterest',
-      'share-on-tumblr': 'Share on Tumblr',
-      'share-on-twitter': 'Share on Twitter',
-      'share-on-whatsapp': 'Share via Whatsapp',
       'share-page': 'Share link to this page'
     }
   },
@@ -34,27 +20,6 @@ var CanvasLink = {
     '<i class="fa fa-lg fa-fw fa-share-alt"></i>',
     '</a>'
   ].join('')),
-
-  linkTemplates: {
-    'envelope': Mirador.Handlebars.compile(
-      'mailto:?subject={{{label}}}{{#if attribution}} ({{attribution}}){{/if}}&body={{{label}}}{{#if attribution}} ({{{attribution}}}){{/if}}: {{link}}'
-    ),
-    'facebook': Mirador.Handlebars.compile(
-      'https://www.facebook.com/sharer/sharer.php?title={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}&u={{link}}'
-    ),
-    'pinterest': Mirador.Handlebars.compile(
-      'http://pinterest.com/pin/create/bookmarklet/?url={{link}}&description={{{label}}}%20{{#if attribution}}%20({{attribution}}){{/if}}&media={{{thumbnailUrl}}}'
-    ),
-    'tumblr': Mirador.Handlebars.compile(
-      'http://www.tumblr.com/share/link?url={{link}}&name={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}&tags=iiif'
-    ),
-    'twitter': Mirador.Handlebars.compile(
-      'https://twitter.com/intent/tweet?text={{{truncate label attribution}}}&url={{link}}&hashtags=iiif'
-    ),
-    'whatsapp': Mirador.Handlebars.compile(
-      'whatsapp://send?text={{{label}}} {{#if attribution}} ({{attribution}}){{/if}}: {{link}}'
-    )
-  },
 
   /* the template for the modal containing the canvas link */
   modalTemplate: Mirador.Handlebars.compile([
@@ -74,19 +39,6 @@ var CanvasLink = {
     '</p>',
     '</div>',
     '<div class="modal-footer">',
-    '{{#if showShareButtons}}',
-    '{{#if showShareButtonsInfo}}',
-    '<div id="share-buttons-info" role="alert">{{t "share-buttons-info"}}</div>',
-    '{{/if}}',
-    '{{#each shareButtons}}',
-    '<a type="button" class="pull-left share-button" id="share-on-{{this}}" title="{{t (concat this)}}" target="_blank" data-target="{{this}}">',
-    '<span class="fa-stack fa-lg">',
-    '<i class="fa fa-circle fa-stack-2x"></i>',
-    '<i class="fa fa-{{this}} fa-stack-1x" aria-hidden="true"></i>',
-    '</span>',
-    '</a>',
-    '{{/each}}',
-    '{{/if}}',
     '<button type="button" class="btn btn-default" data-dismiss="modal">{{t "close"}}</button>',
     '</div>',
     '</div>',
@@ -105,26 +57,21 @@ var CanvasLink = {
 
   /* adds the locales to the internationalization module of the viewer */
   addLocalesToViewer: function(){
+    var currentLocales = {};
     for(var language in this.locales){
+      currentLocales = this.locales[language];
+      if(window.ShareButtons !== undefined && ShareButtons.locales[language]){
+        $.extend(currentLocales, ShareButtons.locales[language]);
+      }
       i18next.addResources(
         language, 'translation',
-        this.locales[language]
+        currentLocales
       );
     }
   },
 
   /* initializes the plugin */
   init: function(){
-    Mirador.Handlebars.registerHelper('concat', function(target){
-      return 'share-on-' + target;
-    });
-    Mirador.Handlebars.registerHelper('truncate', function(label, attribution){
-      var text = label.concat(attribution ? ' (' + attribution + ')' : '');
-      if(text.length > 60){
-        text = text.substring(0, 60).concat('...');
-      }
-      return text;
-    });
     i18next.on('initialized', function(){
       this.addLocalesToViewer();
     }.bind(this));
@@ -152,11 +99,11 @@ var CanvasLink = {
       if('ontouchstart' in window || navigator.maxTouchPoints){
         shareButtons.push('whatsapp');
       }
-      document.body.insertAdjacentHTML('beforeend', this_.modalTemplate({
-        'shareButtons': shareButtons,
-        'showShareButtons': this_.options.showShareButtons || false,
-        'showShareButtonsInfo': this_.options.showShareButtonsInfo || false
-      }));
+      document.body.insertAdjacentHTML('beforeend', this_.modalTemplate());
+      if(window.ShareButtons !== undefined){
+        ShareButtons.init(this_.options.showShareButtonsInfo);
+        ShareButtons.injectButtonsToDom('#canvas-link-modal .modal-footer', 'afterbegin');
+      }
     };
     this.addEventHandlers();
   },
@@ -186,18 +133,16 @@ var CanvasLink = {
         var canvasLink = this.canvasID + (this_.options.urlExtension || '/view');
         var currentImage = this.imagesList[this.focusModules[this.viewType].currentImgIndex];
         var service = currentImage.images[0].resource.service || currentImage.images[0].resource.default.service;
-        var thumbnailUrl = Mirador.Iiif.getImageUrl(currentImage).concat('/full/600,/0/').concat((
+        var thumbnailUrl = Mirador.Iiif.getImageUrl(currentImage).concat('/full/280,/0/').concat((
           Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default.jpg' : 'native.jpg'
         ));
         $('#canvas-link-modal #canvas-link').attr('value', canvasLink);
-        if(this_.options.showShareButtons){
-          $('#canvas-link-modal .share-button').attr('href', function(){
-            return this_.linkTemplates[$(this).data('target')]({
-              'label': label,
-              'attribution': attribution,
-              'link': canvasLink,
-              'thumbnailUrl': thumbnailUrl
-            });
+        if(window.ShareButtons !== undefined){
+          ShareButtons.updateButtonLinks({
+            'attribution': attribution,
+            'label': label,
+            'link': canvasLink,
+            'thumbnailUrl': thumbnailUrl
           });
         }
         $('#canvas-link-modal').modal('show');

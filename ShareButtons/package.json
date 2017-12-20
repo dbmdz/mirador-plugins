@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-sharebuttons",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds extra buttons for sharing things on different social media platforms.",
   "keywords": [
     "iiif",

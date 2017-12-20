@@ -64,7 +64,7 @@ Parameters:
 
 #### updateButtonLinks(data) → {void}
 
-Injects the buttons to the target selector element in the given position.
+Updates the button links with the given parameters.
 
 Parameters:
 

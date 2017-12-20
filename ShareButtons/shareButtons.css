@@ -1,0 +1,32 @@
+#share-buttons-info {
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+#share-buttons > .share-button {
+  color: white;
+}
+
+#share-buttons > #share-on-envelope .fa-circle {
+  color: #7d7d7d;
+}
+
+#share-buttons > #share-on-facebook .fa-circle {
+  color: #3B5998;
+}
+
+#share-buttons > #share-on-pinterest .fa-circle {
+  color: #CB2027;
+}
+
+#share-buttons > #share-on-tumblr .fa-circle {
+  color: #32506d;
+}
+
+#share-buttons > #share-on-twitter .fa-circle {
+  color: #55acee;
+}
+
+#share-buttons > #share-on-whatsapp .fa-circle {
+  color: #25d366;
+}

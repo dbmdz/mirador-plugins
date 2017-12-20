@@ -8,6 +8,7 @@
     "MultiPageNavigation",
     "PhysicalRuler",
     "PiwikTracking",
+    "ShareButtons",
     "ViewFromUrl"
   ],
   "version": "independent"

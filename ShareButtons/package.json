@@ -1,0 +1,24 @@
+{
+  "name": "@dbmdz/mirador-sharebuttons",
+  "version": "0.0.0",
+  "description": "Adds extra buttons for sharing things on different social media platforms.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Matthias Lindinger",
+  "main": "shareButtons.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "scripts": {
+    "lint": "gulp lint",
+    "minify": "gulp minify",
+    "prepublishOnly": "npm run minify"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

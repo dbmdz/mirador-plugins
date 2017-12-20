@@ -9,7 +9,7 @@ Adds an extra button to every window that displays a link to the currently shown
 <canvas uri>/view
 ```
 
-**NOTE:** This means that the server serving Mirador needs a rule for resolving this URL.
+**NOTE:** This means that the server serving the manifest needs a rule for resolving this URL.
 
 ## Installation
 

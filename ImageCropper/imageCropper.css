@@ -119,6 +119,7 @@
 
 @media screen and (max-width: 799px) {
   #image-cropper-modal .modal-dialog {
+    margin: 10px auto;
     width: 90%;
   }
 }

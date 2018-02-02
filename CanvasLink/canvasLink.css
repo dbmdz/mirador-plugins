@@ -21,6 +21,7 @@
 
 @media screen and (max-width: 799px) {
   #canvas-link-modal .modal-dialog {
+    margin: 10px auto;
     width: 90%;
   }
 }

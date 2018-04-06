@@ -32,7 +32,6 @@ gulp.task('minify-css', ['clean'], function(){
 gulp.task('minify-js', ['clean'], function(){
   return gulp.src(['*.js', '!gulpfile.js']).pipe(
     minifyJS({
-      exclude: ['dist'],
       ext:{
         min:'.min.js'
       },

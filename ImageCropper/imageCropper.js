@@ -600,7 +600,6 @@ var ImageCropper = {
             'width': this.canvases[data.canvasID].canvas.width
           };
         }
-
       }.bind(this));
     };
   },

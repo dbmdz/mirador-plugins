@@ -1,0 +1,15 @@
+.window-manifest-navigation > .mirador-btn.mirador-icon-download {
+  color: #929191;
+  margin-right: 5px;
+  width: 30px;
+}
+
+.window-manifest-navigation > .mirador-btn.mirador-icon-download:hover {
+  color: black;
+}
+
+.window-manifest-navigation > .mirador-btn.mirador-icon-download > .download-list {
+  cursor: not-allowed;
+  right: 0;
+  width: 180px;
+}

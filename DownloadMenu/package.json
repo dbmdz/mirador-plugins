@@ -1,0 +1,24 @@
+{
+  "name": "@dbmdz/mirador-downloadmenu",
+  "version": "0.0.0",
+  "description": "Adds a download button to every window that contains links to the manifest and to the currently shown image in different sizes.",
+  "keywords": [
+    "iiif",
+    "mirador"
+  ],
+  "license": "MIT",
+  "author": "Matthias Lindinger",
+  "main": "downloadMenu.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dbmdz/mirador-plugins.git"
+  },
+  "scripts": {
+    "lint": "gulp lint",
+    "minify": "gulp minify",
+    "prepublishOnly": "npm run minify"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

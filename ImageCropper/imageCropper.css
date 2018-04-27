@@ -184,7 +184,8 @@
   text-align: left;
 }
 
-#image-cropper-modal #license-link {
+#image-cropper-modal #license-link,
+#image-cropper-modal #preview-image-link {
   color: #337ab7;
   margin-left: 3px;
 }

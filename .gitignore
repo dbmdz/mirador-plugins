@@ -5,3 +5,14 @@ lerna-debug.log
 node_modules/
 package-lock.json
 yarn.lock
+/ImageCropper/nbproject/private/
+/nbproject/private/
+/CanvasLink/nbproject/private/
+/ManifestButton/nbproject/private/
+/KeyboardNavigation/nbproject/private/
+/ShareButtons/nbproject/private/
+/DownloadMenu/nbproject/private/
+/ViewFromUrl/nbproject/private/
+/PhysicalRuler/nbproject/private/
+/MultiPageNavigation/nbproject/private/
+/PiwikTracking/nbproject/private/

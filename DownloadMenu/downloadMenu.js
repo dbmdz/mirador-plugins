@@ -25,7 +25,12 @@ var DownloadButton = {
 
   /* extracts image urls from the viewer window */
   extractImageUrls: function(viewerWindow){
-    var currentImage = viewerWindow.imagesList[viewerWindow.focusModules.ImageView.currentImgIndex];
+    var currentImgIndex = viewerWindow.focusModules.ImageView.currentImgIndex;
+    if(viewerWindow.manifest.jsonLd['viewingDirection'] == "right-to-left"){
+        currentImgIndex = viewerWindow.manifest.jsonLd.sequences[0].canvases.length - currentImgIndex;
+    }
+
+    var currentImage = viewerWindow.imagesList[currentImgIndex];
     var imageBaseUrl = Mirador.Iiif.getImageUrl(currentImage);
     var ratio = currentImage.height / currentImage.width;
 

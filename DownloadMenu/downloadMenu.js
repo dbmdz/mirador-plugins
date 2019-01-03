@@ -96,7 +96,7 @@ var DownloadButton = {
             function(index){ return imageUrls[index].title; }
           );
         }else{
-          this.element.find('.image-link').addClass('disabled');
+          this.element.find('.image-link').addClass('disabled').find('span.dimensions').text('n.a.');
         }
       }.bind(this));
     };

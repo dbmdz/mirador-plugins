@@ -29,7 +29,7 @@ var DownloadButton = {
   /* extracts image urls from the viewer window */
   extractImageUrls: function(viewerWindow){
     var currentImgIndex = viewerWindow.focusModules.ImageView.currentImgIndex;
-    if(viewerWindow.manifest.jsonLd.viewingDirection == "right-to-left"){
+    if(viewerWindow.manifest.jsonLd.viewingDirection === 'right-to-left'){
         currentImgIndex = viewerWindow.manifest.jsonLd.sequences[0].canvases.length - currentImgIndex;
     }
 

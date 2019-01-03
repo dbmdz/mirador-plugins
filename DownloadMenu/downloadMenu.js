@@ -5,7 +5,7 @@ var DownloadButton = {
   ),
 
   /* the template for the link button */
-  buttonTemplate: Mirador.Handlebars.compile([
+  menuTemplate: Mirador.Handlebars.compile([
     '<span class="mirador-btn mirador-icon-download" role="button" title="Download">',
     '<i class="fa fa-download fa-lg fa-fw"></i>',
     '<i class="fa fa-caret-down"></i>',
@@ -59,7 +59,7 @@ var DownloadButton = {
 
   /* injects the button to the window menu */
   injectButtonToMenu: function(windowButtons, manifestUrl, imageUrls){
-    $(windowButtons).prepend(this.buttonTemplate({
+    $(windowButtons).prepend(this.menuTemplate({
       'imageUrls': imageUrls,
       'manifestUrl': manifestUrl,
     }));

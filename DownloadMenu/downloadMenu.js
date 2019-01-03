@@ -23,6 +23,7 @@ var DownloadButton = {
     '</span>'
   ].join('')),
 
+  /* the different sizes of the image links */
   sizes: ['full', '250,'],
 
   /* extracts image urls from the viewer window */

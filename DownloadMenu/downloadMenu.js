@@ -23,6 +23,8 @@ var DownloadButton = {
     '</span>'
   ].join('')),
 
+  sizes: ['full', '250,'],
+
   /* extracts image urls from the viewer window */
   extractImageUrls: function(viewerWindow){
     var currentImgIndex = viewerWindow.focusModules.ImageView.currentImgIndex;
@@ -35,7 +37,7 @@ var DownloadButton = {
     var ratio = currentImage.height / currentImage.width;
 
     var imageUrls = [];
-    ['full', '250,'].forEach(function(size){
+    this.sizes.forEach(function(size){
       imageUrls.push({
         'href': viewerWindow.currentImageMode !== 'ImageView' ? '#' : this.imageUrlTemplate({
           'imageBaseUrl': imageBaseUrl, 'size': size
@@ -85,6 +87,17 @@ var DownloadButton = {
       this.eventEmitter.subscribe('windowUpdated', function(evt, data){
         if(this.id !== data.id || !data.viewType){
           return;
+        }
+        if(this.element.find('.mirador-icon-download').length === 0){
+          var manifestUrl = this.manifest.jsonLd['@id'];
+          var windowButtons = this.element.find('.window-manifest-navigation');
+          this_.injectButtonToMenu(windowButtons, manifestUrl, this_.sizes.reduce(function(fakeImageUrls){
+            fakeImageUrls.push({
+              'href': '#',
+              'title': 'n.a.'
+            });
+            return fakeImageUrls;
+          }, []));
         }
         if(data.viewType === 'ImageView'){
           var imageUrls = this_.extractImageUrls(this);

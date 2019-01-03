@@ -26,7 +26,7 @@ var DownloadButton = {
   /* extracts image urls from the viewer window */
   extractImageUrls: function(viewerWindow){
     var currentImgIndex = viewerWindow.focusModules.ImageView.currentImgIndex;
-    if(viewerWindow.manifest.jsonLd['viewingDirection'] == "right-to-left"){
+    if(viewerWindow.manifest.jsonLd.viewingDirection == "right-to-left"){
         currentImgIndex = viewerWindow.manifest.jsonLd.sequences[0].canvases.length - currentImgIndex;
     }
 
@@ -113,7 +113,6 @@ var DownloadButton = {
           return currentWindow.id === data.id;
         })[0];
         var manifestUrl = viewerWindow.manifest.jsonLd['@id'];
-        var canvases = viewerWindow.manifest.jsonLd.sequences[0].canvases;
         var imageUrls = this_.extractImageUrls(viewerWindow);
         var windowButtons = viewerWindow.element.find('.window-manifest-navigation');
         this_.injectButtonToMenu(windowButtons, manifestUrl, imageUrls);

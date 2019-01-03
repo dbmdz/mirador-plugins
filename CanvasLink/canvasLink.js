@@ -81,7 +81,7 @@ var CanvasLink = {
       'thumbnailUrl': Mirador.Iiif.getImageUrl(currentImage).concat('/full/280,/0/').concat((
         Mirador.Iiif.getVersionFromContext(service['@context']) === '2.0' ? 'default.jpg' : 'native.jpg'
       ))
-    }
+    };
   },
 
   /* initializes the plugin */

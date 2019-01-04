@@ -32,37 +32,6 @@ var mirador = Mirador({
 });
 ```
 
-## Manifest button
-
-Adds an extra button to every window that links to the loaded manifest.
-
-To enable it, include the CSS and the JavaScript (**after** loading Mirador).
-
-It's possible to define the icon class of the button in the Mirador configuration with the attribute `iconClass` in the section `manifestButton`:
-
-```js
-var mirador = Mirador({
-  manifestButton: {
-    iconClass: 'fa-file' // Define the icon class of the button
-  }
-});
-```
-
-The value has to be one of the [Font Awesome Icon classes](http://fontawesome.io/icon), the default is [`fa-file-text-o`](http://fontawesome.io/icon/file-text-o/).
-
-## Multi-Page Navigation
-
-Adds a small additional navigation bar to the top of the viewport that
-allows faster seeking through a manifest.
-
-To enable it, include the CSS and the JavaScript (**after** loading Mirador).
-
-```html
-<link rel="stylesheet" type="text/css" href="<url to the plugin>/multiPageNavigation.css" />
-...
-<script src="<url to the plugin>/multiPageNavigation.js"></script>
-```
-
 ## Bookmarkable Viewer State
 
 Modifies Mirador to dynamically update the URL to reflect the currently

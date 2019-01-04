@@ -1,7 +1,7 @@
 # Image cropper
 
 [![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-imagecropper.svg)](https://www.npmjs.com/package/@dbmdz/mirador-imagecropper)
-[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-imagecropper.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-imagecropper%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-imagecropper.svg)](http://search.maven.org/search?q=a:dbmdz__mirador-imagecropper)
 
 Adds an overlay to the canvas for retrieving the image url for the selected area.
 
@@ -21,7 +21,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 <dependency>
   <groupId>org.webjars.npm</groupId>
   <artifactId>dbmdz__mirador-imagecropper</artifactId>
-  <version>2.4.0</version>
+  <version>{set to current version}</version>
 </dependency>
 ```
 

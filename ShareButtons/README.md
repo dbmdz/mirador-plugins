@@ -1,7 +1,7 @@
 # Share buttons
 
 [![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-sharebuttons.svg)](https://www.npmjs.com/package/@dbmdz/mirador-sharebuttons)
-[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-sharebuttons.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-sharebuttons%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-sharebuttons.svg)](http://search.maven.org/search?q=a:dbmdz__mirador-sharebuttons)
 
 Provides functions for adding additional buttons that allow sharing content across different social media platforms.
 
@@ -23,7 +23,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 <dependency>
   <groupId>org.webjars.npm</groupId>
   <artifactId>dbmdz__mirador-sharebuttons</artifactId>
-  <version>1.0.0</version>
+  <version>{set to current version}</version>
 </dependency>
 ```
 

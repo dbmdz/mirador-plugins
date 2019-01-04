@@ -1,7 +1,7 @@
 # Link to the current canvas
 
 [![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-canvaslink.svg)](https://www.npmjs.com/package/@dbmdz/mirador-canvaslink)
-[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-canvaslink.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-canvaslink%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-canvaslink.svg)](http://search.maven.org/search?q=a:dbmdz__mirador-canvaslink)
 
 Adds an extra button to every window that displays a link to the currently shown canvas. The URL will look like this:
 
@@ -27,7 +27,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 <dependency>
   <groupId>org.webjars.npm</groupId>
   <artifactId>dbmdz__mirador-canvaslink</artifactId>
-  <version>1.2.0</version>
+  <version>{set to current version}</version>
 </dependency>
 ```
 

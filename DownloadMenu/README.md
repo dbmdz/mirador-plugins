@@ -1,7 +1,7 @@
 # Download menu
 
 [![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-downloadmenu.svg)](https://www.npmjs.com/package/@dbmdz/mirador-downloadmenu)
-[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-downloadmenu.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-downloadmenu%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-downloadmenu.svg)](http://search.maven.org/search?q=a:dbmdz__mirador-downloadmenu)
 
 Adds a download button to every window that contains links to the manifest and to the currently shown image in different sizes.
 
@@ -21,7 +21,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 <dependency>
   <groupId>org.webjars.npm</groupId>
   <artifactId>dbmdz__mirador-downloadmenu</artifactId>
-  <version>1.2.0</version>
+  <version>{set to current version}</version>
 </dependency>
 ```
 

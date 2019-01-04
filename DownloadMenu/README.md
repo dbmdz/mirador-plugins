@@ -30,7 +30,7 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 Enable the plugin by including the CSS and the JavaScript (**after** loading Mirador):
 
 ```html
-<link rel="stylesheet" type="text/css" href="<url to the plugin>/downloadMenu.css" />
+<link rel="stylesheet" type="text/css" href="<url to the plugin>/downloadMenu.min.css" />
 ...
-<script src="<url to the plugin>/downloadMenu.js"></script>
+<script src="<url to the plugin>/downloadMenu.min.js"></script>
 ```

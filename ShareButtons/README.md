@@ -34,9 +34,9 @@ If you have a Java Web-Application managed with `mvn`, there is also a WebJar, w
 Enable the plugin by including the CSS and the JavaScript (**after** loading Mirador):
 
 ```html
-<link rel="stylesheet" type="text/css" href="<url to the plugin>/shareButtons.css" />
+<link rel="stylesheet" type="text/css" href="<url to the plugin>/shareButtons.min.css" />
 ...
-<script src="<url to the plugin>/shareButtons.js"></script>
+<script src="<url to the plugin>/shareButtons.min.js"></script>
 ```
 
 ### Provided functions

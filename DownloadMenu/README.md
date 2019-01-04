@@ -1,4 +1,4 @@
-# Link to the current canvas
+# Download menu
 
 [![NPM](https://img.shields.io/npm/v/@dbmdz/mirador-downloadmenu.svg)](https://www.npmjs.com/package/@dbmdz/mirador-downloadmenu)
 [![Maven Central](https://img.shields.io/maven-central/v/org.webjars.npm/dbmdz__mirador-downloadmenu.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22dbmdz__mirador-downloadmenu%22)

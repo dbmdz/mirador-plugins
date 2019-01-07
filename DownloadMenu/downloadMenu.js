@@ -58,7 +58,7 @@ var DownloadMenu = {
     this.injectWorkspaceEventHandler();
   },
 
-  /* injects the link menu to the window menu */
+  /* injects the link menu to the window navigation */
   injectMenuToNavigation: function(windowNavigation, manifestUrl, imageUrls){
     $(windowNavigation).prepend(this.menuTemplate({
       'imageUrls': imageUrls,

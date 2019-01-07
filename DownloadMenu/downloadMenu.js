@@ -1,10 +1,10 @@
-var DownloadButton = {
+var DownloadMenu = {
   /* the template for the image urls */
   imageUrlTemplate: Mirador.Handlebars.compile(
     '{{imageBaseUrl}}/full/{{size}}/0/default.jpg'
   ),
 
-  /* the template for the link button */
+  /* the template for the link menu */
   menuTemplate: Mirador.Handlebars.compile([
     '<span class="mirador-btn mirador-icon-download" role="button" title="Download">',
     '<i class="fa fa-download fa-lg fa-fw"></i>',
@@ -58,9 +58,9 @@ var DownloadButton = {
     this.injectWorkspaceEventHandler();
   },
 
-  /* injects the button to the window menu */
-  injectButtonToMenu: function(windowButtons, manifestUrl, imageUrls){
-    $(windowButtons).prepend(this.menuTemplate({
+  /* injects the link menu to the window menu */
+  injectMenuToNavigation: function(windowNavigation, manifestUrl, imageUrls){
+    $(windowNavigation).prepend(this.menuTemplate({
       'imageUrls': imageUrls,
       'manifestUrl': manifestUrl,
     }));
@@ -91,8 +91,8 @@ var DownloadButton = {
         }
         if(this.element.find('.mirador-icon-download').length === 0){
           var manifestUrl = this.manifest.jsonLd['@id'];
-          var windowButtons = this.element.find('.window-manifest-navigation');
-          this_.injectButtonToMenu(windowButtons, manifestUrl, this_.sizes.reduce(function(fakeImageUrls){
+          var windowNavigation = this.element.find('.window-manifest-navigation');
+          this_.injectMenuToNavigation(windowNavigation, manifestUrl, this_.sizes.reduce(function(fakeImageUrls){
             fakeImageUrls.push({
               'href': '#',
               'title': 'n.a.'
@@ -128,13 +128,13 @@ var DownloadButton = {
         })[0];
         var manifestUrl = viewerWindow.manifest.jsonLd['@id'];
         var imageUrls = this_.extractImageUrls(viewerWindow);
-        var windowButtons = viewerWindow.element.find('.window-manifest-navigation');
-        this_.injectButtonToMenu(windowButtons, manifestUrl, imageUrls);
+        var windowNavigation = viewerWindow.element.find('.window-manifest-navigation');
+        this_.injectMenuToNavigation(windowNavigation, manifestUrl, imageUrls);
       }.bind(this));
     };
   }
 };
 
 $(document).ready(function(){
-  DownloadButton.init();
+  DownloadMenu.init();
 });

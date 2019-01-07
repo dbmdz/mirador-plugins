@@ -1,6 +1,6 @@
 {
   "name": "@dbmdz/mirador-downloadmenu",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Adds a download menu to every window that contains links to the manifest and to the currently shown image in different sizes.",
   "keywords": [
     "iiif",

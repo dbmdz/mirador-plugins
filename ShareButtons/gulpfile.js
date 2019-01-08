@@ -7,19 +7,21 @@ var rename = require('gulp-rename');
 
 gulp.task('clean', function(){
   return gulp.src(
-    ['*.min.css', '*.min.js'], {read: false}
-  ).pipe(clean());
+    ['*.min.css', '*.min.js'], { read: false }
+  ).pipe(
+    clean()
+  );
 });
 
-gulp.task('lint', function(){
+gulp.task('lint', gulp.series(function(){
   return gulp.src(['*.js', '!*.min.js', '!gulpfile.js']).pipe(
     linter()
   ).pipe(
     linter.reporter('default')
   );
-});
+}));
 
-gulp.task('minify-css', ['clean'], function(){
+gulp.task('minify-css', gulp.series('clean', function(){
   return gulp.src('*.css').pipe(
     minifyCSS()
   ).pipe(
@@ -27,9 +29,9 @@ gulp.task('minify-css', ['clean'], function(){
   ).pipe(
     gulp.dest('.')
   );
-});
+}));
 
-gulp.task('minify-js', ['clean'], function(){
+gulp.task('minify-js', gulp.series('clean', function(){
   return gulp.src(['*.js', '!gulpfile.js']).pipe(
     minifyJS({
       ext:{
@@ -40,6 +42,6 @@ gulp.task('minify-js', ['clean'], function(){
   ).pipe(
     gulp.dest('.')
   );
-});
+}));
 
-gulp.task('minify', ['clean', 'minify-css', 'minify-js']);
+gulp.task('minify', gulp.series('clean', gulp.parallel('minify-css', 'minify-js')));

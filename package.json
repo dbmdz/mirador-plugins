@@ -6,6 +6,7 @@
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
   "scripts": {
+    "clean": "./node_modules/.bin/lerna run clean",
     "diff": "./node_modules/.bin/lerna diff",
     "lint": "./node_modules/.bin/lerna run lint",
     "list": "./node_modules/.bin/lerna ll",

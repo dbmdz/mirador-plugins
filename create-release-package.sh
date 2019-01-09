@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # extract the plugin name and the version from the given tag name
 tag_name=$1
@@ -13,3 +13,5 @@ npm install
 npm run minify
 # pack all the corresponding files to a zip archive
 find -not -iwholename '*.git*' -iname *${plugin_name}* -type f | zip ${plugin_name}-${version}.zip -@
+# clean all modules again
+npm run clean

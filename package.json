@@ -7,6 +7,7 @@
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna run clean",
+    "create-release-package": "./scripts/create-release-package.sh",
     "diff": "./node_modules/.bin/lerna diff",
     "lint": "./node_modules/.bin/lerna run lint",
     "list": "./node_modules/.bin/lerna ll",

@@ -6,11 +6,13 @@
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
   "scripts": {
-    "lint": "./node_modules/lerna/bin/lerna.js run lint",
-    "list": "./node_modules/lerna/bin/lerna.js ls",
-    "minify": "./node_modules/lerna/bin/lerna.js run minify",
-    "release": "./node_modules/lerna/bin/lerna.js publish",
-    "updated": "./node_modules/lerna/bin/lerna.js updated"
+    "diff": "./node_modules/.bin/lerna diff",
+    "lint": "./node_modules/.bin/lerna run lint",
+    "list": "./node_modules/.bin/lerna ll",
+    "list-json": "./node_modules/.bin/lerna ll --json",
+    "minify": "./node_modules/.bin/lerna run minify",
+    "release": "./node_modules/.bin/lerna publish",
+    "updated": "./node_modules/.bin/lerna changed"
   },
   "devDependencies": {
     "gulp": "^4.0.0",

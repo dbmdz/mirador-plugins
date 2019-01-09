@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# check if tag name was passed as argument
+if [[ $# -eq 0 ]]
+then
+  echo 'You have to pass a tag name as first argument!'
+  exit 1
+fi
+
 # extract the plugin name and the version from the given tag name
 tag_name=$1
 tag_parts=(${tag_name//@/ })

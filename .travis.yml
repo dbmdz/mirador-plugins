@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - node
 before_deploy:
-  - if [ ! -z "$TRAVIS_TAG" ]; then /bin/bash create-release-package.sh $TRAVIS_TAG; fi
+  - if [ ! -z "$TRAVIS_TAG" ]; then npm run create-release-package -- $TRAVIS_TAG; fi
 deploy:
   provider: releases
   api_key:

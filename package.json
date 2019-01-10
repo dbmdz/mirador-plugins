@@ -6,21 +6,25 @@
     "url": "https://github.com/dbmdz/mirador-plugins.git"
   },
   "scripts": {
-    "lint": "./node_modules/lerna/bin/lerna.js run lint",
-    "list": "./node_modules/lerna/bin/lerna.js ls",
-    "minify": "./node_modules/lerna/bin/lerna.js run minify",
-    "release": "./node_modules/lerna/bin/lerna.js publish",
-    "updated": "./node_modules/lerna/bin/lerna.js updated"
+    "clean": "./node_modules/.bin/lerna run clean",
+    "create-release-package": "./scripts/create-release-package.sh",
+    "diff": "./node_modules/.bin/lerna diff",
+    "lint": "./node_modules/.bin/lerna run lint",
+    "list": "./node_modules/.bin/lerna ll",
+    "list-json": "./node_modules/.bin/lerna ll --json",
+    "minify": "./node_modules/.bin/lerna run minify",
+    "release": "./node_modules/.bin/lerna publish",
+    "updated": "./node_modules/.bin/lerna changed"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^3.9.4",
+    "gulp-clean-css": "^4.0.0",
     "gulp-jshint": "^2.1.0",
-    "gulp-minify": "^2.1.0",
-    "gulp-rename": "^1.2.3",
-    "jshint": "^2.9.5",
-    "lerna": "^2.9.1"
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^1.4.0",
+    "jshint": "^2.9.7",
+    "lerna": "^3.10.1"
   },
   "private": true
 }

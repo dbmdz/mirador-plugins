@@ -12,7 +12,7 @@ tag_name=$1
 
 if [[ ! ${tag_name} =~ ^\@dbmdz\/mirador-.*?\@[0-9]+\.[0-9]+\.[0-9]+$ ]]
 then
-  echo 'Tge tag name has to match the pattern "@dbmdz/mirador-<plugin name>@<version>"!'
+  echo 'The tag name has to match the pattern "@dbmdz/mirador-<plugin name>@<version>"!'
   exit 1
 fi
 

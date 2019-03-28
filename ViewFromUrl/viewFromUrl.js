@@ -9,6 +9,15 @@ var UpdateUrlFromView = {
   // represents query params not added by this plugin
   furtherParams: '',
 
+  /* activates the annotations if defined via request param */
+  extendImageViewInitialisation: function(){
+    var origFunc = Mirador.ImageView.prototype.init;
+    Mirador.ImageView.prototype.init = function(){
+      origFunc.apply(this);
+      $('.mirador-osd-annotations-layer', this.appendTo).click();
+    };
+  },
+
   init: function() {
     var this_ = this;
     var origFunc = Mirador.Viewer.prototype.setupViewer;
@@ -21,6 +30,9 @@ var UpdateUrlFromView = {
           }
           return paramString;
         }, '');
+        if (params.hasOwnProperty('annotations') && params['annotations'] === 'true') {
+          this_.extendImageViewInitialisation();
+        }
         if (params.hasOwnProperty('manifest')) {
           this.data.unshift({'manifestUri': params.manifest});
           var windowObj = {

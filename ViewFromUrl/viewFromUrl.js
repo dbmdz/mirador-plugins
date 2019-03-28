@@ -14,7 +14,7 @@ var UpdateUrlFromView = {
     var origFunc = Mirador.ImageView.prototype.init;
     Mirador.ImageView.prototype.init = function(){
       origFunc.apply(this);
-      $('.mirador-osd-annotations-layer', this.appendTo).click();
+      $('.mirador-osd-annotations-layer', this.element).click();
     };
   },
 

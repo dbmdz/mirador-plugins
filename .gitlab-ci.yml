@@ -1,0 +1,31 @@
+image: node
+
+stages:
+  - release
+
+.release:
+  before_script:
+    - wget https://github.com/github/hub/releases/download/v2.10.0/hub-linux-amd64-2.10.0.tgz
+    - tar -xzf hub-linux-amd64-2.10.0.tgz
+    - mv hub-linux-amd64-2.10.0/bin/hub /usr/local/bin
+    - rm -rf hub-linux-amd64-2.10.0*
+    - npm run create-release-package -- $CI_COMMIT_TAG
+    - git remote rm origin
+    - git remote add origin "https://github.com/$CI_PROJECT_PATH.git"
+  stage: release
+
+github_release:
+  extends: .release
+  only:
+    - tags
+  script:
+    - if [[ "$CI_COMMIT_TAG" =~ .*RC.* ]]; then exit 0; fi
+    - hub release create -m $CI_COMMIT_TAG $(find . -iname "*.zip" -exec echo -a {} \;) -t $CI_COMMIT_SHA $CI_COMMIT_TAG
+
+github_prelease:
+  extends: .release
+  only:
+    - tags
+  script:
+    - if ! [[ "$CI_COMMIT_TAG" =~ .*RC.* ]]; then exit 0; fi
+    - hub release create -m $CI_COMMIT_TAG $(find . -iname "*.zip" -exec echo -a {} \;) -p -t $CI_COMMIT_SHA $CI_COMMIT_TAG

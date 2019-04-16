@@ -3,9 +3,6 @@ image: node
 stages:
   - release
 
-cache:
-  untracked: true
-
 .release:
   before_script:
     - apt update && DEBIAN_FRONTEND=noninteractive apt install -y zip

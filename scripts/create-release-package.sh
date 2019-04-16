@@ -7,6 +7,11 @@ then
   exit 1
 fi
 
+if ! [ -x "$(command -v zip)" ]; then
+  echo 'Error: zip is NOT installed 💣' >&2
+  exit 1
+fi
+
 # get tag name as first argument
 tag_name=$1
 

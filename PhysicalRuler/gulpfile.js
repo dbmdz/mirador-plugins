@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var clean = require('gulp-clean');
 var linter = require('gulp-jshint');
 var minifyJS = require('gulp-minify');
-var rename = require('gulp-rename');
 
 gulp.task('clean', function(){
   return gulp.src(
@@ -17,6 +16,8 @@ gulp.task('lint', gulp.series(function(){
     linter()
   ).pipe(
     linter.reporter('default')
+  ).pipe(
+    linter.reporter('fail')
   );
 }));
 

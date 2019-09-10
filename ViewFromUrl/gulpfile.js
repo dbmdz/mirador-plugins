@@ -17,6 +17,8 @@ gulp.task('lint', gulp.series(function(){
     linter()
   ).pipe(
     linter.reporter('default')
+  ).pipe(
+    linter.reporter('fail')
   );
 }));
 

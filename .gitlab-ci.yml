@@ -4,7 +4,15 @@ variables:
   HUB_VERSION: "2.10.0"
 
 stages:
+  - lint
   - release
+
+lint:
+  before_script:
+    - npm install
+  script:
+    - npm run lint
+  stage: lint
 
 .release:
   before_script:

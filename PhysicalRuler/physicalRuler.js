@@ -635,7 +635,9 @@ if (!Array.prototype.find) {
         // Add HUD button
         var button = jQuery(this.buttonTemplate({'active': this.config.show}))[0];
         button.addEventListener('click', function() {
+          /* jshint ignore:start */
           this.config.show ? this.hide() : this.show();
+          /* jshint ignore:end */
         }.bind(this));
         this.viewElem.querySelector('.hud-container').appendChild(button);
       }

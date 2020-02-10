@@ -31,15 +31,14 @@
 }
 
 .image-view .cropping-overlay > .resize-frame {
-  border: 2px dashed lightgray;
+  border: 2px dashed yellow;
   border-radius: 3px;
-  box-shadow: 3px 3px 12px black, inset 3px 3px 12px black;
   cursor: move;
   height: 100%;
 }
 
 .image-view .cropping-overlay > .resize-anchor {
-  background: lightgray;
+  background: yellow;
   box-shadow: 5px 5px 10px black;
   height: 8px;
   position: absolute;

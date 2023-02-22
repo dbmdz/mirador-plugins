@@ -14,5 +14,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: npm install
       - name: Check Javascript codestyle
-        run: npm install && npm run lint
+        run: npm run lint

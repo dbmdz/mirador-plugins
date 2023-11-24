@@ -24,7 +24,7 @@
     "gulp-minify": "^3.1.0",
     "gulp-rename": "^2.0.0",
     "jshint": "^2.13.6",
-    "lerna": "^7.4.1"
+    "lerna": "^8.0.0"
   },
   "private": true
 }
